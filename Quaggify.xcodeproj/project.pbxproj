@@ -146,7 +146,7 @@
 		E0841E471E41384700BEA51E /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		E0841E491E414D3100BEA51E /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		E0841E4B1E414F7600BEA51E /* SearchHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchHeaderView.swift; sourceTree = "<group>"; };
-		E09CE8561E409C9B002BF3F8 /* Quaggify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quaggify.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E09CE8561E409C9B002BF3F8 /* Soundwich.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soundwich.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E09CE8591E409C9B002BF3F8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E09CE85B1E409C9B002BF3F8 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E09CE8631E409C9B002BF3F8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -289,7 +289,7 @@
 		E09CE8571E409C9B002BF3F8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E09CE8561E409C9B002BF3F8 /* Quaggify.app */,
+				E09CE8561E409C9B002BF3F8 /* Soundwich.app */,
 				E09CE86D1E409C9B002BF3F8 /* QuaggifyTests.xctest */,
 			);
 			name = Products;
@@ -430,7 +430,7 @@
 			);
 			name = Quaggify;
 			productName = Quaggify;
-			productReference = E09CE8561E409C9B002BF3F8 /* Quaggify.app */;
+			productReference = E09CE8561E409C9B002BF3F8 /* Soundwich.app */;
 			productType = "com.apple.product-type.application";
 		};
 		E09CE86C1E409C9B002BF3F8 /* QuaggifyTests */ = {
@@ -818,7 +818,7 @@
 				INFOPLIST_FILE = Quaggify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.carolinedebs.Soundwich;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Soundwich;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Quaggify-Bridging-Header.h";
@@ -842,7 +842,7 @@
 				INFOPLIST_FILE = Quaggify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.carolinedebs.Soundwich;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Soundwich;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Quaggify-Bridging-Header.h";

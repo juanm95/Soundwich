@@ -100,7 +100,7 @@ class TrackCell: CollectionViewCell {
     if let name = track?.name {
       alertController.title = name
     }
-    alertController.addAction(UIAlertAction(title: "Add to playlist", style: .default) { [weak self] _ in
+    alertController.addAction(UIAlertAction(title: "Send to Friend", style: .default) { [weak self] _ in
       let trackOptionsVC = TrackOptionsViewController()
       trackOptionsVC.track = self?.track
       

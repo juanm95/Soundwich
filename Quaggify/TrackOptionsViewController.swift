@@ -16,9 +16,9 @@ class TrackOptionsViewController: ViewController {
   
   var track: Track? {
     didSet{
-      if let createNewPlaylistSection = Playlist(JSON: ["name": "Create new playlist"]) {
+      /*if let createNewPlaylistSection = Playlist(JSON: ["name": "Create new playlist"]) {
         sections.append([createNewPlaylistSection])
-      }
+      }*/
     }
   }
   
@@ -103,7 +103,7 @@ extension TrackOptionsViewController {
     navigationController?.navigationBar.isOpaque = true
     navigationController?.navigationBar.isTranslucent = false
     navigationItem.leftBarButtonItem = closeModalButton
-    navigationItem.title = "Add to Playlist".uppercased()
+    navigationItem.title = "Send To".uppercased()
     if let titleFont = Font.montSerratRegular(size: 16) {
       navigationController?.navigationBar.titleTextAttributes = [NSFontAttributeName: titleFont, NSForegroundColorAttributeName: ColorPalette.black]
     }
@@ -286,7 +286,7 @@ extension TrackOptionsViewController: UICollectionViewDataSource {
       if let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: SearchHeaderView.identifier, for: indexPath) as? SearchHeaderView {
         
         if indexPath.section == 1 {
-          headerView.title = "Your playlists"
+          headerView.title = "Send To"
           headerView.titleLabel.textColor = ColorPalette.black
           headerView.titleLabel.font = Font.montSerratBold(size: 20)
         }

@@ -41,11 +41,13 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         /*let trackVC = TrackViewController()
         trackVC.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:
         navigationController?.pushViewController(trackVC, animated: true)*/
-        thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
+        /*thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
                 print("playing!")
+            } else {
+                print("ERROR IN AUDIOSTREAMING")
             }
-        })
+        })*/
 
         
          API.checkQueue() { [weak self] (response) in
@@ -95,7 +97,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         titleLabel.text = name
       }
       if let artists = track.artists {
-        let names = artists.map { $0.name ?? "Uknown Artist" }.joined(separator: ", ")
+        let names = artists.map { $0.name ?? "Unknown Artist" }.joined(separator: ", ")
         subTitleLabel.text = names
         navigationItem.title = names
       }
@@ -129,12 +131,12 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
   
   lazy var addToPlaylistButton: UIButton = {
     let btn = UIButton(type: .system)
-    let img = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
-    //btn.tintColor = ColorPalette.white
-    //btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-    //btn.setTitle("Add to Playlist", for: .normal)
+    //let img = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
+    btn.tintColor = ColorPalette.white
+    btn.titleLabel?.font = Font.montSerratRegular(size: 30)
+    btn.setTitle("Send", for: .normal)
     btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
-    btn.setBackgroundImage(img, for: .normal)
+    //btn.setBackgroundImage(img, for: .normal)
     return btn
   }()
     
@@ -219,7 +221,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     
     playSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
     
-    //addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+    addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
   }
 }
 
