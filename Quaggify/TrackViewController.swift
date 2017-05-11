@@ -56,6 +56,20 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             if response["queued"] as! Bool {
                 trackName = "spotify:track:"
                 trackName += response["data"]?["songid"] as! String
+                let alertController = UIAlertController(title: "Soundwich", message: "React to this song your friend sent.", preferredStyle: UIAlertControllerStyle.alert)
+                alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                    API.reactToSong(reaction: "💩", time: response["data"]?["time"] as! String, username: UserDefaults.standard.value(forKey: "username") as! String, to: response["data"]?["tomember"] as! String)
+                }))
+                alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                    API.reactToSong(reaction: "😂", time: response["data"]?["time"] as! String, username: UserDefaults.standard.value(forKey: "username") as! String, to: response["data"]?["tomember"] as! String)
+                }))
+                alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                    API.reactToSong(reaction: "😡", time: response["data"]?["time"] as! String, username: UserDefaults.standard.value(forKey: "username") as! String, to: response["data"]?["tomember"] as! String)
+                }))
+                alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                    API.reactToSong(reaction: "😎", time: response["data"]?["time"] as! String, username: UserDefaults.standard.value(forKey: "username") as! String, to: response["data"]?["tomember"] as! String)
+                }))
+                strongSelf.present(alertController, animated: true, completion: nil)
             } else {
                 thePlayer.indeX += 1
                 trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!

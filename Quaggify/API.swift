@@ -92,6 +92,7 @@ struct API {
   }
     
     static func sendTrackToFriend (track: Track?, friend: Playlist?, completion: @escaping (_ json: [String:AnyObject]) -> Void) {
+        print(track!.id!)
         fetch(endPoint: "sendSong", postString: "to=\(friend!.name!)&from=\(UserDefaults.standard.value(forKey: "username") as! String)&songid=\(track!.id!)", completion: completion)
     }
   
@@ -105,6 +106,12 @@ struct API {
     
     static func registerUser(username: String) {
         fetch(endPoint: "register", postString: "username=\(username)&token=BradSucks&password=Ass") { (data: [String:AnyObject]) -> Void in
+            print(data)
+        }
+    }
+    
+    static func reactToSong(reaction: String, time: String, username: String, to: String) {
+        fetch(endPoint: "react", postString: "username=\(username)&time=\(time)&reaction=\(reaction)&tomember=\(to)") { (data: [String:AnyObject]) -> Void in
             print(data)
         }
     }
