@@ -18,6 +18,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         return UserDefaults.standard.string(forKey: "ACCESS_TOKEN_KEY")
     }
 
+    
     func initializePlayer(){
         print("here")
         if thePlayer.spotifyPlayer == nil {
@@ -28,6 +29,33 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             thePlayer.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
         }
     }
+    
+    
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
+        print("audio Streming printtt4")
+        var trackName = "spotify:track:"
+        
+         API.checkQueue() { [weak self] (response) in
+                guard let strongSelf = self else {
+                    return
+                }
+            print(response)
+            if response["queued"] as! Bool {
+                trackName += response["data"]?["songid"] as! String
+            } else {
+                thePlayer.indeX += 1
+                trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
+            }
+            print(trackName)
+            thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
+                if (error != nil) {
+                    print("playing!")
+                }
+            })
+        }
+        print("audio Streming printtt")
+    }
+    
     
   var track: Track? {
     didSet {
@@ -175,6 +203,7 @@ extension TrackViewController {
   }
 }
 
+
 // MARK: Actions
 extension TrackViewController {
   func addToPlaylist () {
@@ -196,6 +225,7 @@ extension TrackViewController {
             }
         })
     }
+
   
   func fetchTrack () {
     API.fetchTrack(track: track) { [weak self] (trackResponse, error) in

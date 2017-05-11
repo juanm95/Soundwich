@@ -54,6 +54,8 @@ class PlaylistViewController: ViewController {
     super.viewDidLoad()
     setupViews()
     fetchTracks()
+    
+
   }
   
   override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -94,22 +96,31 @@ extension PlaylistViewController {
           strongSelf.spotifyObject?.total = spotifyObject.total
         }
         strongSelf.collectionView.reloadData()
-      }
-    
-        print(strongSelf.spotifyObject?.href)
-        print("made it here")
-        var trackName = "https://api.spotify.com/v1/users/cdebs/playlists/3haitjtKkVm8BZC9MBJoYS/tracks"
-        /*var trackName = "spotify:"
-        trackName += (User.current.id)!
-        trackName += ":playlist:"
-        trackName += (self?.playlist?.id)!
-        trackName += ":tracks:autoplay:true"*/
-        print(trackName)
+        
+        //save the spotifyobject to globals
+        thePlayer.trackList = spotifyObject
+        
+        //print(spotifyObject?.items?[1].track?.id)
+        /* print((self?.playlist?.uri)!)
+         //print(strongSelf.spotifyObject?.href)
+         print("made it here playlistt")
+         var trackName = (self?.playlist?.uri)!
+         trackName += ":autoplay:true"
+         /*var trackName = "spotify:"
+         trackName += (User.current.id)!
+         trackName += ":playlist:"
+         trackName += (self?.playlist?.id)!
+         trackName += ":tracks:autoplay:true"*/
+         // print(trackName)*/
+      /*  var trackName = "spotify:track:"
+        trackName += (spotifyObject?.items?[1].track?.id)!
+        print (trackName)
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
                 print("playing!")
             }
-        })
+        })*/
+      }
     }
   }
   
@@ -166,7 +177,6 @@ extension PlaylistViewController: UICollectionViewDataSource {
           fetchTracks()
         }
       }
-      
       return cell
     }
     return UICollectionViewCell()

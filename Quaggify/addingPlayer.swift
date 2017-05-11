@@ -10,4 +10,6 @@ import Foundation
 
 class thePlayer {
     static var spotifyPlayer: SPTAudioStreamingController?
+    static var trackList: SpotifyObject<PlaylistTrack>?
+    static var indeX: Int = 0
 }
