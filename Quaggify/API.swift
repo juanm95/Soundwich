@@ -90,13 +90,23 @@ struct API {
   static func addTrackToPlaylist (track: Track?, playlist: Playlist?, service: SpotifyService = SpotifyService.shared, completion: @escaping (String?, Error?) -> Void) {
     service.addTrackToPlaylist(track: track, playlist: playlist, completion: completion)
   }
+    
+    static func sendTrackToFriend (track: Track?, friend: Playlist?, completion: @escaping (_ json: [String:AnyObject]) -> Void) {
+        fetch(endPoint: "sendSong", postString: "to=\(friend!.name!)&from=juan&songid=\(track!.id!)", completion: completion)
+    }
   
   static func fetchCurrentUsersPlaylists (limit: Int = 20, offset: Int = 0, service: SpotifyService = SpotifyService.shared, completion: @escaping (SpotifyObject<Playlist>?, Error?) -> Void) {
     service.fetchCurrentUsersPlaylists(limit: limit, offset: offset, completion: completion)
   }
     
     static func fetchFriends (username: String, completion: @escaping (_ json: [String:AnyObject]) -> Void) {
-        fetch(endPoint: "getFriends", postString: "username=\(username)", completion: completion)
+        fetch(endPoint: "getFriends", postString: "username=\(UserDefaults.standard.value(forKey: "username") as! String)", completion: completion)
+    }
+    
+    static func registerUser(username: String) {
+        fetch(endPoint: "register", postString: "username=\(username)&token=BradSucks&password=Ass") { (data: [String:AnyObject]) -> Void in
+            print(data)
+        }
     }
   
   static func createNewPlaylist (name: String, service: SpotifyService = SpotifyService.shared, completion: @escaping (Playlist?, Error?) -> Void) {

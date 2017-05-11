@@ -119,14 +119,13 @@ extension TrackOptionsViewController {
   func fetchPlaylists () {
     isFetching = true
     
-    API.fetchFriends(username: "Caroline") { [weak self] (friends) in
+    API.fetchFriends(username: "juan") { [weak self] (friends) in
       guard let strongSelf = self else {
         return
       }
       strongSelf.isFetching = false
         var items = [Playlist?]()
         let friendArray = friends["data"]! as! Array<String>
-        print(friendArray[0])
         for friend in friendArray {
             items.append(Playlist(JSON: ["name": friend]))
         }
@@ -189,17 +188,9 @@ extension TrackOptionsViewController {
   }
   
   func addTrackToPlaylist(playlist: Playlist?) {
-    API.addTrackToPlaylist(track: track, playlist: playlist) { [weak self] (snapshotId, error) in
-      if let error = error {
-        print(error)
-        Alert.shared.show(title: "Error", message: "Error communicating with the server")
-      } else if let _ = snapshotId {
-        self?.dismiss(animated: true) {
-          Alert.shared.show(title: "Success!", message: "Track added to Playlist")
-          // Message to update library tab
-          NotificationCenter.default.post(name: .onUserPlaylistUpdate, object: playlist)
-        }
-      }
+    API.sendTrackToFriend(track: track, friend: playlist) { [weak self] (data) in
+        Alert.shared.show(title: "Success!", message: "Track sent to friend")
+      
     }
   }
 }
