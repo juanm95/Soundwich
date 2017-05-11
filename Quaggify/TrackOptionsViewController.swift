@@ -27,6 +27,14 @@ class TrackOptionsViewController: ViewController {
       collectionView.reloadData()
     }
   }
+    
+    var fetchedFriends: Bool? {
+        didSet {
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }
+    }
   
   var sections: [[Playlist]] = [] {
     didSet {
@@ -110,26 +118,23 @@ extension TrackOptionsViewController {
   
   func fetchPlaylists () {
     isFetching = true
-    print("Fetching playlists offset(\(offset)) ")
     
-    API.fetchCurrentUsersPlaylists(limit: limit, offset: offset) { [weak self] (spotifyObject, error) in
+    API.fetchFriends(username: "juan") { [weak self] (friends) in
       guard let strongSelf = self else {
         return
       }
       strongSelf.isFetching = false
-      strongSelf.offset += strongSelf.limit
-      
-      if let error = error {
-        print(error)
-        Alert.shared.show(title: "Error", message: "Error communicating with the server")
-      } else if let items = spotifyObject?.items {
-        if strongSelf.sections[safe: 1] != nil {
-          strongSelf.sections[1].append(contentsOf: items)
-        } else {
-          strongSelf.sections.append(items)
+        var items = [Playlist?]()
+        let friendArray = friends["data"]! as! Array<String>
+        for friend in friendArray {
+            items.append(Playlist(JSON: ["name": friend]))
         }
-        strongSelf.spotifyObject = spotifyObject
-      }
+        if strongSelf.sections[safe: 1] != nil {
+          strongSelf.sections[1].append(items[0]!)
+        } else {
+          strongSelf.sections.append(items as! [Playlist])
+        }
+        strongSelf.fetchedFriends = true
     }
   }
   
@@ -183,17 +188,9 @@ extension TrackOptionsViewController {
   }
   
   func addTrackToPlaylist(playlist: Playlist?) {
-    API.addTrackToPlaylist(track: track, playlist: playlist) { [weak self] (snapshotId, error) in
-      if let error = error {
-        print(error)
-        Alert.shared.show(title: "Error", message: "Error communicating with the server")
-      } else if let _ = snapshotId {
-        self?.dismiss(animated: true) {
-          Alert.shared.show(title: "Success!", message: "Track added to Playlist")
-          // Message to update library tab
-          NotificationCenter.default.post(name: .onUserPlaylistUpdate, object: playlist)
-        }
-      }
+    API.sendTrackToFriend(track: track, friend: playlist) { [weak self] (data) in
+        Alert.shared.show(title: "Success!", message: "Track sent to friend")
+      
     }
   }
 }

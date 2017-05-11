@@ -36,6 +36,23 @@ class LoginViewController: ViewController {
     super.viewDidLoad()
     setupViews()
   }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let alertController = UIAlertController(title: "Soundwich", message: "Enter your username", preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addTextField{ (textField : UITextField!) -> Void in
+            textField.placeholder = "Enter username"
+        }
+        alertController.addAction(UIAlertAction(title: "Login", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+            let username = alertController.textFields![0].text!
+            print(username)
+            UserDefaults.standard.set(username, forKey: "username")
+            API.registerUser(username: username)
+        }))
+        
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
   
   func login () {
     SpotifyService.shared.login()
