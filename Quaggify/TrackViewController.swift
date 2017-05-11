@@ -7,9 +7,30 @@
 //
 
 import UIKit
+import AVFoundation
 
-class TrackViewController: ViewController {
-  
+class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate{
+    
+    var spotifyPlayer: SPTAudioStreamingController?
+    var auth = SPTAuth.defaultInstance()!
+    var session:SPTSession!
+    var ACCESS_TOKEN: String? {
+        return UserDefaults.standard.string(forKey: "ACCESS_TOKEN_KEY")
+    }
+
+    func initializePlayer(){
+        print("here")
+        if self.spotifyPlayer == nil {
+            self.spotifyPlayer = SPTAudioStreamingController.sharedInstance()
+            self.spotifyPlayer!.playbackDelegate = self
+            self.spotifyPlayer!.delegate = self
+            try! spotifyPlayer!.start(withClientId: auth.clientID)
+            self.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
+        }
+        
+    }
+
+    
   var track: Track? {
     didSet {
       guard let track = track else {
@@ -60,6 +81,16 @@ class TrackViewController: ViewController {
     btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
     return btn
   }()
+    
+    lazy var playSongButton: UIButton = {
+        let btn = UIButton(type: .system)
+        let img = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
+        btn.tintColor = ColorPalette.white
+        btn.titleLabel?.font = Font.montSerratRegular(size: 30)
+        btn.setTitle("Play", for: .normal)
+        btn.addTarget(self, action: #selector(playSong), for: .touchUpInside)
+        return btn
+    }()
   
   var imageView: UIImageView = {
     let iv = UIImageView()
@@ -88,6 +119,7 @@ class TrackViewController: ViewController {
     super.viewDidLoad()
     setupViews()
     fetchTrack()
+    initializePlayer()
   }
   
   override func viewWillLayoutSubviews() {
@@ -110,13 +142,13 @@ class TrackViewController: ViewController {
   // MARK: Layout
   override func setupViews() {
     super.setupViews()
-    
     view.addSubview(stackView)
     view.addSubview(imageView)
     view.addSubview(containerView)
     view.addSubview(titleLabel)
     view.addSubview(subTitleLabel)
     view.addSubview(addToPlaylistButton)
+    view.addSubview(playSongButton)
     view.backgroundColor = ColorPalette.black
     
     stackView.addArrangedSubview(imageView)
@@ -127,6 +159,8 @@ class TrackViewController: ViewController {
     titleLabel.anchor(containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
     
     subTitleLabel.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
+    
+    playSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
     
     addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
   }
@@ -153,6 +187,15 @@ extension TrackViewController {
     trackOptionsNav.modalPresentationStyle = .overCurrentContext
     tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
   }
+    
+    func playSong() {
+        print("made it here")
+        self.spotifyPlayer?.playSpotifyURI("spotify:track:58s6EuEYJdlb0kO7awm3Vp", startingWith: 0, startingWithPosition: 0, callback: { (error) in
+            if (error != nil) {
+                print("playing!")
+            }
+        })
+    }
   
   func fetchTrack () {
     print("This is the track: \(track)")
@@ -169,19 +212,3 @@ extension TrackViewController {
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
