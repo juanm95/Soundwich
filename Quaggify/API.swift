@@ -92,7 +92,7 @@ struct API {
   }
     
     static func sendTrackToFriend (track: Track?, friend: Playlist?, completion: @escaping (_ json: [String:AnyObject]) -> Void) {
-        fetch(endPoint: "sendSong", postString: "to=\(friend!.name!)&from=juan&songid=\(track!.id!)", completion: completion)
+        fetch(endPoint: "sendSong", postString: "to=\(friend!.name!)&from=\(UserDefaults.standard.value(forKey: "username") as! String)&songid=\(track!.id!)", completion: completion)
     }
   
   static func fetchCurrentUsersPlaylists (limit: Int = 20, offset: Int = 0, service: SpotifyService = SpotifyService.shared, completion: @escaping (SpotifyObject<Playlist>?, Error?) -> Void) {
@@ -107,6 +107,10 @@ struct API {
         fetch(endPoint: "register", postString: "username=\(username)&token=BradSucks&password=Ass") { (data: [String:AnyObject]) -> Void in
             print(data)
         }
+    }
+    
+    static func checkQueue(completion: @escaping (_ json: [String:AnyObject]) -> Void) {
+        fetch(endPoint: "checkQueue", postString: "username=\(UserDefaults.standard.value(forKey: "username") as! String)", completion: completion)
     }
   
   static func createNewPlaylist (name: String, service: SpotifyService = SpotifyService.shared, completion: @escaping (Playlist?, Error?) -> Void) {
