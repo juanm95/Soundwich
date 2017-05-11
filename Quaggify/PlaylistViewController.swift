@@ -32,6 +32,9 @@ class PlaylistViewController: ViewController {
   let interItemSpacing: CGFloat = 8
   let contentInset: CGFloat = 8
   
+  
+    
+    
   lazy var collectionView: UICollectionView = {
     let flowLayout = UICollectionViewFlowLayout()
     flowLayout.scrollDirection = .vertical
@@ -49,13 +52,11 @@ class PlaylistViewController: ViewController {
     cv.register(PlaylistHeaderView.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: PlaylistHeaderView.identifier)
     return cv
   }()
-
+ 
   override func viewDidLoad() {
     super.viewDidLoad()
     setupViews()
     fetchTracks()
-    
-
   }
   
   override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -65,10 +66,12 @@ class PlaylistViewController: ViewController {
   // MARK: Layout
   override func setupViews() {
     super.setupViews()
-    
     view.addSubview(collectionView)
+    
     collectionView.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+ 
   }
+    
 }
 
 // MARK: Actions

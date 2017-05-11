@@ -27,7 +27,7 @@ class PlaylistCell: CollectionViewCell {
       if let playlistName = playlist.name {
         titleLabel.text = playlistName
       } else {
-        titleLabel.text = "Unkown Playlist"
+        titleLabel.text = "Unknown Playlist"
       }
       if let id = playlist.owner?.id, let totalTracks = playlist.tracks?.total {
         subTitleLabel.isHidden = false
