@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		01CE93C43A826F10B198CC31 /* Pods_QuaggifyTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB3D1CC599B6527C02A27D2 /* Pods_QuaggifyTests.framework */; };
+		0C0CBEE81EC4183A0075BE53 /* SpotifyAudioPlayback.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C0CBEE71EC4183A0075BE53 /* SpotifyAudioPlayback.framework */; };
+		0C0CBEEA1EC4198C0075BE53 /* SpotifyAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C0CBEE91EC4198C0075BE53 /* SpotifyAuthentication.framework */; };
+		0C0CBEEC1EC4199E0075BE53 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C0CBEEB1EC4199E0075BE53 /* AVFoundation.framework */; };
+		0C0CBEEE1EC419A50075BE53 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C0CBEED1EC419A50075BE53 /* SystemConfiguration.framework */; };
+		0C0CBEF11EC419E80075BE53 /* whatever.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0CBEF01EC419E80075BE53 /* whatever.m */; };
+		0C471B3F1EC430E600CD2E13 /* addingPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C471B3E1EC430E600CD2E13 /* addingPlayer.swift */; };
 		2980C1A53BC65D1172407B5C /* Pods_Quaggify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B5A1ECA3FE1D320C73E401 /* Pods_Quaggify.framework */; };
 		E018CCC31E424B800099309F /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018CCC21E424B800099309F /* RecentSearches.swift */; };
 		E018CCC61E424EDA0099309F /* RecentSearchesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018CCC51E424EDA0099309F /* RecentSearchesCell.swift */; };
@@ -86,6 +92,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C0CBEE71EC4183A0075BE53 /* SpotifyAudioPlayback.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyAudioPlayback.framework; sourceTree = "<group>"; };
+		0C0CBEE91EC4198C0075BE53 /* SpotifyAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyAuthentication.framework; sourceTree = "<group>"; };
+		0C0CBEEB1EC4199E0075BE53 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		0C0CBEED1EC419A50075BE53 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0C0CBEEF1EC419E80075BE53 /* Quaggify-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Quaggify-Bridging-Header.h"; sourceTree = "<group>"; };
+		0C0CBEF01EC419E80075BE53 /* whatever.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = whatever.m; sourceTree = "<group>"; };
+		0C471B3E1EC430E600CD2E13 /* addingPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addingPlayer.swift; sourceTree = "<group>"; };
 		526120323A5F789102AA38D1 /* Pods-Quaggify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quaggify.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quaggify/Pods-Quaggify.release.xcconfig"; sourceTree = "<group>"; };
 		8B22A0CBEE1D84EDE1B495CA /* Pods-QuaggifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuaggifyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuaggifyTests/Pods-QuaggifyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AD950247F2477E6A23B4B79C /* Pods-Quaggify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quaggify.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Quaggify/Pods-Quaggify.debug.xcconfig"; sourceTree = "<group>"; };
@@ -169,7 +182,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C0CBEEE1EC419A50075BE53 /* SystemConfiguration.framework in Frameworks */,
+				0C0CBEEC1EC4199E0075BE53 /* AVFoundation.framework in Frameworks */,
 				2980C1A53BC65D1172407B5C /* Pods_Quaggify.framework in Frameworks */,
+				0C0CBEEA1EC4198C0075BE53 /* SpotifyAuthentication.framework in Frameworks */,
+				0C0CBEE81EC4183A0075BE53 /* SpotifyAudioPlayback.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -198,6 +215,10 @@
 		48BD1217722A6097E1322AF5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0C0CBEED1EC419A50075BE53 /* SystemConfiguration.framework */,
+				0C0CBEEB1EC4199E0075BE53 /* AVFoundation.framework */,
+				0C0CBEE91EC4198C0075BE53 /* SpotifyAuthentication.framework */,
+				0C0CBEE71EC4183A0075BE53 /* SpotifyAudioPlayback.framework */,
 				E2B5A1ECA3FE1D320C73E401 /* Pods_Quaggify.framework */,
 				AEB3D1CC599B6527C02A27D2 /* Pods_QuaggifyTests.framework */,
 			);
@@ -255,11 +276,13 @@
 		E09CE84D1E409C9B002BF3F8 = {
 			isa = PBXGroup;
 			children = (
+				0C0CBEF01EC419E80075BE53 /* whatever.m */,
 				E09CE8581E409C9B002BF3F8 /* Quaggify */,
 				E09CE8701E409C9B002BF3F8 /* QuaggifyTests */,
 				E09CE8571E409C9B002BF3F8 /* Products */,
 				45419FEC7A8CCFDBC7D3496D /* Pods */,
 				48BD1217722A6097E1322AF5 /* Frameworks */,
+				0C0CBEEF1EC419E80075BE53 /* Quaggify-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -336,6 +359,7 @@
 				E0E385F71E4799EE002A72DD /* TrackViewController.swift */,
 				E0E385FB1E47DA44002A72DD /* AlbumViewController.swift */,
 				E0E385FD1E47DA4F002A72DD /* PlaylistViewController.swift */,
+				0C471B3E1EC430E600CD2E13 /* addingPlayer.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -443,6 +467,7 @@
 					E09CE8551E409C9B002BF3F8 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = ZPEUGUU6JH;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Manual;
 					};
 					E09CE86C1E409C9B002BF3F8 = {
@@ -617,6 +642,7 @@
 				E0344DED1E41EFC300E7E585 /* PlaylistCell.swift in Sources */,
 				E0841E381E41176600BEA51E /* Artist.swift in Sources */,
 				E0AB39C51E420F97004BCD74 /* SpotifyObjectType.swift in Sources */,
+				0C471B3F1EC430E600CD2E13 /* addingPlayer.swift in Sources */,
 				E060584D1E4392D7003DEAB4 /* SpotifyFooter.swift in Sources */,
 				E0841E1D1E40B2FD00BEA51E /* CollectionViewCell.swift in Sources */,
 				E0841E211E40B9C100BEA51E /* UIColor+Extension.swift in Sources */,
@@ -650,6 +676,7 @@
 				E0E386001E47DCE5002A72DD /* AlbumHeaderView.swift in Sources */,
 				E0841E2E1E40D2FA00BEA51E /* API.swift in Sources */,
 				E0841E4C1E414F7600BEA51E /* SearchHeaderView.swift in Sources */,
+				0C0CBEF11EC419E80075BE53 /* whatever.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -781,14 +808,21 @@
 			baseConfigurationReference = AD950247F2477E6A23B4B79C /* Pods-Quaggify.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = ZPEUGUU6JH;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Quaggify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.quaggie.quaggify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "f9d80934-d4ad-4bda-9543-9fc651be6251";
 				PROVISIONING_PROFILE_SPECIFIER = Quaggify;
+				SWIFT_OBJC_BRIDGING_HEADER = "Quaggify-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -798,14 +832,20 @@
 			baseConfigurationReference = 526120323A5F789102AA38D1 /* Pods-Quaggify.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = ZPEUGUU6JH;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Quaggify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.quaggie.quaggify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "1b01e606-088c-4655-920f-c22b11766a19";
 				PROVISIONING_PROFILE_SPECIFIER = Quaggify;
+				SWIFT_OBJC_BRIDGING_HEADER = "Quaggify-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
