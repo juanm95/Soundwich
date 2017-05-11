@@ -16,7 +16,7 @@ class LoginViewController: ViewController {
   
   let titleLabel: UILabel = {
     let label = UILabel()
-    label.text = "Quaggify"
+    label.text = "Soundwich"
     label.textColor = ColorPalette.white
     label.font = Font.montSerratRegular(size: 36)
     label.textAlignment = .center
