@@ -46,13 +46,26 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 print("playing!")
             }
         })
-  
+
         
-        
-        
-        
-        
-        
+         API.checkQueue() { [weak self] (response) in
+                guard let strongSelf = self else {
+                    return
+                }
+            print(response)
+            if response["queued"] as! Bool {
+                trackName += response["data"]?["songid"] as! String
+            } else {
+                thePlayer.indeX += 1
+                trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
+            }
+            print(trackName)
+            thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
+                if (error != nil) {
+                    print("playing!")
+                }
+            })
+        }
         print("audio Streming printtt")
     }
     

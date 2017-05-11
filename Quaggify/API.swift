@@ -108,6 +108,10 @@ struct API {
             print(data)
         }
     }
+    
+    static func checkQueue(completion: @escaping (_ json: [String:AnyObject]) -> Void) {
+        fetch(endPoint: "checkQueue", postString: "username=\(UserDefaults.standard.value(forKey: "username") as! String)", completion: completion)
+    }
   
   static func createNewPlaylist (name: String, service: SpotifyService = SpotifyService.shared, completion: @escaping (Playlist?, Error?) -> Void) {
     service.createNewPlaylist(name: name, completion: completion)
