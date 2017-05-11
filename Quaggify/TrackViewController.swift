@@ -29,8 +29,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         }
         
     }
-
-    
   var track: Track? {
     didSet {
       guard let track = track else {
