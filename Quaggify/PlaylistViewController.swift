@@ -95,8 +95,25 @@ extension PlaylistViewController {
         }
         strongSelf.collectionView.reloadData()
       }
+    
+        print(strongSelf.spotifyObject?.href)
+        print("made it here")
+        var trackName = "https://api.spotify.com/v1/users/cdebs/playlists/3haitjtKkVm8BZC9MBJoYS/tracks"
+        /*var trackName = "spotify:"
+        trackName += (User.current.id)!
+        trackName += ":playlist:"
+        trackName += (self?.playlist?.id)!
+        trackName += ":tracks:autoplay:true"*/
+        print(trackName)
+        thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
+            if (error != nil) {
+                print("playing!")
+            }
+        })
     }
   }
+  
+    
   
   func removeFromPlaylist (track: Track?, position: Int?) {
     print("Removing track \(track?.name ?? "(Null)") on position \(position ?? 0)")
@@ -142,7 +159,8 @@ extension PlaylistViewController: UICollectionViewDataSource {
       let track = spotifyObject?.items?[safe: indexPath.item]?.track
       cell.track = track
       cell.position = indexPath.item
-      
+      //print(track?.id)
+        
       if let totalItems = spotifyObject?.items?.count, indexPath.item == totalItems - 1, spotifyObject?.next != nil {
         if !isFetching {
           fetchTracks()
@@ -153,6 +171,7 @@ extension PlaylistViewController: UICollectionViewDataSource {
     }
     return UICollectionViewCell()
   }
+    
   
   func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
     switch kind {
