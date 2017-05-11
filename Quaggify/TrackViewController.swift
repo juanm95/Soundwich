@@ -32,7 +32,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-        print("audio Streming printtt4")
+        print("audio Streaming printtt4")
         var trackName = "spotify:track:"
         if(thePlayer.indeX < (thePlayer.trackList?.items?.count)!){
         thePlayer.indeX += 1
@@ -84,7 +84,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             })
         }
         }
-        print("audio Streming printtt")
+        print("audio Streaming printtt")
     }
     
     

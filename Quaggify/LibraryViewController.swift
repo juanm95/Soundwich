@@ -83,9 +83,9 @@ class LibraryViewController: ViewController {
 // MARK: Actions
 extension LibraryViewController {
   func addCreateNewPlaylistCell () {
-    if let createNewPlaylistItem = Playlist(JSON: ["name": "Create new playlist"]) {
+    /*if let createNewPlaylistItem = Playlist(JSON: ["name": "Create new playlist"]) {
       playlists.append(createNewPlaylistItem)
-    }
+    }*/
   }
   
   func logout () {
@@ -156,11 +156,12 @@ extension LibraryViewController {
   }
   
   func showNewPlaylistModal () {
-    let alertController = UIAlertController(title: "Create new Playlist".uppercased(), message: nil, preferredStyle: .alert)
+    /*let alertController = UIAlertController(title: "Create new Playlist".uppercased(), message: nil, preferredStyle: .alert)
     alertController.addTextField { textfield in
       textfield.placeholder = "Playlist name"
       textfield.addTarget(self, action: #selector(self.textDidChange(textField:)), for: .editingChanged)
     }
+ 
     let cancelAction = UIAlertAction(title: "Cancel".uppercased(), style: .destructive, handler: nil)
     let createAction = UIAlertAction(title: "Create".uppercased(), style: .default) { _ in
       if let textfield = alertController.textFields?.first, let playlistName = textfield.text {
@@ -193,20 +194,17 @@ extension LibraryViewController {
       } else {
         createAction.isEnabled = false
       }
-    }
+    } */
   }
+
 }
 
 // MARK: UICollectionViewDelegate
 extension LibraryViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    if indexPath.item == 0 {
-      showNewPlaylistModal()
-    } else {
       let playlistVC = PlaylistViewController()
       playlistVC.playlist = playlists[safe: indexPath.item]
       navigationController?.pushViewController(playlistVC, animated: true)
-    }
   }
 }
 
@@ -222,11 +220,11 @@ extension LibraryViewController: UICollectionViewDataSource {
       cell.playlist = playlist
       
       // Create ne playlist
-      if indexPath.item == 0 {
+      /*if indexPath.item == 0 {
         cell.imageView.image = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
         cell.subTitleLabel.isHidden = true
         cell.imageView.tintColor = ColorPalette.white
-      }
+      }*/
       
       if let totalItems = spotifyObject?.items?.count, indexPath.item == totalItems - 1, spotifyObject?.next != nil {
         if !isFetching {
