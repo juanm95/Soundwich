@@ -11,7 +11,7 @@ import AVFoundation
 
 class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate{
     
-    var spotifyPlayer: SPTAudioStreamingController?
+    //var spotifyPlayer: SPTAudioStreamingController?
     var auth = SPTAuth.defaultInstance()!
     var session:SPTSession!
     var ACCESS_TOKEN: String? {
@@ -20,15 +20,15 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
 
     func initializePlayer(){
         print("here")
-        if self.spotifyPlayer == nil {
-            self.spotifyPlayer = SPTAudioStreamingController.sharedInstance()
-            self.spotifyPlayer!.playbackDelegate = self
-            self.spotifyPlayer!.delegate = self
-            try! spotifyPlayer!.start(withClientId: auth.clientID)
-            self.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
+        if thePlayer.spotifyPlayer == nil {
+            thePlayer.spotifyPlayer = SPTAudioStreamingController.sharedInstance()
+            thePlayer.spotifyPlayer!.playbackDelegate = self
+            thePlayer.spotifyPlayer!.delegate = self
+            try! thePlayer.spotifyPlayer!.start(withClientId: auth.clientID)
+            thePlayer.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
         }
-        
     }
+    
   var track: Track? {
     didSet {
       guard let track = track else {
@@ -180,7 +180,6 @@ extension TrackViewController {
   func addToPlaylist () {
     let trackOptionsVC = TrackOptionsViewController()
     trackOptionsVC.track = track
-    
     let trackOptionsNav = NavigationController(rootViewController: trackOptionsVC)
     trackOptionsNav.modalPresentationStyle = .overCurrentContext
     tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
@@ -188,7 +187,10 @@ extension TrackViewController {
     
     func playSong() {
         print("made it here")
-        self.spotifyPlayer?.playSpotifyURI("spotify:track:58s6EuEYJdlb0kO7awm3Vp", startingWith: 0, startingWithPosition: 0, callback: { (error) in
+        var trackName = "spotify:track:"
+        trackName += (track?.id)!
+        print(trackName)
+        thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
                 print("playing!")
             }
@@ -196,7 +198,6 @@ extension TrackViewController {
     }
   
   func fetchTrack () {
-    print("This is the track: \(track)")
     API.fetchTrack(track: track) { [weak self] (trackResponse, error) in
       guard let strongSelf = self else {
         return
