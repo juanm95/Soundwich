@@ -34,13 +34,13 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
         print("audio Streming printtt4")
         var trackName = "spotify:track:"
-      //  if(thePlayer.indeX < )
+        if(thePlayer.indeX < (thePlayer.trackList?.items?.count)!){
         thePlayer.indeX += 1
         trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
         print(trackName)
-        let trackVC = TrackViewController()
+        /*let trackVC = TrackViewController()
         trackVC.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:
-        navigationController?.pushViewController(trackVC, animated: true)
+        navigationController?.pushViewController(trackVC, animated: true)*/
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
                 print("playing!")
@@ -54,6 +54,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 }
             print(response)
             if response["queued"] as! Bool {
+                trackName = "spotify:track:"
                 trackName += response["data"]?["songid"] as! String
             } else {
                 thePlayer.indeX += 1
@@ -65,6 +66,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                     print("playing!")
                 }
             })
+        }
         }
         print("audio Streming printtt")
     }
