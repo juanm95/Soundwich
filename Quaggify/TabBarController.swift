@@ -42,8 +42,8 @@ class TabBarController: UITabBarController {
     super.viewWillAppear(animated)
     
     let homeViewController = NavigationController(rootViewController: LibraryViewController())
-    let homeIcon = #imageLiteral(resourceName: "tab_icon_home").withRenderingMode(.alwaysTemplate)
-    let homeIconFilled = #imageLiteral(resourceName: "tab_icon_home_filled").withRenderingMode(.alwaysTemplate)
+    let homeIcon = #imageLiteral(resourceName: "tab_icon_browse").withRenderingMode(.alwaysTemplate)
+    let homeIconFilled = #imageLiteral(resourceName: "tab_icon_browse_filled").withRenderingMode(.alwaysTemplate)
     homeViewController.tabBarItem = UITabBarItem(title: "Home", image: homeIcon, selectedImage: homeIconFilled)
     homeViewController.tabBarItem.tag = 0
     
@@ -53,7 +53,7 @@ class TabBarController: UITabBarController {
     
     let searchViewController = NavigationController(rootViewController: SearchViewController())
     let searchIcon = #imageLiteral(resourceName: "tab_icon_search").withRenderingMode(.alwaysTemplate)
-    searchViewController.tabBarItem = UITabBarItem(title: "Search", image: searchIcon, tag: 1)
+    searchViewController.tabBarItem = UITabBarItem(title: "Send", image: searchIcon, tag: 1)
     
     /*let libraryViewController = NavigationController(rootViewController: LibraryViewController())
     let libraryIcon = **tab_icon_home**.withRenderingMode(.alwaysTemplate)

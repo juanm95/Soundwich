@@ -116,20 +116,22 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
   lazy var addToPlaylistButton: UIButton = {
     let btn = UIButton(type: .system)
     let img = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
-    btn.tintColor = ColorPalette.white
-    btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-    btn.setTitle("Add to Playlist", for: .normal)
+    //btn.tintColor = ColorPalette.white
+    //btn.titleLabel?.font = Font.montSerratRegular(size: 30)
+    //btn.setTitle("Add to Playlist", for: .normal)
     btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
+    btn.setBackgroundImage(img, for: .normal)
     return btn
   }()
     
     lazy var playSongButton: UIButton = {
         let btn = UIButton(type: .system)
-        let img = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
-        btn.tintColor = ColorPalette.white
-        btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-        btn.setTitle("Play", for: .normal)
+        let img = #imageLiteral(resourceName: "play-button").withRenderingMode(.alwaysTemplate)
+        //btn.tintColor = ColorPalette.white
+        //btn.titleLabel?.font = Font.montSerratRegular(size: 30)
+        //btn.setTitle("Play", for: .normal)
         btn.addTarget(self, action: #selector(playSong), for: .touchUpInside)
+        btn.setImage(UIImage(named: "play-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
     }()
   
@@ -201,9 +203,9 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     
     subTitleLabel.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
     
-    playSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
+    playSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
     
-    addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+    //addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
   }
 }
 

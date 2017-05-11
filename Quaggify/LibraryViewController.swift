@@ -72,7 +72,7 @@ class LibraryViewController: ViewController {
   // MARK: Layout
   override func setupViews() {
     super.setupViews()
-    navigationItem.title = "Your Library".uppercased()
+    navigationItem.title = "Your Playlists".uppercased()
     navigationItem.rightBarButtonItem = logoutButton
     
     view.addSubview(collectionView)
