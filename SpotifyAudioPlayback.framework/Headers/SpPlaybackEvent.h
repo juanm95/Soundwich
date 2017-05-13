@@ -65,14 +65,14 @@ typedef enum : NSUInteger {
 	 * reached the end.
 	 *
 	 * \see SpPlaybackSkipToNext
-	 * \deprecated Use SPPlaybackNotifyMetadataChanged instead.
+	 * deprecated Use SPPlaybackNotifyMetadataChanged instead.
 	 */
 	SPPlaybackNotifyNext,
 
 	/**
 	 * \brief Playback as skipped to the previous track
 	 * \see SpPlaybackSkipToPrev
-	 * \deprecated Use SPPlaybackNotifyMetadataChanged instead.
+	 * deprecated Use SPPlaybackNotifyMetadataChanged instead.
 	 */
 	SPPlaybackNotifyPrev,
 

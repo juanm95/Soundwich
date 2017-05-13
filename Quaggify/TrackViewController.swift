@@ -34,13 +34,11 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
         print("audio Streaming printtt4")
         var trackName = "spotify:track:"
-        if(thePlayer.indeX < (thePlayer.trackList?.items?.count)!){
-        thePlayer.indeX += 1
-        trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
+        //if(thePlayer.indeX < (thePlayer.trackList?.items?.count)!){
+        //thePlayer.indeX += 1
+        //trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
         print(trackName)
-        /*let trackVC = TrackViewController()
-        trackVC.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:
-        navigationController?.pushViewController(trackVC, animated: true)*/
+        
         /*thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
                 print("playing!")
@@ -75,15 +73,20 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             } else {
                 thePlayer.indeX += 1
                 trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
+                let trackVC = TrackViewController()
+                trackVC.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:
+                self?.navigationController?.pushViewController(trackVC, animated: true)
+
             }
             print(trackName)
             thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
                 if (error != nil) {
                     print("playing!")
+                    
                 }
             })
         }
-        }
+        //}
         print("audio Streaming printtt")
     }
     
@@ -179,6 +182,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     setupViews()
     fetchTrack()
     initializePlayer()
+    //playSong()
   }
   
   override func viewWillLayoutSubviews() {
@@ -250,10 +254,8 @@ extension TrackViewController {
   }
     
     func playSong() {
-        print("made it here")
         var trackName = "spotify:track:"
         trackName += (track?.id)!
-        print(trackName)
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
                 print("playing!")

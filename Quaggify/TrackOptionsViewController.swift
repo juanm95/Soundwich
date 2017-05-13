@@ -188,7 +188,7 @@ extension TrackOptionsViewController {
   }
   
   func addTrackToPlaylist(playlist: Playlist?) {
-    API.sendTrackToFriend(track: track, friend: playlist) { [weak self] (data) in
+    API.sendTrackToFriend(track: track, friend: playlist) { (data) in
         Alert.shared.show(title: "Success!", message: "Track sent to friend")
       
     }
@@ -199,12 +199,8 @@ extension TrackOptionsViewController {
 extension TrackOptionsViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     // Dismiss modal & add track to playlist
-    if indexPath.section == 0 {
-      showNewPlaylistModal(track: track)
-    } else {
       let playlist = sections[safe: indexPath.section]?[safe: indexPath.item]
       addTrackToPlaylist(playlist: playlist)
-    }
   }
 }
 
