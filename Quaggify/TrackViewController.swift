@@ -274,7 +274,21 @@ extension TrackViewController {
         let commandCenter = MPRemoteCommandCenter.shared()
         commandCenter.nextTrackCommand.isEnabled = true
         commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.audioStreaming(_:didStopPlayingTrack:)))
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: self.track?.name ?? "No Song Name Provided"]
+        let imageURLString = URL(string: (self.track?.album?.images?[0].url)!)
+        let imageData = try! Data(contentsOf:imageURLString!)
+        let image2 = UIImage(data:imageData)
+        let newSize = CGSize(width:(self.track?.album?.images?[0].width)!,height:(self.track?.album?.images?[0].height)!)
+        if let image = image2 ?? UIImage(named: "Empty Album"), #available(iOS 10.0, *) {
+            let albumArt = MPMediaItemArtwork(boundsSize:newSize, requestHandler: { (size) -> UIImage in return image})
+            let nowPlayingInfo : [String:Any] =  [
+                MPMediaItemPropertyTitle: self.track?.name! ?? "Unknown Song",
+                MPMediaItemPropertyArtist: self.track?.artists?[0].name! ?? "Unknown Artist",
+                MPMediaItemPropertyArtwork: albumArt
+            ]
+            let infoCenter = MPNowPlayingInfoCenter.default()
+            infoCenter.nowPlayingInfo = nowPlayingInfo
+            //infoCenter.nowPlayingInfo.MPMediaItemPropertyArtwork = albumArt
+        }
     }
 
   
