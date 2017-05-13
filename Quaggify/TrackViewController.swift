@@ -89,21 +89,26 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                     return
                 }
             print(response)
+            let response = response as! [String:Any]
             if response["queued"] as! Bool {
                 trackName = "spotify:track:"
-                trackName += response["data"]?["songid"] as! String
+                let data = response["data"] as! [String:Any]
+                let songid = data["songid"] as! String
+                let time = data["time"] as! String
+                let tomember = data["tomember"] as! String
+                trackName += songid
                 let alertController = UIAlertController(title: "Soundwich", message: "React to this song your friend sent.", preferredStyle: UIAlertControllerStyle.alert)
                 alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                    API.reactToSong(reaction: "💩", time: response["data"]?["time"] as! String, username: UserDefaults.standard.value(forKey: "username") as! String, to: response["data"]?["tomember"] as! String)
+                    API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
                 }))
                 alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                    API.reactToSong(reaction: "😂", time: response["data"]?["time"] as! String, username: UserDefaults.standard.value(forKey: "username") as! String, to: response["data"]?["tomember"] as! String)
+                    API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
                 }))
                 alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                    API.reactToSong(reaction: "😡", time: response["data"]?["time"] as! String, username: UserDefaults.standard.value(forKey: "username") as! String, to: response["data"]?["tomember"] as! String)
+                    API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
                 }))
                 alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                    API.reactToSong(reaction: "😎", time: response["data"]?["time"] as! String, username: UserDefaults.standard.value(forKey: "username") as! String, to: response["data"]?["tomember"] as! String)
+                    API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
                 }))
                 strongSelf.present(alertController, animated: true, completion: nil)
             } else {
