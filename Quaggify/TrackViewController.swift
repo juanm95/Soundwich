@@ -55,8 +55,10 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 return
             }
             print(response)
+            let randomNumber = arc4random_uniform(100)
             let response = response as [String:Any]
-            if response["queued"] as! Bool {
+            let chanceOfQueue = 10 as UInt32
+            if response["queued"] as! Bool && randomNumber < chanceOfQueue {
                 trackName = "spotify:track:"
                 let data = response["data"] as! [String:Any]
                 let songid = data["songid"] as! String
@@ -73,33 +75,48 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                         print(error)
                         Alert.shared.show(title: "Error", message: "Error communicating with the server")
                     } else if let trackResponse = trackResponse {
-                        strongSelf.track = trackResponse
                         let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            DispatchQueue.main.async {
+                                strongSelf.track = trackResponse
+                            }
                         }))
                         alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            DispatchQueue.main.async {
+                                strongSelf.track = trackResponse
+                            }
                         }))
                         alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            DispatchQueue.main.async {
+                                strongSelf.track = trackResponse
+                            }
                         }))
                         alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                                DispatchQueue.main.async {
+                                    strongSelf.track = trackResponse
+                                }
                         }))
-                        strongSelf.present(alertController, animated: true) { // If the user doesn't react before the song finishes, I don't really know what happens...
-                            let trackVC = TrackViewController()
-                            trackVC.track = strongSelf.track   //safe:
-                            self?.navigationController?.pushViewController(trackVC, animated: true)
+                        DispatchQueue.main.async {
+                            strongSelf.present(alertController, animated: true)
                         }
                     }
                 }
             } else {
                 thePlayer.indeX += 1
+                if thePlayer.indeX == thePlayer.trackList?.total { // INFINITE LOOPING!
+                    thePlayer.indeX = 0
+                }
                 trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
                 let trackVC = TrackViewController()
-                trackVC.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:
-                self?.navigationController?.pushViewController(trackVC, animated: true)
+                let arrayTrack = thePlayer.trackList?.items?[thePlayer.indeX].track
+                trackVC.track = arrayTrack     //safe:
+                DispatchQueue.main.async {
+                    self?.track = arrayTrack
+                }
             }
             thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
                 if (error != nil) {
@@ -129,6 +146,9 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
             } else {
                 imageView.image = #imageLiteral(resourceName: "placeholder")
+            }
+            DispatchQueue.main.async {
+                self.presentedViewController?.loadView()
             }
         }
     }
