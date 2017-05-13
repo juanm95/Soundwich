@@ -15,6 +15,7 @@
 		0C0CBEF11EC419E80075BE53 /* whatever.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C0CBEF01EC419E80075BE53 /* whatever.m */; };
 		0C471B3F1EC430E600CD2E13 /* addingPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C471B3E1EC430E600CD2E13 /* addingPlayer.swift */; };
 		2980C1A53BC65D1172407B5C /* Pods_Quaggify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B5A1ECA3FE1D320C73E401 /* Pods_Quaggify.framework */; };
+		5F56E16D1EC69B210056CACD /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F56E1691EC69B210056CACD /* MediaPlayer.framework */; };
 		E018CCC31E424B800099309F /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018CCC21E424B800099309F /* RecentSearches.swift */; };
 		E018CCC61E424EDA0099309F /* RecentSearchesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018CCC51E424EDA0099309F /* RecentSearchesCell.swift */; };
 		E0344DE71E41E8C600E7E585 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0344DE61E41E8C600E7E585 /* ArtistCell.swift */; };
@@ -100,6 +101,10 @@
 		0C0CBEF01EC419E80075BE53 /* whatever.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = whatever.m; sourceTree = "<group>"; };
 		0C471B3E1EC430E600CD2E13 /* addingPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = addingPlayer.swift; sourceTree = "<group>"; };
 		526120323A5F789102AA38D1 /* Pods-Quaggify.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quaggify.release.xcconfig"; path = "Pods/Target Support Files/Pods-Quaggify/Pods-Quaggify.release.xcconfig"; sourceTree = "<group>"; };
+		5F56E1671EC69B210056CACD /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		5F56E1681EC69B210056CACD /* MediaAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaAccessibility.framework; path = System/Library/Frameworks/MediaAccessibility.framework; sourceTree = SDKROOT; };
+		5F56E1691EC69B210056CACD /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		5F56E16A1EC69B210056CACD /* MediaToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaToolbox.framework; path = System/Library/Frameworks/MediaToolbox.framework; sourceTree = SDKROOT; };
 		8B22A0CBEE1D84EDE1B495CA /* Pods-QuaggifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuaggifyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuaggifyTests/Pods-QuaggifyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AD950247F2477E6A23B4B79C /* Pods-Quaggify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quaggify.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Quaggify/Pods-Quaggify.debug.xcconfig"; sourceTree = "<group>"; };
 		AEB3D1CC599B6527C02A27D2 /* Pods_QuaggifyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuaggifyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,6 +187,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F56E16D1EC69B210056CACD /* MediaPlayer.framework in Frameworks */,
 				0C0CBEEE1EC419A50075BE53 /* SystemConfiguration.framework in Frameworks */,
 				0C0CBEEC1EC4199E0075BE53 /* AVFoundation.framework in Frameworks */,
 				2980C1A53BC65D1172407B5C /* Pods_Quaggify.framework in Frameworks */,
@@ -215,6 +221,10 @@
 		48BD1217722A6097E1322AF5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5F56E1671EC69B210056CACD /* CoreMedia.framework */,
+				5F56E1681EC69B210056CACD /* MediaAccessibility.framework */,
+				5F56E1691EC69B210056CACD /* MediaPlayer.framework */,
+				5F56E16A1EC69B210056CACD /* MediaToolbox.framework */,
 				0C0CBEED1EC419A50075BE53 /* SystemConfiguration.framework */,
 				0C0CBEEB1EC4199E0075BE53 /* AVFoundation.framework */,
 				0C0CBEE91EC4198C0075BE53 /* SpotifyAuthentication.framework */,

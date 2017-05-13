@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import MediaPlayer
 
 class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate{
     
@@ -20,6 +21,41 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
 
     
     func initializePlayer(){
+      /*  UIApplication.shared.beginReceivingRemoteControlEvents();
+        MPRemoteCommandCenter.shared().playCommand.addTarget {event in
+            //thePlayer.()
+            self.updateNowPlayingInfoCenter()
+            return .success
+        }
+        MPRemoteCommandCenter.shared().pauseCommand.addTarget {event in
+            self.audioPlayer.pause()
+            return .success
+        }
+        MPRemoteCommandCenter.sharedCommandCenter().nextTrackCommand.addTargetWithHandler {event in
+            self.next()
+            return .Success
+        }
+        MPRemoteCommandCenter.sharedCommandCenter().previousTrackCommand.addTargetWithHandler {event in
+            self.prev()
+            return .Success
+}*/
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        
+        do {
+          try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
+            
+            self.becomeFirstResponder()
+            
+            do {
+                try AVAudioSession.sharedInstance().setActive(true)
+                print("AVAudioSession is Active")
+            } catch let error as NSError {
+                print(error.localizedDescription)
+                
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
         print("here")
         if thePlayer.spotifyPlayer == nil {
             thePlayer.spotifyPlayer = SPTAudioStreamingController.sharedInstance()
@@ -257,6 +293,10 @@ extension TrackViewController {
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
                 print("playing!")
+                let commandCenter = MPRemoteCommandCenter.shared()
+                commandCenter.nextTrackCommand.isEnabled = true
+                commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.playSong))
+                MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: "TESTING"]
             }
         })
     }
