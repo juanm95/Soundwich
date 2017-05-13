@@ -12,7 +12,6 @@ import MediaPlayer
 
 class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate{
     
-    //var spotifyPlayer: SPTAudioStreamingController?
     var auth = SPTAuth.defaultInstance()!
     var session:SPTSession!
     var ACCESS_TOKEN: String? {
@@ -21,24 +20,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     
     
     func initializePlayer(){
-        /*  UIApplication.shared.beginReceivingRemoteControlEvents();
-         MPRemoteCommandCenter.shared().playCommand.addTarget {event in
-         //thePlayer.()
-         self.updateNowPlayingInfoCenter()
-         return .success
-         }
-         MPRemoteCommandCenter.shared().pauseCommand.addTarget {event in
-         self.audioPlayer.pause()
-         return .success
-         }
-         MPRemoteCommandCenter.sharedCommandCenter().nextTrackCommand.addTargetWithHandler {event in
-         self.next()
-         return .Success
-         }
-         MPRemoteCommandCenter.sharedCommandCenter().previousTrackCommand.addTargetWithHandler {event in
-         self.prev()
-         return .Success
-         }*/
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
         do {
@@ -74,37 +55,51 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 return
             }
             print(response)
-            let response = response as! [String:Any]
+            let response = response as [String:Any]
             if response["queued"] as! Bool {
                 trackName = "spotify:track:"
                 let data = response["data"] as! [String:Any]
                 let songid = data["songid"] as! String
                 let time = data["time"] as! String
                 let tomember = data["tomember"] as! String
+                let frommember = data["frommember"] as! String
                 trackName += songid
-                self?.track?.uri = trackName
-                self?.fetchTrack()
-                let alertController = UIAlertController(title: "Soundwich", message: "React to this song your friend sent.", preferredStyle: UIAlertControllerStyle.alert)
-                alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                    API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                }))
-                alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                    API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                }))
-                alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                    API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                }))
-                alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                    API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                }))
-                strongSelf.present(alertController, animated: true, completion: nil)
+                self?.track?.id = songid
+                API.fetchTrack(track: self?.track) { [weak self] (trackResponse, error) in
+                    guard let strongSelf = self else {
+                        return
+                    }
+                    if let error = error {
+                        print(error)
+                        Alert.shared.show(title: "Error", message: "Error communicating with the server")
+                    } else if let trackResponse = trackResponse {
+                        strongSelf.track = trackResponse
+                        let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
+                        alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                            API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                        }))
+                        alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                            API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                        }))
+                        alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                            API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                        }))
+                        alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                            API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                        }))
+                        strongSelf.present(alertController, animated: true) { // If the user doesn't react before the song finishes, I don't really know what happens...
+                            let trackVC = TrackViewController()
+                            trackVC.track = strongSelf.track   //safe:
+                            self?.navigationController?.pushViewController(trackVC, animated: true)
+                        }
+                    }
+                }
             } else {
                 thePlayer.indeX += 1
                 trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
                 let trackVC = TrackViewController()
                 trackVC.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:
                 self?.navigationController?.pushViewController(trackVC, animated: true)
-                
             }
             thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
                 if (error != nil) {
@@ -138,8 +133,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         }
     }
     
-    // MARK: Views
-    
     var titleLabel: UILabel = {
         let label = UILabel()
         label.font = Font.montSerratBold(size: 20)
@@ -156,23 +149,19 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         return label
     }()
     
+    /* Used to Send Song to Friend */
     lazy var addToPlaylistButton: UIButton = {
         let btn = UIButton(type: .system)
-        //let img = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
         btn.tintColor = ColorPalette.white
         btn.titleLabel?.font = Font.montSerratRegular(size: 30)
         btn.setTitle("Send", for: .normal)
         btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
-        //btn.setBackgroundImage(img, for: .normal)
         return btn
     }()
     
     lazy var playSongButton: UIButton = {
         let btn = UIButton(type: .system)
         let img = #imageLiteral(resourceName: "play-button").withRenderingMode(.alwaysTemplate)
-        //btn.tintColor = ColorPalette.white
-        //btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-        //btn.setTitle("Play", for: .normal)
         btn.addTarget(self, action: #selector(playSong), for: .touchUpInside)
         btn.setImage(UIImage(named: "play-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
@@ -206,7 +195,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         setupViews()
         fetchTrack()
         initializePlayer()
-        //playSong()
+        playSong()
     }
     
     override func viewWillLayoutSubviews() {
@@ -226,7 +215,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         view.layoutIfNeeded()
     }
     
-    // MARK: Layout
     override func setupViews() {
         super.setupViews()
         view.addSubview(stackView)
@@ -237,7 +225,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         view.addSubview(addToPlaylistButton)
         view.addSubview(playSongButton)
         view.backgroundColor = ColorPalette.black
-        
         stackView.addArrangedSubview(imageView)
         stackView.addArrangedSubview(containerView)
         
@@ -253,7 +240,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     }
 }
 
-// MARK: Layout
 extension TrackViewController {
     func setPortraitLayout () {
         stackView.axis = .vertical
@@ -264,10 +250,6 @@ extension TrackViewController {
     }
 }
 
-
-
-
-// MARK: Actions
 extension TrackViewController {
     func addToPlaylist () {
         let trackOptionsVC = TrackOptionsViewController()
@@ -302,6 +284,7 @@ extension TrackViewController {
                 Alert.shared.show(title: "Error", message: "Error communicating with the server")
             } else if let trackResponse = trackResponse {
                 strongSelf.track = trackResponse
+                print("--- FETCHED TRACK ---")
                 print(trackResponse)
             }
         }
