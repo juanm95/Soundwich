@@ -33,7 +33,11 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             } else {
                 self.imageView.image = #imageLiteral(resourceName: "placeholder")
             }
-                self.presentedViewController?.loadView()
+               
+            }
+            self.presentedViewController?.loadView()
+            if(thePlayer.paused){
+                self.pauseSong()
             }
             self.playSong()
         }
@@ -65,14 +69,30 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         return btn
     }()
     
-    lazy var playSongButton: UIButton = {
+    lazy var pauseSongButton: UIButton = {
         let btn = UIButton(type: .system)
-        let img = #imageLiteral(resourceName: "play-button").withRenderingMode(.alwaysTemplate)
-        btn.addTarget(self, action: #selector(playSong), for: .touchUpInside)
-        btn.setImage(UIImage(named: "play-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.setImage(UIImage(named: "pausebutton")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.addTarget(self, action: #selector(pauseSong), for: .touchUpInside)
         return btn
     }()
   
+    lazy var nextSongButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(UIImage(named: "next")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.addTarget(self, action: #selector(nextSong), for: .touchUpInside)
+        return btn
+    }()
+    
+    
+    lazy var previousSongButton: UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(UIImage(named: "previous")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        btn.addTarget(self, action: #selector(previousSong), for: .touchUpInside)
+        return btn
+    }()
+    
+    
+    
   var imageView: UIImageView = {
     let iv = UIImageView()
     iv.contentMode = .scaleAspectFit
@@ -127,7 +147,11 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     view.addSubview(titleLabel)
     view.addSubview(subTitleLabel)
     view.addSubview(addToPlaylistButton)
-    view.addSubview(playSongButton)
+    view.addSubview(pauseSongButton)
+    view.addSubview(nextSongButton)
+    view.addSubview(previousSongButton)
+
+    
     view.backgroundColor = ColorPalette.black
     stackView.addArrangedSubview(imageView)
     stackView.addArrangedSubview(containerView)
@@ -136,9 +160,17 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         titleLabel.anchor(containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
         
         subTitleLabel.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
-        
-        playSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
-        
+    
+    
+      pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
+    
+    nextSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 200, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
+    
+    previousSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 200, widthConstant: 0, heightConstant: 70)
+    
+    
+
+    
         addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
 }
@@ -162,27 +194,87 @@ extension TrackViewController {
         tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
     }
     
+    
+    
+    func nextSong(){
+        print("next")
+        thePlayer.indeX += 1
+        if thePlayer.indeX == thePlayer.trackList?.total {
+            thePlayer.indeX = 0
+            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
+        } else {
+            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
+        }
+    }
+    
+    
+    func previousSong(){
+        print("prev")
+        thePlayer.indeX -= 1
+        if thePlayer.indeX == -1 {
+            thePlayer.indeX = 0
+            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
+        } else {
+            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
+        }
+    }
+    
+    func pauseSong(){
+        if(thePlayer.paused){
+            thePlayer.paused = false
+            pauseSongButton.setImage(UIImage(named: "pausebutton")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyPlaybackRate] = 1
+            thePlayer.spotifyPlayer?.setIsPlaying(true, callback: { (error) in
+                if (error != nil) {
+                    print("what")
+                    //  print(error)
+                }
+            })
+        } else {
+            thePlayer.paused = true
+            pauseSongButton.setImage(UIImage(named: "play-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyPlaybackRate] = 0
+            thePlayer.spotifyPlayer?.setIsPlaying(false, callback: { (error) in
+                if (error != nil) {
+                    print("hello")
+                    //  print(error)
+                }
+            })
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     func playSong() {
         var trackName = "spotify:track:"
         trackName += (track?.id)!
         print("here - playsong")
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
-                print(error)
+              //  print(error)
             }
         })
         let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.nextTrackCommand.isEnabled = true
-//        commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.audioStreaming(_:didStopPlayingTrack:)))
+        commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.nextSong))
+        commandCenter.previousTrackCommand.addTarget(self, action:#selector(previousSong))
+        commandCenter.togglePlayPauseCommand.addTarget(self, action:#selector(pauseSong))
         let imageURLString = URL(string: (self.track?.album?.images?[0].url)!)
         let imageData = try! Data(contentsOf:imageURLString!)
         let image2 = UIImage(data:imageData)
         let newSize = CGSize(width:(self.track?.album?.images?[0].width)!,height:(self.track?.album?.images?[0].height)!)
-        if let image = image2 ?? UIImage(named: "Empty Album"), #available(iOS 10.0, *) {
+        if let image = image2 ?? UIImage(named: "No Album Artwork"), #available(iOS 10.0, *) {
             let albumArt = MPMediaItemArtwork(boundsSize:newSize, requestHandler: { (size) -> UIImage in return image})
             let nowPlayingInfo : [String:Any] =  [
                 MPMediaItemPropertyTitle: self.track?.name! ?? "Unknown Song",
                 MPMediaItemPropertyArtist: self.track?.artists?[0].name! ?? "Unknown Artist",
+                MPMediaItemPropertyAlbumTitle: self.track?.album?.name! ?? "Unknown Album",
+                MPMediaItemPropertyPlaybackDuration: (self.track?.durationMS)!/1000,
+                MPNowPlayingInfoPropertyPlaybackRate: 1,
                 MPMediaItemPropertyArtwork: albumArt
             ]
             let infoCenter = MPNowPlayingInfoCenter.default()
