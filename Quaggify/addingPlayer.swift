@@ -14,5 +14,6 @@ class thePlayer {
     static var trackList: SpotifyObject<PlaylistTrack>?
     static var indeX: Int = 0
     static var nowPlaying: TrackViewController?
+    static var paused: Bool = false
 }
 

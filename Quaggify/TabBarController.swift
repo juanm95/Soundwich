@@ -55,13 +55,13 @@ class TabBarController: UITabBarController {
     let searchIcon = #imageLiteral(resourceName: "tab_icon_search").withRenderingMode(.alwaysTemplate)
     searchViewController.tabBarItem = UITabBarItem(title: "Send", image: searchIcon, tag: 1)
     
-    /*let libraryViewController = NavigationController(rootViewController: LibraryViewController())
-    let libraryIcon = **tab_icon_home**.withRenderingMode(.alwaysTemplate)
-    let libraryIconFilled = **tab_icon_home_filled**.withRenderingMode(.alwaysTemplate)
-    libraryViewController.tabBarItem = UITabBarItem(title: "Your Library", image: libraryIcon, selectedImage: libraryIconFilled)
-    libraryViewController.tabBarItem.tag = 2*/
+    let newsFeedControler = NavigationController(rootViewController: newsFeedController())
+    let feedIcon = #imageLiteral(resourceName: "tab_icon_library").withRenderingMode(.alwaysTemplate)
+    let feedIconFilled = #imageLiteral(resourceName: "tab_icon_library_filled").withRenderingMode(.alwaysTemplate)
+    newsFeedControler.tabBarItem = UITabBarItem(title: "Newsfeed", image: feedIcon, selectedImage: feedIconFilled)
+    newsFeedControler.tabBarItem.tag = 2
     
-    viewControllers = [homeViewController, searchViewController] //libraryViewController]
+    viewControllers = [homeViewController, searchViewController, newsFeedControler]
   }
   
 }
@@ -76,8 +76,8 @@ extension TabBarController: UITabBarControllerDelegate {
         if let searchVC = navController.topViewController as? SearchViewController {
           searchVC.scrollToTop()
         }
-        if let libraryVC = navController.topViewController as? LibraryViewController {
-          libraryVC.scrollToTop()
+       if let feedVC = navController.topViewController as? newsFeedController {
+          feedVC.scrollToTop()
         }
       }
     }
