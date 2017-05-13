@@ -7,9 +7,53 @@
 //
 
 import UIKit
+import AVFoundation
+import MediaPlayer
 
-class LibraryViewController: ViewController {
+class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
   
+    var auth = SPTAuth.defaultInstance()!
+    var session:SPTSession!
+    var ACCESS_TOKEN: String? {
+        return UserDefaults.standard.string(forKey: "ACCESS_TOKEN_KEY")
+    }
+    
+    func initializePlayer() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
+            
+
+            
+            self.becomeFirstResponder()
+            
+            do {
+                try AVAudioSession.sharedInstance().setActive(true)
+                print("AVAudioSession is Active")
+            } catch let error as NSError {
+                print(error.localizedDescription)
+                
+            }
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
+        
+        print("here")
+        if thePlayer.spotifyPlayer == nil {
+            thePlayer.spotifyPlayer = SPTAudioStreamingController.sharedInstance()
+            thePlayer.spotifyPlayer!.playbackDelegate = self
+            thePlayer.spotifyPlayer!.delegate = self
+            try! thePlayer.spotifyPlayer!.start(withClientId: auth.clientID)
+            thePlayer.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
+        }
+    }
+
+    
+    
+    
+    
+    
   var spotifyObject: SpotifyObject<Playlist>?
   var playlists: [Playlist] = [] {
     didSet {
@@ -62,7 +106,7 @@ class LibraryViewController: ViewController {
     setupViews()
     addListeners()
     fetchPlaylists()
-    addCreateNewPlaylistCell()
+    //addCreateNewPlaylistCell()
   }
   
   override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -72,6 +116,7 @@ class LibraryViewController: ViewController {
   // MARK: Layout
   override func setupViews() {
     super.setupViews()
+    initializePlayer()
     navigationItem.title = "Your Playlists".uppercased()
     navigationItem.rightBarButtonItem = logoutButton
     

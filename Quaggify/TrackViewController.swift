@@ -12,15 +12,34 @@ import MediaPlayer
 
 class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate{
     
-    var auth = SPTAuth.defaultInstance()!
+    /*var auth = SPTAuth.defaultInstance()!
     var session:SPTSession!
     var ACCESS_TOKEN: String? {
         return UserDefaults.standard.string(forKey: "ACCESS_TOKEN_KEY")
-    }
+    }*/
     
-    func initializePlayer(){
+   /* func initializePlayer(){
+        UIApplication.shared.beginReceivingRemoteControlEvents();
+        MPRemoteCommandCenter.shared().playCommand.addTarget {event in
+            //thePlayer.()
+            // self.updateNowPlayingInfoCenter()
+            return .success
+        }
+        MPRemoteCommandCenter.shared().pauseCommand.addTarget {event in
+            self.playSong()// thePlayer.audioStreaming()
+            return .success
+        }
+        MPRemoteCommandCenter.shared().nextTrackCommand.addTarget {event in
+            self.next
+            return .success
+        }
+        MPRemoteCommandCenter.shared().previousTrackCommand.addTarget {event in
+            self.playSong()
+            return .success
+        }
+        
 
-        UIApplication.shared.beginReceivingRemoteControlEvents()
+        /*UIApplication.shared.beginReceivingRemoteControlEvents()
         
         do {
           try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
@@ -36,7 +55,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             }
         } catch let error as NSError {
             print(error.localizedDescription)
-        }
+        }*/
         print("here")
         if thePlayer.spotifyPlayer == nil {
             thePlayer.spotifyPlayer = SPTAudioStreamingController.sharedInstance()
@@ -45,12 +64,12 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             try! thePlayer.spotifyPlayer!.start(withClientId: auth.clientID)
             thePlayer.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
         }
-    }
+    } */
     
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
         var trackName = "spotify:track:"
-        API.checkQueue() { [weak self] (response) in
+        /*API.checkQueue() { [weak self] (response) in
                 guard let strongSelf = self else {
                     return
                 }
@@ -80,22 +99,16 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             } else {
                 thePlayer.indeX += 1
                 trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
-                let trackVC = TrackViewController()
-                trackVC.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:
-                self?.navigationController?.pushViewController(trackVC, animated: true)
-
-            }
             print(trackName)
             thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
                 if (error != nil) {
-                    print("playing!")
-                    
+                    print("audioStreaming() called")
                 }
             })
-        }
+        }*/
     }
-    
-    
+
+
   var track: Track? {
     didSet {
       guard let track = track else {
@@ -180,8 +193,8 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     super.viewDidLoad()
     setupViews()
     fetchTrack()
-    initializePlayer()
-    playSong()
+    //initializePlayer()
+  //  playSong()
   }
   
   override func viewWillLayoutSubviews() {
@@ -211,6 +224,9 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     view.addSubview(addToPlaylistButton)
     view.addSubview(playSongButton)
     view.backgroundColor = ColorPalette.black
+    
+   // initializePlayer()
+
     
     stackView.addArrangedSubview(imageView)
     stackView.addArrangedSubview(containerView)
@@ -249,15 +265,16 @@ extension TrackViewController {
     func playSong() {
         var trackName = "spotify:track:"
         trackName += (track?.id)!
+        print("here - playsong")
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
-                print("playing!")
-                let commandCenter = MPRemoteCommandCenter.shared()
-                commandCenter.nextTrackCommand.isEnabled = true
-                commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.playSong))
-                MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: "TESTING"]
+                print("playSong() called")
             }
         })
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.audioStreaming(_:didStopPlayingTrack:)))
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: self.track?.name ?? "No Song Name Provided"]
     }
 
   
