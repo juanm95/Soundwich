@@ -12,6 +12,18 @@ import MediaPlayer
 
 class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
   
+    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
+        print("braddd")
+        thePlayer.indeX += 1
+        var trackName = "spotify:track:"
+        trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
+        let trackVC = TrackViewController()
+        trackVC.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:
+        self.navigationController?.pushViewController(trackVC, animated: true)
+
+    }
+    
+    
     var auth = SPTAuth.defaultInstance()!
     var session:SPTSession!
     var ACCESS_TOKEN: String? {
