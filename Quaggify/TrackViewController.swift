@@ -12,144 +12,30 @@ import MediaPlayer
 
 class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate{
     
-    var auth = SPTAuth.defaultInstance()!
-    var session:SPTSession!
-    var ACCESS_TOKEN: String? {
-        return UserDefaults.standard.string(forKey: "ACCESS_TOKEN_KEY")
-    }
-    
-    
-    func initializePlayer(){
-        UIApplication.shared.beginReceivingRemoteControlEvents()
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
-            
-            self.becomeFirstResponder()
-            
-            do {
-                try AVAudioSession.sharedInstance().setActive(true)
-                print("AVAudioSession is Active")
-            } catch let error as NSError {
-                print(error.localizedDescription)
-                
-            }
-        } catch let error as NSError {
-            print(error.localizedDescription)
-        }
-        print("here")
-        if thePlayer.spotifyPlayer == nil {
-            thePlayer.spotifyPlayer = SPTAudioStreamingController.sharedInstance()
-            thePlayer.spotifyPlayer!.playbackDelegate = self
-            thePlayer.spotifyPlayer!.delegate = self
-            try! thePlayer.spotifyPlayer!.start(withClientId: auth.clientID)
-            thePlayer.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
-        }
-    }
-    
-    
-    func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-        var trackName = "spotify:track:"
-        API.checkQueue() { [weak self] (response) in
-            guard let strongSelf = self else {
-                return
-            }
-            print(response)
-            let randomNumber = arc4random_uniform(100)
-            let response = response as [String:Any]
-            let chanceOfQueue = 10 as UInt32
-            if response["queued"] as! Bool && randomNumber < chanceOfQueue {
-                trackName = "spotify:track:"
-                let data = response["data"] as! [String:Any]
-                let songid = data["songid"] as! String
-                let time = data["time"] as! String
-                let tomember = data["tomember"] as! String
-                let frommember = data["frommember"] as! String
-                trackName += songid
-                self?.track?.id = songid
-                API.fetchTrack(track: self?.track) { [weak self] (trackResponse, error) in
-                    guard let strongSelf = self else {
-                        return
-                    }
-                    if let error = error {
-                        print(error)
-                        Alert.shared.show(title: "Error", message: "Error communicating with the server")
-                    } else if let trackResponse = trackResponse {
-                        let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
-                        alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                            API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            DispatchQueue.main.async {
-                                strongSelf.track = trackResponse
-                            }
-                        }))
-                        alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                            API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            DispatchQueue.main.async {
-                                strongSelf.track = trackResponse
-                            }
-                        }))
-                        alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                            API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            DispatchQueue.main.async {
-                                strongSelf.track = trackResponse
-                            }
-                        }))
-                        alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                            API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                                DispatchQueue.main.async {
-                                    strongSelf.track = trackResponse
-                                }
-                        }))
-                        DispatchQueue.main.async {
-                            strongSelf.present(alertController, animated: true)
-                        }
-                    }
-                }
-            } else {
-                thePlayer.indeX += 1
-                if thePlayer.indeX == thePlayer.trackList?.total { // INFINITE LOOPING!
-                    thePlayer.indeX = 0
-                }
-                trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
-                let trackVC = TrackViewController()
-                let arrayTrack = thePlayer.trackList?.items?[thePlayer.indeX].track
-                trackVC.track = arrayTrack     //safe:
-                DispatchQueue.main.async {
-                    self?.track = arrayTrack
-                }
-            }
-            thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
-                if (error != nil) {
-                    print(error)
-                }
-            })
-        }
-    }
-    
-    
     var track: Track? {
         didSet {
             guard let track = track else {
                 return
             }
+            DispatchQueue.main.async {
             if let name = track.name {
-                titleLabel.text = name
+                self.titleLabel.text = name
             }
             if let artists = track.artists {
                 let names = artists.map { $0.name ?? "Unknown Artist" }.joined(separator: ", ")
-                subTitleLabel.text = names
-                navigationItem.title = names
+                self.subTitleLabel.text = names
+                self.navigationItem.title = names
             }
             if let smallerImage = track.album?.images?[safe: 1], let imgUrlString = smallerImage.url, let url = URL(string: imgUrlString) {
-                imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
+                self.imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
             } else if let smallerImage = track.album?.images?[safe: 0], let imgUrlString = smallerImage.url, let url = URL(string: imgUrlString) {
-                imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
+                self.imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
             } else {
-                imageView.image = #imageLiteral(resourceName: "placeholder")
+                self.imageView.image = #imageLiteral(resourceName: "placeholder")
             }
-            DispatchQueue.main.async {
                 self.presentedViewController?.loadView()
             }
+            self.playSong()
         }
     }
     
@@ -186,68 +72,65 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         btn.setImage(UIImage(named: "play-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
     }()
+  
+  var imageView: UIImageView = {
+    let iv = UIImageView()
+    iv.contentMode = .scaleAspectFit
+    iv.clipsToBounds = true
+    return iv
+  }()
+  
+  let stackView: UIStackView = {
+    let sv = UIStackView()
+    sv.alignment = .fill
+    sv.axis = .vertical
+    sv.distribution = .fillEqually
+    sv.backgroundColor = .clear
+    sv.spacing = 8
+    return sv
+  }()
+  
+  let containerView: UIView = {
+    let v = UIView()
+    v.backgroundColor = .clear
+    return v
+  }()
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    setupViews()
+//    fetchTrack()
+  }
+  
+  override func viewWillLayoutSubviews() {
+    super.viewWillLayoutSubviews()
     
-    var imageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.clipsToBounds = true
-        return iv
-    }()
-    
-    let stackView: UIStackView = {
-        let sv = UIStackView()
-        sv.alignment = .fill
-        sv.axis = .vertical
-        sv.distribution = .fillEqually
-        sv.backgroundColor = .clear
-        sv.spacing = 8
-        return sv
-    }()
-    
-    let containerView: UIView = {
-        let v = UIView()
-        v.backgroundColor = .clear
-        return v
-    }()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupViews()
-        fetchTrack()
-        initializePlayer()
-        playSong()
+    switch UIApplication.shared.statusBarOrientation {
+    case .portrait: fallthrough
+    case .portraitUpsideDown: fallthrough
+    case .unknown:
+      setPortraitLayout()
+      break
+    case .landscapeLeft: fallthrough
+    case .landscapeRight:
+      setLandscapeLayout()
+      break
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-        switch UIApplication.shared.statusBarOrientation {
-        case .portrait: fallthrough
-        case .portraitUpsideDown: fallthrough
-        case .unknown:
-            setPortraitLayout()
-            break
-        case .landscapeLeft: fallthrough
-        case .landscapeRight:
-            setLandscapeLayout()
-            break
-        }
-        view.layoutIfNeeded()
-    }
-    
-    override func setupViews() {
-        super.setupViews()
-        view.addSubview(stackView)
-        view.addSubview(imageView)
-        view.addSubview(containerView)
-        view.addSubview(titleLabel)
-        view.addSubview(subTitleLabel)
-        view.addSubview(addToPlaylistButton)
-        view.addSubview(playSongButton)
-        view.backgroundColor = ColorPalette.black
-        stackView.addArrangedSubview(imageView)
-        stackView.addArrangedSubview(containerView)
-        
+    view.layoutIfNeeded()
+  }
+  
+ override func setupViews() {
+    super.setupViews()
+    view.addSubview(stackView)
+    view.addSubview(imageView)
+    view.addSubview(containerView)
+    view.addSubview(titleLabel)
+    view.addSubview(subTitleLabel)
+    view.addSubview(addToPlaylistButton)
+    view.addSubview(playSongButton)
+    view.backgroundColor = ColorPalette.black
+    stackView.addArrangedSubview(imageView)
+    stackView.addArrangedSubview(containerView)
         stackView.anchor(topLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, topConstant: 8, leftConstant: 8, bottomConstant: 8, rightConstant: 8, widthConstant: 0, heightConstant: 0)
         
         titleLabel.anchor(containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
@@ -282,15 +165,30 @@ extension TrackViewController {
     func playSong() {
         var trackName = "spotify:track:"
         trackName += (track?.id)!
+        print("here - playsong")
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
-                print("playing!")
-                let commandCenter = MPRemoteCommandCenter.shared()
-                commandCenter.nextTrackCommand.isEnabled = true
-                commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.playSong))
-                MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: "TESTING"]
+                print(error)
             }
         })
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.nextTrackCommand.isEnabled = true
+//        commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.audioStreaming(_:didStopPlayingTrack:)))
+        let imageURLString = URL(string: (self.track?.album?.images?[0].url)!)
+        let imageData = try! Data(contentsOf:imageURLString!)
+        let image2 = UIImage(data:imageData)
+        let newSize = CGSize(width:(self.track?.album?.images?[0].width)!,height:(self.track?.album?.images?[0].height)!)
+        if let image = image2 ?? UIImage(named: "Empty Album"), #available(iOS 10.0, *) {
+            let albumArt = MPMediaItemArtwork(boundsSize:newSize, requestHandler: { (size) -> UIImage in return image})
+            let nowPlayingInfo : [String:Any] =  [
+                MPMediaItemPropertyTitle: self.track?.name! ?? "Unknown Song",
+                MPMediaItemPropertyArtist: self.track?.artists?[0].name! ?? "Unknown Artist",
+                MPMediaItemPropertyArtwork: albumArt
+            ]
+            let infoCenter = MPNowPlayingInfoCenter.default()
+            infoCenter.nowPlayingInfo = nowPlayingInfo
+            //infoCenter.nowPlayingInfo.MPMediaItemPropertyArtwork = albumArt
+        }
     }
     
     
@@ -303,9 +201,10 @@ extension TrackViewController {
                 print(error)
                 Alert.shared.show(title: "Error", message: "Error communicating with the server")
             } else if let trackResponse = trackResponse {
+                
                 strongSelf.track = trackResponse
-                print("--- FETCHED TRACK ---")
-                print(trackResponse)
+              //  print("--- FETCHED TRACK ---")
+               // print(trackResponse)
             }
         }
     }

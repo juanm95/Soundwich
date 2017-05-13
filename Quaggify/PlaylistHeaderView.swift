@@ -45,7 +45,7 @@ class PlaylistHeaderView: UICollectionReusableView {
        // btn.frame = CGRectMake(0, 0, 50, 50)
        // btn.setBackgroundImage(UIImage(named: "button"), for: UIControlState.normal)
         print("is it")
-        btn.addTarget(self, action: #selector(TrackViewController.audioStreaming), for: UIControlEvents.touchUpInside)
+//        btn.addTarget(self, action: #selector(TrackViewController.audioStreaming), for: UIControlEvents.touchUpInside)
         print("no")
         return btn
     }()
