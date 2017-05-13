@@ -12,33 +12,14 @@ import MediaPlayer
 
 class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate{
     
-    //var spotifyPlayer: SPTAudioStreamingController?
     var auth = SPTAuth.defaultInstance()!
     var session:SPTSession!
     var ACCESS_TOKEN: String? {
         return UserDefaults.standard.string(forKey: "ACCESS_TOKEN_KEY")
     }
-
     
     func initializePlayer(){
-      /*  UIApplication.shared.beginReceivingRemoteControlEvents();
-        MPRemoteCommandCenter.shared().playCommand.addTarget {event in
-            //thePlayer.()
-            self.updateNowPlayingInfoCenter()
-            return .success
-        }
-        MPRemoteCommandCenter.shared().pauseCommand.addTarget {event in
-            self.audioPlayer.pause()
-            return .success
-        }
-        MPRemoteCommandCenter.sharedCommandCenter().nextTrackCommand.addTargetWithHandler {event in
-            self.next()
-            return .Success
-        }
-        MPRemoteCommandCenter.sharedCommandCenter().previousTrackCommand.addTargetWithHandler {event in
-            self.prev()
-            return .Success
-}*/
+
         UIApplication.shared.beginReceivingRemoteControlEvents()
         
         do {
@@ -68,28 +49,13 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-        print("audio Streaming printtt4")
         var trackName = "spotify:track:"
-        //if(thePlayer.indeX < (thePlayer.trackList?.items?.count)!){
-        //thePlayer.indeX += 1
-        //trackName += (thePlayer.trackList?.items?[thePlayer.indeX].track?.id)!
-        print(trackName)
-        
-        /*thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
-            if (error != nil) {
-                print("playing!")
-            } else {
-                print("ERROR IN AUDIOSTREAMING")
-            }
-        })*/
-
-        
-         API.checkQueue() { [weak self] (response) in
+        API.checkQueue() { [weak self] (response) in
                 guard let strongSelf = self else {
                     return
                 }
             print(response)
-            let response = response as! [String:Any]
+            let response = response as [String:Any]
             if response["queued"] as! Bool {
                 trackName = "spotify:track:"
                 let data = response["data"] as! [String:Any]
@@ -127,8 +93,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 }
             })
         }
-        //}
-        print("audio Streaming printtt")
     }
     
     
@@ -154,9 +118,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
       }
     }
   }
-  
-  // MARK: Views
-  
+    
   var titleLabel: UILabel = {
     let label = UILabel()
     label.font = Font.montSerratBold(size: 20)
@@ -173,23 +135,19 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     return label
   }()
   
+  /* Used to Send Song to Friend */
   lazy var addToPlaylistButton: UIButton = {
     let btn = UIButton(type: .system)
-    //let img = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
     btn.tintColor = ColorPalette.white
     btn.titleLabel?.font = Font.montSerratRegular(size: 30)
     btn.setTitle("Send", for: .normal)
     btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
-    //btn.setBackgroundImage(img, for: .normal)
     return btn
   }()
     
     lazy var playSongButton: UIButton = {
         let btn = UIButton(type: .system)
         let img = #imageLiteral(resourceName: "play-button").withRenderingMode(.alwaysTemplate)
-        //btn.tintColor = ColorPalette.white
-        //btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-        //btn.setTitle("Play", for: .normal)
         btn.addTarget(self, action: #selector(playSong), for: .touchUpInside)
         btn.setImage(UIImage(named: "play-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
         return btn
@@ -223,7 +181,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     setupViews()
     fetchTrack()
     initializePlayer()
-    //playSong()
+    playSong()
   }
   
   override func viewWillLayoutSubviews() {
@@ -243,8 +201,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     view.layoutIfNeeded()
   }
   
-  // MARK: Layout
-  override func setupViews() {
+ override func setupViews() {
     super.setupViews()
     view.addSubview(stackView)
     view.addSubview(imageView)
@@ -270,7 +227,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
   }
 }
 
-// MARK: Layout
 extension TrackViewController {
   func setPortraitLayout () {
     stackView.axis = .vertical
@@ -281,10 +237,6 @@ extension TrackViewController {
   }
 }
 
-
-
-
-// MARK: Actions
 extension TrackViewController {
   func addToPlaylist () {
     let trackOptionsVC = TrackOptionsViewController()
