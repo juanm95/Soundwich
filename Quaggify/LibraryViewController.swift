@@ -12,9 +12,36 @@ import MediaPlayer
 
 class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
     
+    private func addReceivedSongToPlaylist(trackResponse: Track) {
+        thePlayer.needToReact = false
+        thePlayer.injected = false
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.playCommand.isEnabled = true
+        if #available(iOS 9.1, *) {
+            commandCenter.changePlaybackPositionCommand.isEnabled = true
+        } else {
+            // Fallback on earlier versions
+        }
+        let playlistId = UserDefaults.standard.value(forKey: "playlistId")
+        let ownerid = User.current.id
+        let owner = User(JSON: ["id": ownerid])
+        var soundwichPlaylist = Playlist(JSON: ["id": UserDefaults.standard.value(forKey: "playlistId")])
+        soundwichPlaylist?.owner = owner
+        API.addTrackToPlaylist(track: trackResponse, playlist: soundwichPlaylist) {(string: String?, error: Error?) in
+            print (string)
+        }
+    }
+    
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
         print("braddd")
         var trackName = "spotify:track:"
+        if (thePlayer.needToReact) {
+            thePlayer.nowPlaying?.playSong()
+            return
+        }
         API.checkQueue() { [weak self] (response) in
             guard let strongSelf = self else {
                 return
@@ -24,6 +51,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             let response = response as [String:Any]
             let chanceOfQueue = 100 as UInt32
             if response["queued"] as! Bool && randomNumber < chanceOfQueue {
+                thePlayer.needToReact = true
                 thePlayer.injected = true
                 let commandCenter = MPRemoteCommandCenter.shared()
                 commandCenter.nextTrackCommand.isEnabled = false
@@ -51,62 +79,25 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                         Alert.shared.show(title: "Error", message: "Error communicating with the server")
                     } else if let trackResponse = trackResponse {
                         let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
-                        alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                        alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            thePlayer.injected = false
-                            commandCenter.nextTrackCommand.isEnabled = true
-                            commandCenter.previousTrackCommand.isEnabled = true
-                            commandCenter.pauseCommand.isEnabled = true
-                            commandCenter.playCommand.isEnabled = true
-                            if #available(iOS 9.1, *) {
-                                commandCenter.changePlaybackPositionCommand.isEnabled = true
-                            } else {
-                                // Fallback on earlier versions
-                            }
-                            }))
-                        
+                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
+                        }))
                         alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            thePlayer.injected = false
-                            commandCenter.nextTrackCommand.isEnabled = true
-                            commandCenter.previousTrackCommand.isEnabled = true
-                            commandCenter.pauseCommand.isEnabled = true
-                            commandCenter.playCommand.isEnabled = true
-                            if #available(iOS 9.1, *) {
-                                commandCenter.changePlaybackPositionCommand.isEnabled = true
-                            } else {
-                                // Fallback on earlier versions
-                            }
+                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
-                        alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                        alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            thePlayer.injected = false
-                            commandCenter.nextTrackCommand.isEnabled = true
-                            commandCenter.previousTrackCommand.isEnabled = true
-                            commandCenter.pauseCommand.isEnabled = true
-                            commandCenter.playCommand.isEnabled = true
-                            if #available(iOS 9.1, *) {
-                                commandCenter.changePlaybackPositionCommand.isEnabled = true
-                            } else {
-                                // Fallback on earlier versions
-                            }
+                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
-                        alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                        alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            thePlayer.injected = false
-                            commandCenter.nextTrackCommand.isEnabled = true
-                            commandCenter.previousTrackCommand.isEnabled = true
-                            commandCenter.pauseCommand.isEnabled = true
-                            commandCenter.playCommand.isEnabled = true
-                            if #available(iOS 9.1, *) {
-                                commandCenter.changePlaybackPositionCommand.isEnabled = true
-                            } else {
-                                // Fallback on earlier versions
-                            }
+                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
                         thePlayer.nowPlaying?.track = trackResponse
-                        DispatchQueue.main.async {
-                            thePlayer.nowPlaying?.present(alertController, animated: true)
+                                DispatchQueue.main.async {
+                                    UIApplication.topViewController()?.present(alertController, animated: true)
                         }
                     }
                 }

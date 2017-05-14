@@ -189,8 +189,7 @@ extension TrackOptionsViewController {
   
   func addTrackToPlaylist(playlist: Playlist?) {
     API.sendTrackToFriend(track: track, friend: playlist) { (data) in
-        Alert.shared.show(title: "Success!", message: "Track sent to friend")
-      
+        Alert.shared.show(title: "Success!", message: "Track sent to \(playlist!.name!)")
     }
   }
 }

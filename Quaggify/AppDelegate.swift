@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Flurry_iOS_SDK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   var window: UIWindow?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    
+    Flurry.startSession("JSZXMGRDMQ69QZHN3N9M", with: FlurrySessionBuilder
+        .init()
+        .withCrashReporting(true)
+        .withLogLevel(FlurryLogLevelAll))
     
     window = UIWindow(frame: UIScreen.main.bounds)
     
@@ -40,7 +46,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             } else if let user = user {
               User.current = user
               User.current.saveToDefaults()
-              
+                if UserDefaults.standard.value(forKey: "playlistId") == nil {
+                    let playlistName = "Received on Soundwich"
+                    API.createNewPlaylist(name: playlistName) { [weak self] (playlist, error) in
+                        if let error = error {
+                            print(error)
+                            // Showing error message
+                            Alert.shared.show(title: "Error", message: "Error communicating with the server")
+                        } else if let playlist = playlist {
+                            // Adding track to palylist
+                            //                        API.addTrackToPlaylist(track: track, playlist: playlist) { [weak self] (snapshotId, error) in
+                            //                            if let error = error {
+                            //                                print(error)
+                            //                                // Showing error message
+                            //                                Alert.shared.show(title: "Error", message: "Error communicating with the server")
+                            //                            } else if let _ = snapshotId {
+                            //                                self?.dismiss(animated: true) {
+                            Alert.shared.show(title: "Success!", message: "Playlist \(playlistName) created")
+                            // Message to update library tab
+                            NotificationCenter.default.post(name: .onUserPlaylistUpdate, object: playlist)
+                            //                                }
+                            UserDefaults.standard.set(playlist.id, forKey: "playlistId")
+                        }
+                    }
+                }
               let tabBarVC = TabBarController()
               tabBarVC.didLogin = true
               self?.window?.rootViewController = tabBarVC
