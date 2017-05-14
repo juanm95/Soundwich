@@ -14,6 +14,17 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
     
     private func addReceivedSongToPlaylist(trackResponse: Track) {
         thePlayer.needToReact = false
+        thePlayer.injected = false
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.previousTrackCommand.isEnabled = true
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.playCommand.isEnabled = true
+        if #available(iOS 9.1, *) {
+            commandCenter.changePlaybackPositionCommand.isEnabled = true
+        } else {
+            // Fallback on earlier versions
+        }
         let playlistId = UserDefaults.standard.value(forKey: "playlistId")
         let ownerid = User.current.id
         let owner = User(JSON: ["id": ownerid])
@@ -41,6 +52,17 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             let chanceOfQueue = 100 as UInt32
             if response["queued"] as! Bool && randomNumber < chanceOfQueue {
                 thePlayer.needToReact = true
+                thePlayer.injected = true
+                let commandCenter = MPRemoteCommandCenter.shared()
+                commandCenter.nextTrackCommand.isEnabled = false
+                commandCenter.previousTrackCommand.isEnabled = false
+                commandCenter.pauseCommand.isEnabled = false
+                commandCenter.playCommand.isEnabled = false
+                if #available(iOS 9.1, *) {
+                    commandCenter.changePlaybackPositionCommand.isEnabled = false
+                } else {
+                    // Fallback on earlier versions
+                }
                 let data = response["data"] as! [String:Any]
                 let songid = data["songid"] as! String
                 let time = data["time"] as! String
@@ -61,7 +83,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                             API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
                             self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
-                        alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
+                        alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
                             self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
