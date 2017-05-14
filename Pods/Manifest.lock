@@ -3,6 +3,7 @@ PODS:
   - AlamofireObjectMapper (4.0.1):
     - Alamofire (~> 4.1)
     - ObjectMapper (~> 2.0)
+  - Flurry-iOS-SDK/FlurrySDK (8.0.2)
   - Kingfisher (3.4.0)
   - ObjectMapper (2.2.2)
   - ReachabilitySwift (3)
@@ -10,6 +11,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.3)
   - AlamofireObjectMapper (~> 4.0)
+  - Flurry-iOS-SDK/FlurrySDK
   - Kingfisher (~> 3.4.0)
   - ObjectMapper (~> 2.2)
   - ReachabilitySwift
@@ -17,10 +19,11 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   Alamofire: 856a113053a7bc9cbe5d6367a555d773fc5cfef7
   AlamofireObjectMapper: 842d2eed43a4d0593ff0110d54ac86a170c4519c
+  Flurry-iOS-SDK: 6d47c244428d2cab3f25c97bdba9b2f4d4a5935f
   Kingfisher: 5690cfb3d1bddf3a98d679a3a34d0b7294974ed2
   ObjectMapper: 9e385c2295bcc4e16eabbcfc85db801442bba545
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
 
-PODFILE CHECKSUM: 6161f2f96882405063f686c06f32b4a212dcbf07
+PODFILE CHECKSUM: 32b5b40fcefee63680e8b5d22d7bdc34376511c7
 
 COCOAPODS: 1.2.1

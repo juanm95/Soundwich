@@ -9,7 +9,7 @@ target 'Quaggify' do
   pod 'ObjectMapper', '~> 2.2'
   pod 'ReachabilitySwift'
   pod 'Kingfisher', '~> 3.4.0'
-
+  pod 'Flurry-iOS-SDK/FlurrySDK' #Analytics Pod
   # Pods for Quaggify
 
   target 'QuaggifyTests' do
