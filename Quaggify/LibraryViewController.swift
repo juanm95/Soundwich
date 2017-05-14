@@ -106,6 +106,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                 if thePlayer.indeX >= (thePlayer.trackList?.total)! {
                     thePlayer.indeX = 0
                 }
+                if(thePlayer.indeX < 0 ) { thePlayer.indeX = 0}
                 thePlayer.nowPlaying?.track = thePlayer.trackList?.items?[thePlayer.indeX].track
             }
         }

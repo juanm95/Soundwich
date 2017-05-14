@@ -62,7 +62,7 @@ class TabBarController: UITabBarController {
     newsFeedControler.tabBarItem.tag = 2
     
    // if(thePlayer.nowPlaying?.track?.id == nil){
-     //  thePlayer.nowPlaying = TrackViewController()
+      // thePlayer.nowPlaying = TrackViewController()
    // }
     let nowPlaying = NavigationController(rootViewController: TrackViewController())
        // nowPlaying.pushViewController(thePlayer.nowPlaying!, animated:true)
@@ -77,15 +77,18 @@ class TabBarController: UITabBarController {
 }
 
 extension TabBarController: UITabBarControllerDelegate {
-  func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-     if let navController = viewController as? NavigationController {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let navController = viewController as? NavigationController {
             if let npVC = navController.topViewController as? TrackViewController {
                 if(thePlayer.start && thePlayer.nowPlayingBug == 0){
-                        thePlayer.nowPlayingBug = 1
-                       navController.pushViewController(thePlayer.nowPlaying!, animated:false)
+                    thePlayer.nowPlayingBug = 1
+                    //navController.setNavigationBarHidden(true, animated: true)
+                    navController.pushViewController(thePlayer.nowPlaying!, animated:false)
+                     navController.setViewControllers([thePlayer.nowPlaying!], animated: true)
+
                 }
+            }
         }
-    }
 
     if previousViewController == viewController {
       if let navController = viewController as? NavigationController {

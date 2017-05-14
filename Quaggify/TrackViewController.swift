@@ -126,6 +126,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     commandCenter.previousTrackCommand.isEnabled = true
     commandCenter.pauseCommand.isEnabled = true
     commandCenter.playCommand.isEnabled = true
+        if(thePlayer.start){
     commandCenter.nextTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.nextSong))
     commandCenter.previousTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.previousSong))
     commandCenter.pauseCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.pauseSong))
@@ -140,6 +141,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     } else {
         // Fallback on earlier versions
     }
+        }
     }
 //    fetchTrack()
   }
@@ -203,12 +205,16 @@ extension TrackViewController {
 
 extension TrackViewController {
     func addToPlaylist () {
+         if(thePlayer.start){
         addToPlaylistButton.setTitle("Send to Friend", for: .normal)
         let trackOptionsVC = TrackOptionsViewController()
         trackOptionsVC.track = track
         let trackOptionsNav = NavigationController(rootViewController: trackOptionsVC)
         trackOptionsNav.modalPresentationStyle = .overCurrentContext
         tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
+         } else {
+            addToPlaylistButton.setTitle("No Song Playing!", for: .normal)
+        }
     }
     
     func onChangePlaybackPositionCommand (_ event: MPChangePlaybackPositionCommandEvent){
@@ -219,26 +225,30 @@ extension TrackViewController {
     }
     
     func nextSong(){
+        if(thePlayer.start){
         print("next")
         thePlayer.indeX += 1
         if thePlayer.indeX >= (thePlayer.trackList?.total)! {
             thePlayer.indeX = 0
         }
         self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
+        }
     }
     
     
     func previousSong(){
+        if(thePlayer.start){
         print("prev")
         thePlayer.indeX -= 1
         if thePlayer.indeX <= -1 {
             thePlayer.indeX = 0
         }
         self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
-        
+        }
     }
     
     func pauseSong(){
+         if(thePlayer.start){
          MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = thePlayer.spotifyPlayer?.playbackState.position
         if(thePlayer.paused){
             thePlayer.paused = false
@@ -260,6 +270,7 @@ extension TrackViewController {
                     //  print(error)
                 }
             })
+        }
         }
         
     }
