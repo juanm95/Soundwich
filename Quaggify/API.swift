@@ -26,7 +26,6 @@ struct API {
             let json = (try? JSONSerialization.jsonObject(with: data, options: [])) as! [String:AnyObject]
             print(json)
             completion(json)
-            
         }
         task.resume()
     }

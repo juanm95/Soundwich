@@ -61,7 +61,13 @@ class TabBarController: UITabBarController {
     newsFeedControler.tabBarItem = UITabBarItem(title: "Newsfeed", image: feedIcon, selectedImage: feedIconFilled)
     newsFeedControler.tabBarItem.tag = 2
     
-    viewControllers = [homeViewController, searchViewController, newsFeedControler]
+    let nowPlaying = NavigationController(rootViewController: NowPlayingViewController())
+    let npIcon = #imageLiteral(resourceName: "playicon_filled").withRenderingMode(.alwaysTemplate)
+    let npIconFilled = #imageLiteral(resourceName: "playicon").withRenderingMode(.alwaysTemplate)
+    nowPlaying.tabBarItem = UITabBarItem(title: "Player", image: npIcon, selectedImage: npIconFilled)
+    nowPlaying.tabBarItem.tag = 3
+    
+    viewControllers = [homeViewController, searchViewController, newsFeedControler, nowPlaying]
   }
   
 }
@@ -78,6 +84,9 @@ extension TabBarController: UITabBarControllerDelegate {
         }
        if let feedVC = navController.topViewController as? newsFeedController {
           feedVC.scrollToTop()
+        }
+       if let npVC = navController.topViewController as? NowPlayingViewController {
+            npVC.scrollToTop()
         }
       }
     }

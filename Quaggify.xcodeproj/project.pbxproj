@@ -17,6 +17,7 @@
 		2980C1A53BC65D1172407B5C /* Pods_Quaggify.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E2B5A1ECA3FE1D320C73E401 /* Pods_Quaggify.framework */; };
 		5F56E16D1EC69B210056CACD /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F56E1691EC69B210056CACD /* MediaPlayer.framework */; };
 		5F69AC5E1EC740CC000EDE0F /* newsFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F69AC5D1EC740CC000EDE0F /* newsFeedController.swift */; };
+		5FB3C88E1EC80AB10091A28C /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3C88D1EC80AB10091A28C /* NowPlayingViewController.swift */; };
 		E018CCC31E424B800099309F /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018CCC21E424B800099309F /* RecentSearches.swift */; };
 		E018CCC61E424EDA0099309F /* RecentSearchesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018CCC51E424EDA0099309F /* RecentSearchesCell.swift */; };
 		E0344DE71E41E8C600E7E585 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0344DE61E41E8C600E7E585 /* ArtistCell.swift */; };
@@ -106,8 +107,9 @@
 		5F56E1681EC69B210056CACD /* MediaAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaAccessibility.framework; path = System/Library/Frameworks/MediaAccessibility.framework; sourceTree = SDKROOT; };
 		5F56E1691EC69B210056CACD /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5F56E16A1EC69B210056CACD /* MediaToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaToolbox.framework; path = System/Library/Frameworks/MediaToolbox.framework; sourceTree = SDKROOT; };
-		77783E6D1EC7BA64002AD61D /* Soundwich.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soundwich.entitlements; sourceTree = "<group>"; };
 		5F69AC5D1EC740CC000EDE0F /* newsFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newsFeedController.swift; sourceTree = "<group>"; };
+		5FB3C88D1EC80AB10091A28C /* NowPlayingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingViewController.swift; sourceTree = "<group>"; };
+		77783E6D1EC7BA64002AD61D /* Soundwich.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soundwich.entitlements; sourceTree = "<group>"; };
 		8B22A0CBEE1D84EDE1B495CA /* Pods-QuaggifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuaggifyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuaggifyTests/Pods-QuaggifyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AD950247F2477E6A23B4B79C /* Pods-Quaggify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quaggify.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Quaggify/Pods-Quaggify.debug.xcconfig"; sourceTree = "<group>"; };
 		AEB3D1CC599B6527C02A27D2 /* Pods_QuaggifyTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_QuaggifyTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -375,6 +377,7 @@
 				E0E385FD1E47DA4F002A72DD /* PlaylistViewController.swift */,
 				0C471B3E1EC430E600CD2E13 /* addingPlayer.swift */,
 				5F69AC5D1EC740CC000EDE0F /* newsFeedController.swift */,
+				5FB3C88D1EC80AB10091A28C /* NowPlayingViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -653,6 +656,7 @@
 				E0E385EE1E449B33002A72DD /* AlbumsViewController.swift in Sources */,
 				E06058471E434A98003DEAB4 /* RefreshTokenResponse.swift in Sources */,
 				E0344DEB1E41EF7700E7E585 /* TrackCell.swift in Sources */,
+				5FB3C88E1EC80AB10091A28C /* NowPlayingViewController.swift in Sources */,
 				E018CCC31E424B800099309F /* RecentSearches.swift in Sources */,
 				E0841E3C1E41189900BEA51E /* Image.swift in Sources */,
 				E0841E131E40AFC400BEA51E /* SearchViewController.swift in Sources */,
