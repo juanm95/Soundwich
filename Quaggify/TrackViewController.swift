@@ -64,7 +64,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         let btn = UIButton(type: .system)
         btn.tintColor = ColorPalette.white
         btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-        btn.setTitle("Send", for: .normal)
+        btn.setTitle("Send to Friend", for: .normal)
         btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
         return btn
     }()
@@ -75,6 +75,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         btn.addTarget(self, action: #selector(pauseSong), for: .touchUpInside)
         return btn
     }()
+
   
     lazy var nextSongButton: UIButton = {
         let btn = UIButton(type: .system)
@@ -179,18 +180,13 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         titleLabel.anchor(containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
         
         subTitleLabel.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
-    
-    
-      pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
+    pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
     
     nextSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 200, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
     
     previousSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 200, widthConstant: 0, heightConstant: 70)
     
-    
-
-    
-        addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+    addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 15, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
 }
 
@@ -207,6 +203,7 @@ extension TrackViewController {
 
 extension TrackViewController {
     func addToPlaylist () {
+        addToPlaylistButton.setTitle("Send to Friend", for: .normal)
         let trackOptionsVC = TrackOptionsViewController()
         trackOptionsVC.track = track
         let trackOptionsNav = NavigationController(rootViewController: trackOptionsVC)
@@ -238,6 +235,7 @@ extension TrackViewController {
             thePlayer.indeX = 0
         }
         self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
+        
     }
     
     func pauseSong(){
@@ -263,6 +261,7 @@ extension TrackViewController {
                 }
             })
         }
+        
     }
     
  

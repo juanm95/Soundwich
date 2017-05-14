@@ -241,41 +241,11 @@ extension NowPlayingViewController: UICollectionViewDelegate {
     }
 }
 
-extension NowPlayingViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if spotifySearchResponse == nil {
-            return RecentSearches.shared.items.count
+extension NowPlayingViewController {
+        func collectionView(_ collectionView: UICollectionView) {
+            navigationController?.pushViewController(thePlayer.nowPlaying!, animated: true)
         }
-        let spotifyObject = sections[section]
-        
-        if spotifyObject is SpotifyObject<Album> {
-            return spotifySearchResponse?.albums?.items?.count ?? 0
-        }
-        if spotifyObject is SpotifyFooter<SpotifyObject<Album>> {
-            return spotifySearchResponse?.albums?.next != nil ? 1 : 0
-        }
-        if spotifyObject is SpotifyObject<Artist> {
-            return spotifySearchResponse?.artists?.items?.count ?? 0
-        }
-        if spotifyObject is SpotifyFooter<SpotifyObject<Artist>> {
-            return spotifySearchResponse?.artists?.next != nil ? 1 : 0
-        }
-        if spotifyObject is SpotifyObject<Track> {
-            return spotifySearchResponse?.tracks?.items?.count ?? 0
-        }
-        if spotifyObject is SpotifyFooter<SpotifyObject<Track>> {
-            return spotifySearchResponse?.tracks?.next != nil ? 1 : 0
-        }
-        if spotifyObject is SpotifyObject<Playlist> {
-            return spotifySearchResponse?.playlists?.items?.count ?? 0
-        }
-        if spotifyObject is SpotifyFooter<SpotifyObject<Playlist>> {
-            return spotifySearchResponse?.playlists?.next != nil ? 1 : 0
-        }
-        
-        return  0
-        
-    }
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if spotifySearchResponse == nil, RecentSearches.shared.items.count > 0 {
             return 1

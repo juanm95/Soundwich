@@ -23,7 +23,7 @@ class TabBarController: UITabBarController {
     UITabBar.appearance().tintColor = ColorPalette.white
     UITabBar.appearance().isTranslucent = false
     UITabBar.appearance().barTintColor = ColorPalette.gray
-    
+    //thePlayer.nowPlaying = TrackViewController()
     // Fetching updated user
     if !didLogin {
       if let user = User.getFromDefaults() {
@@ -61,19 +61,32 @@ class TabBarController: UITabBarController {
     newsFeedControler.tabBarItem = UITabBarItem(title: "Newsfeed", image: feedIcon, selectedImage: feedIconFilled)
     newsFeedControler.tabBarItem.tag = 2
     
-    let nowPlaying = NavigationController(rootViewController: NowPlayingViewController())
-    let npIcon = #imageLiteral(resourceName: "playicon_filled").withRenderingMode(.alwaysTemplate)
-    let npIconFilled = #imageLiteral(resourceName: "playicon").withRenderingMode(.alwaysTemplate)
-    nowPlaying.tabBarItem = UITabBarItem(title: "Player", image: npIcon, selectedImage: npIconFilled)
-    nowPlaying.tabBarItem.tag = 3
+   // if(thePlayer.nowPlaying?.track?.id == nil){
+     //  thePlayer.nowPlaying = TrackViewController()
+   // }
+    let nowPlaying = NavigationController(rootViewController: TrackViewController())
+       // nowPlaying.pushViewController(thePlayer.nowPlaying!, animated:true)
+        let npIcon = #imageLiteral(resourceName: "playicon_filled").withRenderingMode(.alwaysTemplate)
+        let npIconFilled = #imageLiteral(resourceName: "playicon").withRenderingMode(.alwaysTemplate)
+        nowPlaying.tabBarItem = UITabBarItem(title: "Player", image: npIcon, selectedImage: npIconFilled)
+        nowPlaying.tabBarItem.tag = 3
+        viewControllers = [homeViewController, searchViewController, newsFeedControler, nowPlaying]
     
-    viewControllers = [homeViewController, searchViewController, newsFeedControler, nowPlaying]
   }
   
 }
 
 extension TabBarController: UITabBarControllerDelegate {
   func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+     if let navController = viewController as? NavigationController {
+            if let npVC = navController.topViewController as? TrackViewController {
+                if(thePlayer.start && thePlayer.nowPlayingBug == 0){
+                        thePlayer.nowPlayingBug = 1
+                       navController.pushViewController(thePlayer.nowPlaying!, animated:false)
+                }
+        }
+    }
+
     if previousViewController == viewController {
       if let navController = viewController as? NavigationController {
         if let homeVC = navController.topViewController as? HomeViewController {
@@ -85,9 +98,9 @@ extension TabBarController: UITabBarControllerDelegate {
        if let feedVC = navController.topViewController as? newsFeedController {
           feedVC.scrollToTop()
         }
-       if let npVC = navController.topViewController as? NowPlayingViewController {
-            npVC.scrollToTop()
-        }
+      /* if let npVC = navController.topViewController as? NowPlayingViewController {
+            navController.pushViewController(thePlayer.nowPlaying!, animated:true)
+        }*/
       }
     }
     previousViewController = viewController
