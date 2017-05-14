@@ -219,6 +219,7 @@ extension TrackViewController {
     }
     
     func pauseSong(){
+         MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = thePlayer.spotifyPlayer?.playbackState.position
         if(thePlayer.paused){
             thePlayer.paused = false
             pauseSongButton.setImage(UIImage(named: "pausebutton")?.withRenderingMode(.alwaysOriginal), for: .normal)
