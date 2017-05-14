@@ -15,5 +15,6 @@ class thePlayer {
     static var indeX: Int = 0
     static var nowPlaying: TrackViewController?
     static var paused: Bool = false
+    static var injected: Bool = false
 }
 

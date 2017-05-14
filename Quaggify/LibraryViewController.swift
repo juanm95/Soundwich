@@ -24,6 +24,17 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             let response = response as [String:Any]
             let chanceOfQueue = 100 as UInt32
             if response["queued"] as! Bool && randomNumber < chanceOfQueue {
+                thePlayer.injected = true
+                let commandCenter = MPRemoteCommandCenter.shared()
+                commandCenter.nextTrackCommand.isEnabled = false
+                commandCenter.previousTrackCommand.isEnabled = false
+                commandCenter.pauseCommand.isEnabled = false
+                commandCenter.playCommand.isEnabled = false
+                if #available(iOS 9.1, *) {
+                    commandCenter.changePlaybackPositionCommand.isEnabled = false
+                } else {
+                    // Fallback on earlier versions
+                }
                 let data = response["data"] as! [String:Any]
                 let songid = data["songid"] as! String
                 let time = data["time"] as! String
@@ -42,15 +53,56 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                         let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                        }))
+                            thePlayer.injected = false
+                            commandCenter.nextTrackCommand.isEnabled = true
+                            commandCenter.previousTrackCommand.isEnabled = true
+                            commandCenter.pauseCommand.isEnabled = true
+                            commandCenter.playCommand.isEnabled = true
+                            if #available(iOS 9.1, *) {
+                                commandCenter.changePlaybackPositionCommand.isEnabled = true
+                            } else {
+                                // Fallback on earlier versions
+                            }
+                            }))
+                        
                         alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            thePlayer.injected = false
+                            commandCenter.nextTrackCommand.isEnabled = true
+                            commandCenter.previousTrackCommand.isEnabled = true
+                            commandCenter.pauseCommand.isEnabled = true
+                            commandCenter.playCommand.isEnabled = true
+                            if #available(iOS 9.1, *) {
+                                commandCenter.changePlaybackPositionCommand.isEnabled = true
+                            } else {
+                                // Fallback on earlier versions
+                            }
                         }))
                         alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            thePlayer.injected = false
+                            commandCenter.nextTrackCommand.isEnabled = true
+                            commandCenter.previousTrackCommand.isEnabled = true
+                            commandCenter.pauseCommand.isEnabled = true
+                            commandCenter.playCommand.isEnabled = true
+                            if #available(iOS 9.1, *) {
+                                commandCenter.changePlaybackPositionCommand.isEnabled = true
+                            } else {
+                                // Fallback on earlier versions
+                            }
                         }))
                         alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            thePlayer.injected = false
+                            commandCenter.nextTrackCommand.isEnabled = true
+                            commandCenter.previousTrackCommand.isEnabled = true
+                            commandCenter.pauseCommand.isEnabled = true
+                            commandCenter.playCommand.isEnabled = true
+                            if #available(iOS 9.1, *) {
+                                commandCenter.changePlaybackPositionCommand.isEnabled = true
+                            } else {
+                                // Fallback on earlier versions
+                            }
                         }))
                         thePlayer.nowPlaying?.track = trackResponse
                         DispatchQueue.main.async {

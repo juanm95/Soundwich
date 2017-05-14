@@ -120,15 +120,26 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     super.viewDidLoad()
     setupViews()
     let commandCenter = MPRemoteCommandCenter.shared()
-    commandCenter.nextTrackCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.nextSong))
-    commandCenter.previousTrackCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.previousSong))
-    commandCenter.pauseCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.pauseSong))
+    if(thePlayer.injected == false){
+    commandCenter.nextTrackCommand.isEnabled = true
+    commandCenter.previousTrackCommand.isEnabled = true
+    commandCenter.pauseCommand.isEnabled = true
+    commandCenter.playCommand.isEnabled = true
+    commandCenter.nextTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.nextSong))
+    commandCenter.previousTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.previousSong))
+    commandCenter.pauseCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.pauseSong))
+    commandCenter.playCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.pauseSong))
+        if #available(iOS 9.1, *) {
+            commandCenter.changePlaybackPositionCommand.isEnabled = true
+        } else {
+            // Fallback on earlier versions
+        }
     if #available(iOS 9.1, *) {
         commandCenter.changePlaybackPositionCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.onChangePlaybackPositionCommand))
     } else {
         // Fallback on earlier versions
     }
-    commandCenter.playCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.pauseSong))
+    }
 //    fetchTrack()
   }
   
