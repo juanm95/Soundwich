@@ -12,9 +12,25 @@ import MediaPlayer
 
 class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
     
+    private func addReceivedSongToPlaylist(trackResponse: Track) {
+        thePlayer.needToReact = false
+        let playlistId = UserDefaults.standard.value(forKey: "playlistId")
+        let ownerid = User.current.id
+        let owner = User(JSON: ["id": ownerid])
+        var soundwichPlaylist = Playlist(JSON: ["id": UserDefaults.standard.value(forKey: "playlistId")])
+        soundwichPlaylist?.owner = owner
+        API.addTrackToPlaylist(track: trackResponse, playlist: soundwichPlaylist) {(string: String?, error: Error?) in
+            NotificationCenter.default.post(name: .onUserPlaylistUpdate, object: soundwichPlaylist)
+        }
+    }
+    
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
         print("braddd")
         var trackName = "spotify:track:"
+        if (thePlayer.needToReact) {
+            thePlayer.nowPlaying?.playSong()
+            return
+        }
         API.checkQueue() { [weak self] (response) in
             guard let strongSelf = self else {
                 return
@@ -24,6 +40,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             let response = response as [String:Any]
             let chanceOfQueue = 100 as UInt32
             if response["queued"] as! Bool && randomNumber < chanceOfQueue {
+                thePlayer.needToReact = true
                 let data = response["data"] as! [String:Any]
                 let songid = data["songid"] as! String
                 let time = data["time"] as! String
@@ -40,22 +57,34 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                         Alert.shared.show(title: "Error", message: "Error communicating with the server")
                     } else if let trackResponse = trackResponse {
                         let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
-                        alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                        alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
-                        alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                        alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
-                        alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                        alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
-                        alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
+                        alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
                         thePlayer.nowPlaying?.track = trackResponse
-                        DispatchQueue.main.async {
-                            thePlayer.nowPlaying?.present(alertController, animated: true)
-                        }
+//                        if present {
+//                            self?.presentedViewController?.dismiss(animated: false, completion: {
+                                DispatchQueue.main.async {
+                                    thePlayer.nowPlaying?.present(alertController, animated: true)
+                                }
+//                            })
+//                        } else {
+//                            DispatchQueue.main.async {
+//                                thePlayer.nowPlaying?.present(alertController, animated: true)
+//                            }
+//                        }
                     }
                 }
             } else {
