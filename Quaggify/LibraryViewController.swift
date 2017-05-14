@@ -20,7 +20,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
         var soundwichPlaylist = Playlist(JSON: ["id": UserDefaults.standard.value(forKey: "playlistId")])
         soundwichPlaylist?.owner = owner
         API.addTrackToPlaylist(track: trackResponse, playlist: soundwichPlaylist) {(string: String?, error: Error?) in
-            NotificationCenter.default.post(name: .onUserPlaylistUpdate, object: soundwichPlaylist)
+            print (string)
         }
     }
     
@@ -74,17 +74,9 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                             self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
                         }))
                         thePlayer.nowPlaying?.track = trackResponse
-//                        if present {
-//                            self?.presentedViewController?.dismiss(animated: false, completion: {
                                 DispatchQueue.main.async {
-                                    thePlayer.nowPlaying?.present(alertController, animated: true)
-                                }
-//                            })
-//                        } else {
-//                            DispatchQueue.main.async {
-//                                thePlayer.nowPlaying?.present(alertController, animated: true)
-//                            }
-//                        }
+                                    UIApplication.topViewController()?.present(alertController, animated: true)
+                        }
                     }
                 }
             } else {
