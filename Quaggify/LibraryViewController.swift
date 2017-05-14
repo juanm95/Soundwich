@@ -60,10 +60,10 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                 }
             } else {
                 thePlayer.indeX += 1
-                if thePlayer.indeX == thePlayer.trackList?.total {
+                if thePlayer.indeX >= (thePlayer.trackList?.total)! {
                     thePlayer.indeX = 0
                 }
-                thePlayer.nowPlaying?.track = thePlayer.trackList?.items?[thePlayer.indeX].track      //safe:                
+                thePlayer.nowPlaying?.track = thePlayer.trackList?.items?[thePlayer.indeX].track
             }
         }
     }
@@ -77,7 +77,6 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
     
     func initializePlayer() {
         UIApplication.shared.beginReceivingRemoteControlEvents()
-        
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: [])
             
@@ -104,6 +103,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             try! thePlayer.spotifyPlayer!.start(withClientId: auth.clientID)
             thePlayer.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
         }
+       
     }
     
     
@@ -163,7 +163,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
         setupViews()
         addListeners()
         fetchPlaylists()
-        //addCreateNewPlaylistCell()
+               //addCreateNewPlaylistCell()
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {

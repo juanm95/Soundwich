@@ -119,6 +119,11 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
   override func viewDidLoad() {
     super.viewDidLoad()
     setupViews()
+    let commandCenter = MPRemoteCommandCenter.shared()
+    commandCenter.nextTrackCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.nextSong))
+    commandCenter.previousTrackCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.previousSong))
+    commandCenter.pauseCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.pauseSong))
+    commandCenter.playCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.pauseSong))
 //    fetchTrack()
   }
   
@@ -150,8 +155,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     view.addSubview(pauseSongButton)
     view.addSubview(nextSongButton)
     view.addSubview(previousSongButton)
-
-    
     view.backgroundColor = ColorPalette.black
     stackView.addArrangedSubview(imageView)
     stackView.addArrangedSubview(containerView)
@@ -199,24 +202,20 @@ extension TrackViewController {
     func nextSong(){
         print("next")
         thePlayer.indeX += 1
-        if thePlayer.indeX == thePlayer.trackList?.total {
+        if thePlayer.indeX >= (thePlayer.trackList?.total)! {
             thePlayer.indeX = 0
-            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
-        } else {
-            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
         }
+        self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
     }
     
     
     func previousSong(){
         print("prev")
         thePlayer.indeX -= 1
-        if thePlayer.indeX == -1 {
+        if thePlayer.indeX <= -1 {
             thePlayer.indeX = 0
-            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
-        } else {
-            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
         }
+        self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
     }
     
     func pauseSong(){
@@ -259,10 +258,6 @@ extension TrackViewController {
               //  print(error)
             }
         })
-        let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.nextSong))
-        commandCenter.previousTrackCommand.addTarget(self, action:#selector(previousSong))
-        commandCenter.togglePlayPauseCommand.addTarget(self, action:#selector(pauseSong))
         let imageURLString = URL(string: (self.track?.album?.images?[0].url)!)
         let imageData = try! Data(contentsOf:imageURLString!)
         let image2 = UIImage(data:imageData)

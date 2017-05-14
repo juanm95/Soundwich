@@ -156,7 +156,7 @@ extension PlaylistViewController {
 // MARK: UICollectionViewDelegate
 extension PlaylistViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    thePlayer.indeX = 0
+    thePlayer.indeX = indexPath.item
     thePlayer.nowPlaying = TrackViewController()
     thePlayer.nowPlaying?.track = spotifyObject?.items?[safe: indexPath.item]?.track
     navigationController?.pushViewController(thePlayer.nowPlaying!, animated: true)
