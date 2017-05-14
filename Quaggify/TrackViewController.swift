@@ -119,6 +119,16 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
   override func viewDidLoad() {
     super.viewDidLoad()
     setupViews()
+    let commandCenter = MPRemoteCommandCenter.shared()
+    commandCenter.nextTrackCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.nextSong))
+    commandCenter.previousTrackCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.previousSong))
+    commandCenter.pauseCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.pauseSong))
+    if #available(iOS 9.1, *) {
+        commandCenter.changePlaybackPositionCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.onChangePlaybackPositionCommand))
+    } else {
+        // Fallback on earlier versions
+    }
+    commandCenter.playCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.pauseSong))
 //    fetchTrack()
   }
   
@@ -150,8 +160,6 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     view.addSubview(pauseSongButton)
     view.addSubview(nextSongButton)
     view.addSubview(previousSongButton)
-
-    
     view.backgroundColor = ColorPalette.black
     stackView.addArrangedSubview(imageView)
     stackView.addArrangedSubview(containerView)
@@ -185,6 +193,7 @@ extension TrackViewController {
     }
 }
 
+
 extension TrackViewController {
     func addToPlaylist () {
         let trackOptionsVC = TrackOptionsViewController()
@@ -194,32 +203,34 @@ extension TrackViewController {
         tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
     }
     
-    
+    func onChangePlaybackPositionCommand (_ event: MPChangePlaybackPositionCommandEvent){
+        thePlayer.spotifyPlayer?.seek(to: event.positionTime, callback: { (error) in
+            if (error != nil) {
+            }
+        })
+    }
     
     func nextSong(){
         print("next")
         thePlayer.indeX += 1
-        if thePlayer.indeX == thePlayer.trackList?.total {
+        if thePlayer.indeX >= (thePlayer.trackList?.total)! {
             thePlayer.indeX = 0
-            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
-        } else {
-            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
         }
+        self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
     }
     
     
     func previousSong(){
         print("prev")
         thePlayer.indeX -= 1
-        if thePlayer.indeX == -1 {
+        if thePlayer.indeX <= -1 {
             thePlayer.indeX = 0
-            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
-        } else {
-            self.track = thePlayer.trackList?.items?[thePlayer.indeX].track
         }
+        self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
     }
     
     func pauseSong(){
+         MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = thePlayer.spotifyPlayer?.playbackState.position
         if(thePlayer.paused){
             thePlayer.paused = false
             pauseSongButton.setImage(UIImage(named: "pausebutton")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -243,12 +254,7 @@ extension TrackViewController {
         }
     }
     
-    
-    
-    
-    
-    
-    
+ 
     
     func playSong() {
         var trackName = "spotify:track:"
@@ -259,10 +265,6 @@ extension TrackViewController {
               //  print(error)
             }
         })
-        let commandCenter = MPRemoteCommandCenter.shared()
-        commandCenter.nextTrackCommand.addTarget(self, action:#selector(self.nextSong))
-        commandCenter.previousTrackCommand.addTarget(self, action:#selector(previousSong))
-        commandCenter.togglePlayPauseCommand.addTarget(self, action:#selector(pauseSong))
         let imageURLString = URL(string: (self.track?.album?.images?[0].url)!)
         let imageData = try! Data(contentsOf:imageURLString!)
         let image2 = UIImage(data:imageData)
