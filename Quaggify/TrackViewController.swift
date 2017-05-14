@@ -123,6 +123,11 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     commandCenter.nextTrackCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.nextSong))
     commandCenter.previousTrackCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.previousSong))
     commandCenter.pauseCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.pauseSong))
+    if #available(iOS 9.1, *) {
+        commandCenter.changePlaybackPositionCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.onChangePlaybackPositionCommand))
+    } else {
+        // Fallback on earlier versions
+    }
     commandCenter.playCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.pauseSong))
 //    fetchTrack()
   }
@@ -188,6 +193,7 @@ extension TrackViewController {
     }
 }
 
+
 extension TrackViewController {
     func addToPlaylist () {
         let trackOptionsVC = TrackOptionsViewController()
@@ -197,7 +203,12 @@ extension TrackViewController {
         tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
     }
     
-    
+    func onChangePlaybackPositionCommand (_ event: MPChangePlaybackPositionCommandEvent){
+        thePlayer.spotifyPlayer?.seek(to: event.positionTime, callback: { (error) in
+            if (error != nil) {
+            }
+        })
+    }
     
     func nextSong(){
         print("next")
@@ -243,12 +254,7 @@ extension TrackViewController {
         }
     }
     
-    
-    
-    
-    
-    
-    
+ 
     
     func playSong() {
         var trackName = "spotify:track:"
