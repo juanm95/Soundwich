@@ -61,9 +61,6 @@ class TabBarController: UITabBarController {
     newsFeedControler.tabBarItem = UITabBarItem(title: "Newsfeed", image: feedIcon, selectedImage: feedIconFilled)
     newsFeedControler.tabBarItem.tag = 2
     
-   // if(thePlayer.nowPlaying?.track?.id == nil){
-      // thePlayer.nowPlaying = TrackViewController()
-   // }
     let nowPlaying = NavigationController(rootViewController: TrackViewController())
        // nowPlaying.pushViewController(thePlayer.nowPlaying!, animated:true)
         let npIcon = #imageLiteral(resourceName: "playicon_filled").withRenderingMode(.alwaysTemplate)
