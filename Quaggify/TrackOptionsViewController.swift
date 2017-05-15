@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Flurry_iOS_SDK
 
 class TrackOptionsViewController: ViewController {
   
@@ -189,6 +190,8 @@ extension TrackOptionsViewController {
   
   func addTrackToPlaylist(playlist: Playlist?) {
     API.sendTrackToFriend(track: track, friend: playlist) { (data) in
+        let songParams = ["Song_Title": self.track?.name!, "Artist": self.track?.artists?[0].name!, "Popularity": self.track?.popularity!, "Duration": self.track?.durationMS ?? 0] as [String: Any]
+        Flurry.logEvent("Send_Track", withParameters: songParams)
         Alert.shared.show(title: "Success!", message: "Track sent to \(playlist!.name!)")
     }
   }

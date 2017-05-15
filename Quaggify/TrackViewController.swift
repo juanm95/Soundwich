@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import MediaPlayer
+import Flurry_iOS_SDK
 
 class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate{
     
@@ -277,6 +278,8 @@ extension TrackViewController {
             }
         })
         let imageURLString = URL(string: (self.track?.album?.images?[0].url)!)
+        let songParams = ["Song_Title": self.track?.name!, "Artist": self.track?.artists?[0].name!, "Popularity": self.track?.popularity!, "Duration": self.track?.durationMS ?? 0] as [String: Any]
+        Flurry.logEvent("Play_Track", withParameters: songParams)
         let imageData = try! Data(contentsOf:imageURLString!)
         let image2 = UIImage(data:imageData)
         let newSize = CGSize(width:(self.track?.album?.images?[0].width)!,height:(self.track?.album?.images?[0].height)!)

@@ -9,10 +9,12 @@
 import UIKit
 import AVFoundation
 import MediaPlayer
+import Flurry_iOS_SDK
 
 class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
     
-    private func addReceivedSongToPlaylist(trackResponse: Track) {
+    private func react(reaction: String, trackResponse: Track, tomember: String, time: String) {
+        API.reactToSong(reaction: reaction, time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
         thePlayer.needToReact = false
         thePlayer.injected = false
         let commandCenter = MPRemoteCommandCenter.shared()
@@ -33,6 +35,8 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
         API.addTrackToPlaylist(track: trackResponse, playlist: soundwichPlaylist) {(string: String?, error: Error?) in
             print (string)
         }
+        let reactionParameters = ["reaction": reaction] as [String: Any]
+        Flurry.endTimedEvent("Reacting", withParameters: reactionParameters)
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
@@ -80,25 +84,22 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                     } else if let trackResponse = trackResponse {
                         let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
-                            API.reactToSong(reaction: "💩", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
+                            self?.react(reaction: "💩", trackResponse: trackResponse, tomember: tomember, time: time)
                         }))
                         alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                            API.reactToSong(reaction: "😂", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
+                            self?.react(reaction: "😂", trackResponse: trackResponse, tomember: tomember, time: time)
                         }))
                         alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
-                            API.reactToSong(reaction: "😡", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
+                            self?.react(reaction: "😡", trackResponse: trackResponse, tomember: tomember, time: time)
                         }))
                         alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
-                            API.reactToSong(reaction: "😎", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
-                            self?.addReceivedSongToPlaylist(trackResponse: trackResponse)
+                            self?.react(reaction: "😎", trackResponse: trackResponse, tomember: tomember, time: time)
                         }))
                         thePlayer.nowPlaying?.track = trackResponse
-                                DispatchQueue.main.async {
-                                    UIApplication.topViewController()?.present(alertController, animated: true)
+                        DispatchQueue.main.async {
+                            UIApplication.topViewController()?.present(alertController, animated: true)
                         }
+                        Flurry.logEvent("Reacting", timed: true);
                     }
                 }
             } else {

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Flurry_iOS_SDK
 class SearchViewController: ViewController {
   
   var spotifySearchResponse: SpotifySearchResponse? {
@@ -127,6 +127,7 @@ extension SearchViewController {
   func fetchSearchResults () {
     // Api call
     if let text = searchController.searchBar.text {
+        Flurry.logEvent("Search", withParameters: ["query": text])
       API.fetchSearchResults(query: text) { [weak self] (response, error) in
         RecentSearches.shared.add(search: text)
         self?.spotifySearchResponse = response
