@@ -17,5 +17,7 @@ class thePlayer {
     static var paused: Bool = false
     static var needToReact: Bool = false
     static var injected: Bool = false
+    static var start: Bool = false
+    static var nowPlayingBug: Int = 0
 }
 

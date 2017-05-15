@@ -65,7 +65,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         let btn = UIButton(type: .system)
         btn.tintColor = ColorPalette.white
         btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-        btn.setTitle("Send", for: .normal)
+        btn.setTitle("Send to Friend", for: .normal)
         btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
         return btn
     }()
@@ -76,6 +76,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         btn.addTarget(self, action: #selector(pauseSong), for: .touchUpInside)
         return btn
     }()
+
   
     lazy var nextSongButton: UIButton = {
         let btn = UIButton(type: .system)
@@ -126,6 +127,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     commandCenter.previousTrackCommand.isEnabled = true
     commandCenter.pauseCommand.isEnabled = true
     commandCenter.playCommand.isEnabled = true
+        if(thePlayer.start){
     commandCenter.nextTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.nextSong))
     commandCenter.previousTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.previousSong))
     commandCenter.pauseCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.pauseSong))
@@ -140,6 +142,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     } else {
         // Fallback on earlier versions
     }
+        }
     }
 //    fetchTrack()
   }
@@ -180,18 +183,13 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         titleLabel.anchor(containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
         
         subTitleLabel.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
-    
-    
-      pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
+    pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
     
     nextSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 200, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
     
     previousSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 200, widthConstant: 0, heightConstant: 70)
     
-    
-
-    
-        addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+    addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 15, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
 }
 
@@ -208,11 +206,16 @@ extension TrackViewController {
 
 extension TrackViewController {
     func addToPlaylist () {
+         if(thePlayer.start){
+        addToPlaylistButton.setTitle("Send to Friend", for: .normal)
         let trackOptionsVC = TrackOptionsViewController()
         trackOptionsVC.track = track
         let trackOptionsNav = NavigationController(rootViewController: trackOptionsVC)
         trackOptionsNav.modalPresentationStyle = .overCurrentContext
         tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
+         } else {
+            addToPlaylistButton.setTitle("No Song Playing!", for: .normal)
+        }
     }
     
     func onChangePlaybackPositionCommand (_ event: MPChangePlaybackPositionCommandEvent){
@@ -223,25 +226,30 @@ extension TrackViewController {
     }
     
     func nextSong(){
+        if(thePlayer.start){
         print("next")
         thePlayer.indeX += 1
         if thePlayer.indeX >= (thePlayer.trackList?.total)! {
             thePlayer.indeX = 0
         }
         self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
+        }
     }
     
     
     func previousSong(){
+        if(thePlayer.start){
         print("prev")
         thePlayer.indeX -= 1
         if thePlayer.indeX <= -1 {
             thePlayer.indeX = 0
         }
         self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
+        }
     }
     
     func pauseSong(){
+         if(thePlayer.start){
          MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = thePlayer.spotifyPlayer?.playbackState.position
         if(thePlayer.paused){
             thePlayer.paused = false
@@ -264,6 +272,8 @@ extension TrackViewController {
                 }
             })
         }
+        }
+        
     }
     
  
