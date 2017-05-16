@@ -65,6 +65,10 @@ struct API {
   static func fetchTrack (track: Track?, service: SpotifyService = SpotifyService.shared, completion: @escaping (Track?, Error?) -> Void) {
     service.fetchTrack(track: track, completion: completion)
   }
+    
+    static func fetchSoundwichPlaylist (service: SpotifyService = SpotifyService.shared, completion: @escaping (Playlist?, Error?) -> Void) {
+        service.fetchSoundwichPlaylist(completion: completion)
+    }
   
   static func fetchTracks (query: String, limit: Int = 20, offset: Int = 0, service: SpotifyService = SpotifyService.shared, completion: @escaping (SpotifyObject<Track>?, Error?) -> Void) {
     service.fetchTracks(query: query, limit: limit, offset: offset, completion: completion)

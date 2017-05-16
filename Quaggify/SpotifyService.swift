@@ -72,6 +72,7 @@ class SpotifyService: NSObject {
     }
     return nil
   }
+
   private var createNewPlaylistUrl: String? {
     if let userId = User.current.id {
       return "https://api.spotify.com/v1/users/\(userId)/playlists"
@@ -212,6 +213,38 @@ class SpotifyService: NSObject {
         }
     }
   }
+    
+    func fetchSoundwichPlaylist (completion: @escaping (Playlist?, Error?) -> Void) {
+        
+        var headers: HTTPHeaders = [:]
+        if let accessToken = ACCESS_TOKEN {
+            headers["Authorization"] = "Bearer \(accessToken)"
+        }
+        
+        let soundwichUrl = "https://api.spotify.com/v1/users/1219472736/playlists/5uphpuHMHAtRYAc3uYiRLy"
+        
+        Alamofire.request(soundwichUrl, method: .get, parameters: nil, headers: headers).responseObject { [weak self] (response: DataResponse<Playlist>) in
+            switch response.result {
+            case .success(let spotifyObject):
+                if let statusCode = response.response?.statusCode, statusCode == 401 {
+                    self?.refreshToken { (error) in
+                        if let error = error {
+                            completion(nil, error)
+                        } else {
+                            self?.fetchSoundwichPlaylist(completion: completion)
+                        }
+                    }
+                    break
+                }
+                completion(spotifyObject, nil)
+                break
+            case .failure(let error):
+                print ("-----HERE BE MY ERROR \(error)")
+                completion(nil, error)
+                break
+            }
+        }
+    }
   
   func fetchTrack (track: Track?, completion: @escaping (Track?, Error?) -> Void) {
     let parameters: Parameters = [

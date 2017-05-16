@@ -221,7 +221,6 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
         initializePlayer()
         navigationItem.title = "Your Playlists".uppercased()
         navigationItem.rightBarButtonItem = logoutButton
-        
         view.addSubview(collectionView)
         collectionView.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
@@ -256,23 +255,26 @@ extension LibraryViewController {
     func fetchPlaylists () {
         isFetching = true
         print("Fetching albums offset(\(offset)) ")
-        
-        API.fetchCurrentUsersPlaylists(limit: limit, offset: offset) { [weak self] (spotifyObject, error) in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.isFetching = false
-            strongSelf.refreshControl.endRefreshing()
-            strongSelf.offset += strongSelf.limit
-            
-            if let error = error {
-                print(error)
-                Alert.shared.show(title: "Error", message: "Error communicating with the server")
-            } else if let items = spotifyObject?.items {
-                strongSelf.playlists.append(contentsOf: items)
-                strongSelf.spotifyObject = spotifyObject
+        API.fetchSoundwichPlaylist() { (soundwichPlaylist: Playlist?, error: Error?) in
+            self.playlists.append(soundwichPlaylist!)
+            API.fetchCurrentUsersPlaylists(limit: self.limit, offset: self.offset) { [weak self] (spotifyObject, error) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.isFetching = false
+                strongSelf.refreshControl.endRefreshing()
+                strongSelf.offset += strongSelf.limit
+                
+                if let error = error {
+                    print(error)
+                    Alert.shared.show(title: "Error", message: "Error communicating with the server")
+                } else if let items = spotifyObject?.items {
+                    strongSelf.playlists.append(contentsOf: items)
+                    strongSelf.spotifyObject = spotifyObject
+                }
             }
         }
+        
     }
     
     func refreshPlaylists () {
@@ -365,6 +367,11 @@ extension LibraryViewController: UICollectionViewDataSource {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlaylistCell.identifier, for: indexPath) as? PlaylistCell {
             let playlist = playlists[safe: indexPath.item]
             cell.playlist = playlist
+            
+            if indexPath.item == 0 {
+                cell.subTitleLabel.text = "Soundwich"
+                cell.imageView.image = #imageLiteral(resourceName: "soundwichImage").withRenderingMode(.alwaysOriginal)
+            }
             
             // Create ne playlist
             /*if indexPath.item == 0 {
