@@ -22,6 +22,9 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             if let name = track.name {
                 self.titleLabel.text = name
             }
+            if let duration = track.durationMS{
+                self.playbackSlider.maximumValue = Float(duration/1000)
+            }
             if let artists = track.artists {
                 let names = artists.map { $0.name ?? "Unknown Artist" }.joined(separator: ", ")
                 self.subTitleLabel.text = names
@@ -93,6 +96,29 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         return btn
     }()
     
+    lazy var playbackSlider: UISlider = {
+        
+        let playbackSlid = UISlider(frame:CGRect(x:10, y:250, width:250, height:10))
+        playbackSlid.minimumValue = 0
+        playbackSlid.setThumbImage(UIImage(named: "thumb")!, for: .normal)
+        playbackSlid.isContinuous = true
+        playbackSlid.tintColor = UIColor.orange
+        playbackSlid.addTarget(self, action: #selector(slide(_:)), for: .valueChanged)
+        return playbackSlid
+        
+    }()
+    
+    @IBAction func slide(_ slider: UISlider) {
+        if(thePlayer.start){
+            let seconds : Int64 = Int64(slider.value)
+            thePlayer.spotifyPlayer?.seek(to: TimeInterval(seconds), callback: { (error) in
+                if (error != nil) {
+                }
+            })
+            MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = TimeInterval(seconds)
+        }
+    }
+
     
     
   var imageView: UIImageView = {
@@ -171,6 +197,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     view.addSubview(containerView)
     view.addSubview(titleLabel)
     view.addSubview(subTitleLabel)
+    view.addSubview(playbackSlider)
     view.addSubview(addToPlaylistButton)
     view.addSubview(pauseSongButton)
     view.addSubview(nextSongButton)
@@ -189,7 +216,9 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     
     previousSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 200, widthConstant: 0, heightConstant: 70)
     
-    addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, topConstant: 15, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+    addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 150, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+    
+    playbackSlider.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 105, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
 }
 
