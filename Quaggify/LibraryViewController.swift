@@ -358,6 +358,16 @@ extension LibraryViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let playlistVC = PlaylistViewController()
         playlistVC.playlist = playlists[safe: indexPath.item]
+        if playlistVC.playlist?.name == "Recommended by Soundwich" {
+            let playlistParameters = ["playlist": "Soundwich Recommended"] as [String: Any]
+            Flurry.logEvent("Selecting_a_playlist", withParameters: playlistParameters)
+        } else if playlistVC.playlist?.name == "Received on Soundwich" {
+            let playlistParameters = ["playlist": "Soundwich Received"] as [String: Any]
+            Flurry.logEvent("Selecting_a_playlist", withParameters: playlistParameters)
+        } else {
+            let playlistParameters = ["playlist": "Theirs"] as [String: Any]
+            Flurry.logEvent("Selecting_a_playlist", withParameters: playlistParameters)
+        }
         navigationController?.pushViewController(playlistVC, animated: true)
     }
 }
@@ -429,22 +439,3 @@ extension LibraryViewController: ScrollDelegate {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
