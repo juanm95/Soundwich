@@ -19,6 +19,7 @@
 		5F69AC5E1EC740CC000EDE0F /* newsFeedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F69AC5D1EC740CC000EDE0F /* newsFeedController.swift */; };
 		5FB3C8901EC80FB70091A28C /* Flurry_iOS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3C88F1EC80FB70091A28C /* Flurry_iOS_SDK.framework */; };
 		5FB3C8921EC814060091A28C /* NowPlayingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3C8911EC814060091A28C /* NowPlayingViewController.swift */; };
+		7720867C1ECAA5E5007FB8E1 /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7720867B1ECAA5E5007FB8E1 /* FriendsViewController.swift */; };
 		E018CCC31E424B800099309F /* RecentSearches.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018CCC21E424B800099309F /* RecentSearches.swift */; };
 		E018CCC61E424EDA0099309F /* RecentSearchesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E018CCC51E424EDA0099309F /* RecentSearchesCell.swift */; };
 		E0344DE71E41E8C600E7E585 /* ArtistCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0344DE61E41E8C600E7E585 /* ArtistCell.swift */; };
@@ -67,7 +68,7 @@
 		E09CE8721E409C9B002BF3F8 /* QuaggifyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09CE8711E409C9B002BF3F8 /* QuaggifyTests.swift */; };
 		E0AB39C51E420F97004BCD74 /* SpotifyObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AB39C41E420F97004BCD74 /* SpotifyObjectType.swift */; };
 		E0AB39C71E424AE5004BCD74 /* UIApplication+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0AB39C61E424AE5004BCD74 /* UIApplication+Extension.swift */; };
-		E0E385EC1E440C47002A72DD /* TrackOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E385EB1E440C47002A72DD /* TrackOptionsViewController.swift */; };
+		E0E385EC1E440C47002A72DD /* SendToFriendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E385EB1E440C47002A72DD /* SendToFriendViewController.swift */; };
 		E0E385EE1E449B33002A72DD /* AlbumsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E385ED1E449B33002A72DD /* AlbumsViewController.swift */; };
 		E0E385F01E44AE75002A72DD /* ArtistsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E385EF1E44AE75002A72DD /* ArtistsViewController.swift */; };
 		E0E385F21E44B18A002A72DD /* PlaylistsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0E385F11E44B18A002A72DD /* PlaylistsViewController.swift */; };
@@ -111,6 +112,7 @@
 		5F69AC5D1EC740CC000EDE0F /* newsFeedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = newsFeedController.swift; sourceTree = "<group>"; };
 		5FB3C88F1EC80FB70091A28C /* Flurry_iOS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Flurry_iOS_SDK.framework; path = "Pods/../build/Debug-iphoneos/Flurry-iOS-SDK/Flurry_iOS_SDK.framework"; sourceTree = "<group>"; };
 		5FB3C8911EC814060091A28C /* NowPlayingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NowPlayingViewController.swift; path = ../NowPlayingViewController.swift; sourceTree = "<group>"; };
+		7720867B1ECAA5E5007FB8E1 /* FriendsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		77783E6D1EC7BA64002AD61D /* Soundwich.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soundwich.entitlements; sourceTree = "<group>"; };
 		8B22A0CBEE1D84EDE1B495CA /* Pods-QuaggifyTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuaggifyTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuaggifyTests/Pods-QuaggifyTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AD950247F2477E6A23B4B79C /* Pods-Quaggify.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quaggify.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Quaggify/Pods-Quaggify.debug.xcconfig"; sourceTree = "<group>"; };
@@ -169,7 +171,7 @@
 		E09CE8731E409C9B002BF3F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E0AB39C41E420F97004BCD74 /* SpotifyObjectType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpotifyObjectType.swift; sourceTree = "<group>"; };
 		E0AB39C61E424AE5004BCD74 /* UIApplication+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extension.swift"; sourceTree = "<group>"; };
-		E0E385EB1E440C47002A72DD /* TrackOptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackOptionsViewController.swift; sourceTree = "<group>"; };
+		E0E385EB1E440C47002A72DD /* SendToFriendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendToFriendViewController.swift; sourceTree = "<group>"; };
 		E0E385ED1E449B33002A72DD /* AlbumsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlbumsViewController.swift; sourceTree = "<group>"; };
 		E0E385EF1E44AE75002A72DD /* ArtistsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtistsViewController.swift; sourceTree = "<group>"; };
 		E0E385F11E44B18A002A72DD /* PlaylistsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistsViewController.swift; sourceTree = "<group>"; };
@@ -375,7 +377,8 @@
 				E0E385ED1E449B33002A72DD /* AlbumsViewController.swift */,
 				E0E385EF1E44AE75002A72DD /* ArtistsViewController.swift */,
 				E0E385F11E44B18A002A72DD /* PlaylistsViewController.swift */,
-				E0E385EB1E440C47002A72DD /* TrackOptionsViewController.swift */,
+				E0E385EB1E440C47002A72DD /* SendToFriendViewController.swift */,
+				7720867B1ECAA5E5007FB8E1 /* FriendsViewController.swift */,
 				E0344DE81E41EBB400E7E585 /* ArtistViewController.swift */,
 				E0E385F71E4799EE002A72DD /* TrackViewController.swift */,
 				E0E385FB1E47DA44002A72DD /* AlbumViewController.swift */,
@@ -644,6 +647,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7720867C1ECAA5E5007FB8E1 /* FriendsViewController.swift in Sources */,
 				E0E385F21E44B18A002A72DD /* PlaylistsViewController.swift in Sources */,
 				E0841E2C1E40D28600BEA51E /* SpotifyService.swift in Sources */,
 				E0E385F41E44B965002A72DD /* UINavigationBar+Extension.swift in Sources */,
@@ -686,7 +690,7 @@
 				E0AB39C71E424AE5004BCD74 /* UIApplication+Extension.swift in Sources */,
 				E0E385F61E44E515002A72DD /* String+Extension.swift in Sources */,
 				E0841E1F1E40B96900BEA51E /* ColorPalette.swift in Sources */,
-				E0E385EC1E440C47002A72DD /* TrackOptionsViewController.swift in Sources */,
+				E0E385EC1E440C47002A72DD /* SendToFriendViewController.swift in Sources */,
 				E0E386021E4873FF002A72DD /* ScrollDelegate.swift in Sources */,
 				E0841E321E40F47000BEA51E /* Playlist.swift in Sources */,
 				E018CCC61E424EDA0099309F /* RecentSearchesCell.swift in Sources */,

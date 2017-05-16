@@ -59,16 +59,22 @@ class TabBarController: UITabBarController {
     let feedIcon = #imageLiteral(resourceName: "tab_icon_library").withRenderingMode(.alwaysTemplate)
     let feedIconFilled = #imageLiteral(resourceName: "tab_icon_library_filled").withRenderingMode(.alwaysTemplate)
     newsFeedControler.tabBarItem = UITabBarItem(title: "Newsfeed", image: feedIcon, selectedImage: feedIconFilled)
-    newsFeedControler.tabBarItem.tag = 2
+    newsFeedControler.tabBarItem.tag = 3
     
     let nowPlaying = NavigationController(rootViewController: TrackViewController())
        // nowPlaying.pushViewController(thePlayer.nowPlaying!, animated:true)
         let npIcon = #imageLiteral(resourceName: "playicon_filled").withRenderingMode(.alwaysTemplate)
         let npIconFilled = #imageLiteral(resourceName: "playicon").withRenderingMode(.alwaysTemplate)
         nowPlaying.tabBarItem = UITabBarItem(title: "Player", image: npIcon, selectedImage: npIconFilled)
-        nowPlaying.tabBarItem.tag = 3
+        nowPlaying.tabBarItem.tag = 2
         viewControllers = [homeViewController, searchViewController, newsFeedControler, nowPlaying]
     
+    let friends = NavigationController(rootViewController: FriendsViewController())
+    let friendIcon = #imageLiteral(resourceName: "friend").withRenderingMode(.alwaysTemplate)
+    friends.tabBarItem = UITabBarItem(title: "Friends", image: friendIcon, selectedImage: friendIcon)
+    friends.tabBarItem.tag = 4
+    
+    viewControllers = [homeViewController, searchViewController, nowPlaying, newsFeedControler, friends]
   }
   
 }

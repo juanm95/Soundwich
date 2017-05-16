@@ -258,7 +258,7 @@ extension TrackOptionsViewController: UICollectionViewDataSource {
       cell.titleLabel.textColor = ColorPalette.black
       
       if section == 0 {
-        cell.imageView.image = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysTemplate)
+        cell.imageView.image = #imageLiteral(resourceName: "placeholder").withRenderingMode(.alwaysTemplate)
         cell.subTitleLabel.isHidden = true
         cell.imageView.tintColor = ColorPalette.black
       }

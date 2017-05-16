@@ -295,7 +295,7 @@ extension TrackViewController {
         let newSize = CGSize(width:(self.track?.album?.images?[0].width)!,height:(self.track?.album?.images?[0].height)!)
         if let image = image2 ?? UIImage(named: "No Album Artwork"), #available(iOS 10.0, *) {
             let albumArt = MPMediaItemArtwork(boundsSize:newSize, requestHandler: { (size) -> UIImage in return image})
-            let nowPlayingInfo : [String:Any] =  [
+            let nowPlayingInfo : [String:Any] = [
                 MPMediaItemPropertyTitle: self.track?.name! ?? "Unknown Song",
                 MPMediaItemPropertyArtist: self.track?.artists?[0].name! ?? "Unknown Artist",
                 MPMediaItemPropertyAlbumTitle: self.track?.album?.name! ?? "Unknown Album",

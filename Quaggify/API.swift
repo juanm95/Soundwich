@@ -115,6 +115,10 @@ struct API {
         }
     }
     
+    static func addFriend(friend: String, username: String, completion: @escaping ([String:AnyObject]) -> Void) {
+        fetch(endPoint: "addFriend", postString: "friend=\(friend)&username=\(username)", completion: completion)
+    }
+    
     static func checkQueue(completion: @escaping (_ json: [String:AnyObject]) -> Void) {
         fetch(endPoint: "checkQueue", postString: "username=\(UserDefaults.standard.value(forKey: "username") as! String)", completion: completion)
     }
