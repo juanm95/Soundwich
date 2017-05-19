@@ -109,7 +109,7 @@ class TrackCell: CollectionViewCell {
       UIApplication.topViewController()?.present(trackOptionsNav, animated: true, completion: nil)
     })
     if let topViewController = UIApplication.topViewController() {
-      if !(topViewController is AlbumViewController) {
+      /*if !(topViewController is AlbumViewController) {
         alertController.addAction(UIAlertAction(title: "Go to Album", style: .default, handler: { [weak self] _ in
           let albumVC = AlbumViewController()
           albumVC.album = self?.track?.album
@@ -122,7 +122,7 @@ class TrackCell: CollectionViewCell {
           artistVC.artist = self?.track?.artists?.first
           topViewController.navigationController?.pushViewController(artistVC, animated: true)
         }))
-      }
+      }*/
       
       alertController.addAction(UIAlertAction(title: "Open in Spotify", style: .default) { [weak self] _ in
         if let uri = self?.track?.uri, let url = URL(string: uri), UIApplication.shared.canOpenURL(url) {

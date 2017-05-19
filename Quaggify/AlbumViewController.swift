@@ -23,7 +23,7 @@ class AlbumViewController: ViewController {
   }
   
   var spotifyObject: SpotifyObject<Track>?
-  
+    var spotifyObjectNew: SpotifyObject<PlaylistTrack>?
   var limit = 20
   var offset = 0
   var isFetching = false
@@ -102,10 +102,29 @@ extension AlbumViewController {
 // MARK: UICollectionViewDelegate
 extension AlbumViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    let trackVC = TrackViewController()
+   /* let trackVC = TrackViewController()
     trackVC.track = spotifyObject?.items?[safe: indexPath.item]
     navigationController?.pushViewController(trackVC, animated: true)
-  }
+  }*/
+    for i in 0..<(spotifyObject?.total)! {
+        spotifyObjectNew?.items?[i].track = spotifyObject?.items?[i]
+    }
+      print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+      print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    print(spotifyObjectNew)
+    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+      print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    thePlayer.trackList = spotifyObjectNew
+    thePlayer.indeX = indexPath.item
+    if(!thePlayer.start){
+        thePlayer.nowPlaying = TrackViewController()
+    }
+    thePlayer.nowPlaying?.track = spotifyObjectNew?.items?[safe: indexPath.item]?.track
+    if(!thePlayer.start){
+        navigationController?.pushViewController(thePlayer.nowPlaying!, animated: true)
+    }
+    thePlayer.start = true
+}
 }
 
 // MARK: UICollectionViewDataSource

@@ -101,7 +101,7 @@ extension PlaylistViewController {
         strongSelf.collectionView.reloadData()
         
         //save the spotifyobject to globals
-        thePlayer.trackList = spotifyObject
+        
         
         //print(spotifyObject?.items?[1].track?.id)
         /* print((self?.playlist?.uri)!)
@@ -156,6 +156,7 @@ extension PlaylistViewController {
 // MARK: UICollectionViewDelegate
 extension PlaylistViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    thePlayer.trackList = spotifyObject
     thePlayer.indeX = indexPath.item
     if(!thePlayer.start){
         thePlayer.nowPlaying = TrackViewController()

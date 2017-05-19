@@ -393,7 +393,7 @@ extension LibraryViewController: UICollectionViewDataSource {
             
             if indexPath.item == 0 {
                 cell.subTitleLabel.text = "Soundwich"
-                cell.imageView.image = #imageLiteral(resourceName: "soundwichImage").withRenderingMode(.alwaysOriginal)
+                cell.imageView.image = #imageLiteral(resourceName: "icon_add_playlist").withRenderingMode(.alwaysOriginal)
             }
             
             // Create ne playlist

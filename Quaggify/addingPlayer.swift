@@ -12,6 +12,7 @@ import MediaPlayer
 class thePlayer {
     static var spotifyPlayer: SPTAudioStreamingController?
     static var trackList: SpotifyObject<PlaylistTrack>?
+    static var albumTrackList: SpotifyObject<Track>?
     static var indeX: Int = 0
     static var nowPlaying: TrackViewController?
     static var paused: Bool = false
