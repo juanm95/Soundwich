@@ -13,8 +13,8 @@ import Flurry_iOS_SDK
 
 class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
     
-    private func react(reaction: String, trackResponse: Track, tomember: String, time: String) {
-        API.reactToSong(reaction: reaction, time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+    private func react(reaction: String, trackResponse: Track, frommember: String, time: String) {
+        API.reactToSong(reaction: reaction, time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: frommember)
         thePlayer.needToReact = false
         thePlayer.injected = false
         let commandCenter = MPRemoteCommandCenter.shared()
@@ -84,16 +84,16 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                     } else if let trackResponse = trackResponse {
                         let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
-                            self?.react(reaction: "💩", trackResponse: trackResponse, tomember: tomember, time: time)
+                            self?.react(reaction: "💩", trackResponse: trackResponse, frommember: frommember, time: time)
                         }))
                         alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
-                            self?.react(reaction: "😂", trackResponse: trackResponse, tomember: tomember, time: time)
+                            self?.react(reaction: "😂", trackResponse: trackResponse, frommember: frommember, time: time)
                         }))
                         alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
-                            self?.react(reaction: "😡", trackResponse: trackResponse, tomember: tomember, time: time)
+                            self?.react(reaction: "😡", trackResponse: trackResponse, frommember: frommember, time: time)
                         }))
                         alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
-                            self?.react(reaction: "😎", trackResponse: trackResponse, tomember: tomember, time: time)
+                            self?.react(reaction: "😎", trackResponse: trackResponse, frommember: frommember, time: time)
                         }))
                         thePlayer.nowPlaying?.track = trackResponse
                         DispatchQueue.main.async {

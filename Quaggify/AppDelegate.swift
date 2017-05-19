@@ -51,8 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     for i in 0..<deviceToken.count {
         token += String(format: "%0.2.2hhx", arguments: [chars[i]])
     }
-    
-    print("Device token = ", token)
+    UserDefaults.standard.set(token, forKey: "token")
 //    self.strDeviceToken = token
 //    SSCurrentUser.sharedInstacne.apnsToken = token;
   }
