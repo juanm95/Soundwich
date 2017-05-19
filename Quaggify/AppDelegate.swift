@@ -8,14 +8,22 @@
 
 import UIKit
 import Flurry_iOS_SDK
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
   var window: UIWindow?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
+    // enable push notifications
+    
+    print("enable")
+    registerForRemoteNotification()
+    
+    
+    // anayltics
     Flurry.startSession("JSZXMGRDMQ69QZHN3N9M", with: FlurrySessionBuilder
         .init()
         .withCrashReporting(true)
@@ -32,6 +40,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
     return true
   }
+    
+  func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+    
+    print("got in didregister")
+    print("REGISTERINGKS LJFLS FJLSKJ LKSLKFFJ L")
+    let chars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
+    var token = ""
+    
+    for i in 0..<deviceToken.count {
+        token += String(format: "%0.2.2hhx", arguments: [chars[i]])
+    }
+    
+    print("Device token = ", token)
+//    self.strDeviceToken = token
+//    SSCurrentUser.sharedInstacne.apnsToken = token;
+  }
+    
+    func registerForRemoteNotification() {
+        
+        print("in register remot notifications")
+        if #available(iOS 10.0, *) {
+            let center = UNUserNotificationCenter.current()
+            center.delegate = self
+            center.requestAuthorization(options: [.sound, .alert, .badge]) { (granted, error) in
+                if error == nil {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            }
+        } else {
+            UIApplication.shared.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
+            UIApplication.shared.registerForRemoteNotifications()
+        }
+    }
   
   func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
     if let code = url.queryItemValueFor(key: "code") {
@@ -83,5 +124,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     return true
   }
+    
+    //Called when a notification is delivered to a foreground app.
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("User Info = ",notification.request.content.userInfo)
+        let info: [AnyHashable : Any] = notification.request.content.userInfo
+        //        let message = info["messageFrom"] as! String
+//        let typeInt = info["type"] as! Int
+//        var type: NotificationType = .other
+//        switch typeInt {
+//        case 1:
+//            type = .acceptTeacher
+//        default:
+//            type = .other
+//        }
+//        if (type == .acceptTeacher){
+//        let notificationName = Notification.Name(LEARNING_ACCEPTED_NOTIFICATION)
+        let notificationName = Notification.Name("Hello")
+        NotificationCenter.default.post(name: notificationName, object: nil)
+//        }
+        
+        completionHandler([.alert, .badge, .sound])
+    }
+    
+    //Called to let your app know which action was selected by the user for a given notification.
+    @available(iOS 10.0, *)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("User Info = ",response.notification.request.content.userInfo)
+        completionHandler()
+    }
+    
 }
 
