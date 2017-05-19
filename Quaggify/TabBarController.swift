@@ -73,7 +73,7 @@ class TabBarController: UITabBarController {
     let friends = NavigationController(rootViewController: FriendsViewController())
     let friendIcon = #imageLiteral(resourceName: "friend").withRenderingMode(.alwaysTemplate)
     friends.tabBarItem = UITabBarItem(title: "Friends", image: friendIcon, selectedImage: friendIcon)
-    friends.tabBarItem.tag = 4
+    friends.tabBarItem.tag = 3
     
     viewControllers = [homeViewController, nowPlaying,  friends]
     //viewControllers = [homeViewController, searchViewController, nowPlaying, newsFeedControler, friends]

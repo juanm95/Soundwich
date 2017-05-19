@@ -13,9 +13,9 @@ import Flurry_iOS_SDK
 
 class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
     
-    private func react(reactionEmoji: String, trackResponse: Track, tomember: String, time: String, elaboration: String) {
-        let reaction = "\(reactionEmoji) \(elaboration)"
-        API.reactToSong(reaction: reaction, time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: tomember)
+
+    private func react(reactionEmoji: String, trackResponse: Track, frommember: String, time: String, elaboration: String) {
+        API.reactToSong(reaction: reactionEmoji, time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: frommember)
         thePlayer.needToReact = false
         thePlayer.injected = false
         let commandCenter = MPRemoteCommandCenter.shared()
@@ -86,19 +86,19 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                         let alertController = UIAlertController(title: "Soundwich", message: "React to this song \(frommember) sent.", preferredStyle: UIAlertControllerStyle.alert)
                         alertController.addAction(UIAlertAction(title: "💩", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             let elaboration = alertController.textFields![0].text!
-                            self?.react(reactionEmoji: "💩", trackResponse: trackResponse, tomember: tomember, time: time, elaboration: elaboration)
+                            self?.react(reactionEmoji: "💩", trackResponse: trackResponse, frommember: frommember, time: time, elaboration: elaboration)
                         }))
                         alertController.addAction(UIAlertAction(title: "😂", style: UIAlertActionStyle.default, handler: {(alert: UIAlertAction!) in
                             let elaboration = alertController.textFields![0].text!
-                            self?.react(reactionEmoji: "😂", trackResponse: trackResponse, tomember: tomember, time: time, elaboration: elaboration)
+                            self?.react(reactionEmoji: "😂", trackResponse: trackResponse, frommember: frommember, time: time, elaboration: elaboration)
                         }))
                         alertController.addAction(UIAlertAction(title: "😡", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             let elaboration = alertController.textFields![0].text!
-                            self?.react(reactionEmoji: "😡", trackResponse: trackResponse, tomember: tomember, time: time, elaboration: elaboration)
+                            self?.react(reactionEmoji: "😡", trackResponse: trackResponse, frommember: frommember, time: time, elaboration: elaboration)
                         }))
                         alertController.addAction(UIAlertAction(title: "😎", style: UIAlertActionStyle.default, handler: {[weak self] (alert: UIAlertAction!) in
                             let elaboration = alertController.textFields![0].text!
-                            self?.react(reactionEmoji: "😎", trackResponse: trackResponse, tomember: tomember, time: time, elaboration: elaboration)
+                            self?.react(reactionEmoji: "😎", trackResponse: trackResponse, frommember: frommember, time: time, elaboration: elaboration)
                         }))
                         alertController.addTextField { textfield in
                             textfield.placeholder = "Attach message to reaction"
