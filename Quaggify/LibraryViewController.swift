@@ -182,6 +182,12 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
         return button
     }()
     
+    lazy var searchButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(image: UIImage(named: "tab_icon_search"), style: .plain, target: self, action: #selector(search))
+        button.tintColor = ColorPalette.white
+        return button
+    }()
+    
     var limit = 20
     var offset = 0
     var isFetching = false
@@ -234,6 +240,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
         initializePlayer()
         navigationItem.title = "Your Playlists".uppercased()
         navigationItem.rightBarButtonItem = logoutButton
+        navigationItem.leftBarButtonItem = searchButton
         view.addSubview(collectionView)
         collectionView.anchor(view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
@@ -249,6 +256,12 @@ extension LibraryViewController {
     
     func logout () {
         SpotifyService.shared.logout()
+        thePlayer.nowPlaying?.pauseSong()
+    }
+    
+    func search() {
+        let searchViewController = SearchViewController()
+        navigationController?.pushViewController(searchViewController, animated: true)
     }
     
     func addListeners () {

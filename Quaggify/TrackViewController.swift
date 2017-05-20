@@ -66,9 +66,10 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     /* Used to Send Song to Friend */
     lazy var addToPlaylistButton: UIButton = {
         let btn = UIButton(type: .system)
-        btn.tintColor = ColorPalette.white
+        btn.setImage(UIImage(named: "send_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+       /* btn.tintColor = ColorPalette.white
         btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-        btn.setTitle("Send to Friend", for: .normal)
+        btn.setTitle("Send to Friend", for: .normal)*/
         btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
         return btn
     }()
@@ -236,14 +237,14 @@ extension TrackViewController {
 extension TrackViewController {
     func addToPlaylist () {
          if(thePlayer.start){
-        addToPlaylistButton.setTitle("Send to Friend", for: .normal)
+         addToPlaylistButton.setImage(UIImage(named: "send_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
         let trackOptionsVC = TrackOptionsViewController()
         trackOptionsVC.track = track
         let trackOptionsNav = NavigationController(rootViewController: trackOptionsVC)
         trackOptionsNav.modalPresentationStyle = .overCurrentContext
         tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
          } else {
-            addToPlaylistButton.setTitle("No Song Playing!", for: .normal)
+             addToPlaylistButton.setImage(UIImage(named: "nosong_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     

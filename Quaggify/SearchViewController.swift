@@ -64,7 +64,7 @@ class SearchViewController: ViewController {
     sc.dimsBackgroundDuringPresentation = false
     sc.hidesNavigationBarDuringPresentation = false
     sc.searchBar.sizeToFit()
-    sc.searchBar.placeholder = "Search"
+    sc.searchBar.placeholder = "Search Playlists"
     sc.searchBar.autocapitalizationType = .sentences
     sc.searchBar.autocorrectionType = .no
     sc.searchBar.returnKeyType = .default
@@ -250,22 +250,22 @@ extension SearchViewController: UICollectionViewDataSource {
     let spotifyObject = sections[section]
     
     if spotifyObject is SpotifyObject<Album> {
-      return spotifySearchResponse?.albums?.items?.count ?? 0
+      return 0
     }
     if spotifyObject is SpotifyFooter<SpotifyObject<Album>> {
-      return spotifySearchResponse?.albums?.next != nil ? 1 : 0
+      return 0
     }
     if spotifyObject is SpotifyObject<Artist> {
-      return spotifySearchResponse?.artists?.items?.count ?? 0
+      return 0
     }
     if spotifyObject is SpotifyFooter<SpotifyObject<Artist>> {
-      return spotifySearchResponse?.artists?.next != nil ? 1 : 0
+      return 0
     }
     if spotifyObject is SpotifyObject<Track> {
-      return spotifySearchResponse?.tracks?.items?.count ?? 0
+      return 0
     }
     if spotifyObject is SpotifyFooter<SpotifyObject<Track>> {
-      return spotifySearchResponse?.tracks?.next != nil ? 1 : 0
+      return 0
     }
     if spotifyObject is SpotifyObject<Playlist> {
       return spotifySearchResponse?.playlists?.items?.count ?? 0
@@ -307,21 +307,21 @@ extension SearchViewController: UICollectionViewDataSource {
     if spotifyObject is SpotifyObject<Album> {
       if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AlbumCell.identifier, for: indexPath) as? AlbumCell {
         let album = spotifySearchResponse?.albums?.items?[safe: indexPath.item]
-        cell.album = album
+        //cell.album = album
         return cell
       }
     }
     if spotifyObject is SpotifyObject<Artist> {
       if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ArtistCell.identifier, for: indexPath) as? ArtistCell {
         let artist = spotifySearchResponse?.artists?.items?[safe: indexPath.item]
-        cell.artist = artist
+        //cell.artist = artist
         return cell
       }
     }
     if spotifyObject is SpotifyObject<Track> {
       if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackCell.identifier, for: indexPath) as? TrackCell {
         let track = spotifySearchResponse?.tracks?.items?[safe: indexPath.item]
-        cell.track = track
+      //  cell.track = track
         return cell
       }
     }
@@ -370,11 +370,11 @@ extension SearchViewController: UICollectionViewDataSource {
         let spotifyObject = sections[section]
         
         if spotifyObject is SpotifyObject<Album> {
-          headerView.title = "Albums"
+          //headerView.title = "Albums"
         } else if spotifyObject is SpotifyObject<Artist> {
-          headerView.title = "Artists"
+         // headerView.title = "Artists"
         } else if spotifyObject is SpotifyObject<Track> {
-          headerView.title = "Songs"
+         // headerView.title = "Songs"
         } else if spotifyObject is SpotifyObject<Playlist> {
           headerView.title = "Playlists"
         }
@@ -402,9 +402,9 @@ extension SearchViewController: UICollectionViewDelegateFlowLayout {
     }
     
     switch sections[section] {
-    case is SpotifyObject<Album>: fallthrough
-    case is SpotifyObject<Artist>: fallthrough
-    case is SpotifyObject<Track>: fallthrough
+   // case is SpotifyObject<Album>: fallthrough
+   // case is SpotifyObject<Artist>: fallthrough
+   // case is SpotifyObject<Track>: fallthrough
     case is SpotifyObject<Playlist>:
       return CGSize(width: view.frame.width, height: 72)
     default:
