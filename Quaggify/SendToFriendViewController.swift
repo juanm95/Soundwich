@@ -196,7 +196,8 @@ extension TrackOptionsViewController {
          Alert.shared.show(title: "Oops", message: "All out of sends, please wait until tomorrow!")
         } {*/
             Flurry.logEvent("Send_Track", withParameters: songParams)
-            Alert.shared.show(title: "Success!", message: "Track sent to \(playlist!.name!), sends left: \(5)")
+        Alert.shared.show(title: "Success!", message: "Track sent to \(playlist!.name!)")
+         //   Alert.shared.show(title: "Success!", message: "Track sent to \(playlist!.name!), sends left: \(5)")
         //}
     }
   }
