@@ -50,11 +50,11 @@ class TabBarController: UITabBarController {
     if previousViewController == nil {
       previousViewController = homeViewController
     }
-    
+    /*
     let searchViewController = NavigationController(rootViewController: SearchViewController())
     let searchIcon = #imageLiteral(resourceName: "tab_icon_search").withRenderingMode(.alwaysTemplate)
     searchViewController.tabBarItem = UITabBarItem(title: "Send", image: searchIcon, tag: 1)
-    /*
+    
     let newsFeedControler = NavigationController(rootViewController: newsFeedController())
     let feedIcon = #imageLiteral(resourceName: "tab_icon_library").withRenderingMode(.alwaysTemplate)
     let feedIconFilled = #imageLiteral(resourceName: "tab_icon_library_filled").withRenderingMode(.alwaysTemplate)
@@ -66,15 +66,15 @@ class TabBarController: UITabBarController {
         let npIcon = #imageLiteral(resourceName: "playicon_filled").withRenderingMode(.alwaysTemplate)
         let npIconFilled = #imageLiteral(resourceName: "playicon").withRenderingMode(.alwaysTemplate)
         nowPlaying.tabBarItem = UITabBarItem(title: "Player", image: npIcon, selectedImage: npIconFilled)
-        nowPlaying.tabBarItem.tag = 2
+        nowPlaying.tabBarItem.tag = 1
         //viewControllers = [homeViewController, searchViewController, newsFeedControler, nowPlaying]
     
     let friends = NavigationController(rootViewController: FriendsViewController())
     let friendIcon = #imageLiteral(resourceName: "friend").withRenderingMode(.alwaysTemplate)
     friends.tabBarItem = UITabBarItem(title: "Friends", image: friendIcon, selectedImage: friendIcon)
-    friends.tabBarItem.tag = 3
+    friends.tabBarItem.tag = 2
     
-    viewControllers = [homeViewController, searchViewController, nowPlaying, friends]
+    viewControllers = [homeViewController, nowPlaying, friends]
   }
   
 }
