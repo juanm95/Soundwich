@@ -44,7 +44,7 @@ class TabBarController: UITabBarController {
     let homeViewController = NavigationController(rootViewController: LibraryViewController())
     let homeIcon = #imageLiteral(resourceName: "tab_icon_browse").withRenderingMode(.alwaysTemplate)
     let homeIconFilled = #imageLiteral(resourceName: "tab_icon_browse_filled").withRenderingMode(.alwaysTemplate)
-    homeViewController.tabBarItem = UITabBarItem(title: "Home", image: homeIcon, selectedImage: homeIconFilled)
+    homeViewController.tabBarItem = UITabBarItem(title: "Library", image: homeIcon, selectedImage: homeIconFilled)
     homeViewController.tabBarItem.tag = 0
     
    /* if previousViewController == nil {

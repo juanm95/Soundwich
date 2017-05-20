@@ -19,25 +19,25 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 return
             }
             DispatchQueue.main.async {
-            if let name = track.name {
-                self.titleLabel.text = name
-            }
-            if let duration = track.durationMS{
-                self.playbackSlider.maximumValue = Float(duration/1000)
-            }
-            if let artists = track.artists {
-                let names = artists.map { $0.name ?? "Unknown Artist" }.joined(separator: ", ")
-                self.subTitleLabel.text = names
-                self.navigationItem.title = names
-            }
-            if let smallerImage = track.album?.images?[safe: 1], let imgUrlString = smallerImage.url, let url = URL(string: imgUrlString) {
-                self.imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
-            } else if let smallerImage = track.album?.images?[safe: 0], let imgUrlString = smallerImage.url, let url = URL(string: imgUrlString) {
-                self.imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
-            } else {
-                self.imageView.image = #imageLiteral(resourceName: "placeholder")
-            }
-               
+                if let name = track.name {
+                    self.titleLabel.text = name
+                }
+                if let duration = track.durationMS{
+                    self.playbackSlider.maximumValue = Float(duration/1000)
+                }
+                if let artists = track.artists {
+                    let names = artists.map { $0.name ?? "Unknown Artist" }.joined(separator: ", ")
+                    self.subTitleLabel.text = names
+                    self.navigationItem.title = names
+                }
+                if let smallerImage = track.album?.images?[safe: 1], let imgUrlString = smallerImage.url, let url = URL(string: imgUrlString) {
+                    self.imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
+                } else if let smallerImage = track.album?.images?[safe: 0], let imgUrlString = smallerImage.url, let url = URL(string: imgUrlString) {
+                    self.imageView.kf.setImage(with: url, placeholder: #imageLiteral(resourceName: "placeholder"), options: [.transition(.fade(0.2))])
+                } else {
+                    self.imageView.image = #imageLiteral(resourceName: "placeholder")
+                }
+                
             }
             self.presentedViewController?.loadView()
             if(thePlayer.paused){
@@ -67,9 +67,9 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     lazy var addToPlaylistButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(UIImage(named: "send_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
-       /* btn.tintColor = ColorPalette.white
-        btn.titleLabel?.font = Font.montSerratRegular(size: 30)
-        btn.setTitle("Send to Friend", for: .normal)*/
+        /* btn.tintColor = ColorPalette.white
+         btn.titleLabel?.font = Font.montSerratRegular(size: 30)
+         btn.setTitle("Send to Friend", for: .normal)*/
         btn.addTarget(self, action: #selector(addToPlaylist), for: .touchUpInside)
         return btn
     }()
@@ -80,8 +80,8 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         btn.addTarget(self, action: #selector(pauseSong), for: .touchUpInside)
         return btn
     }()
-
-  
+    
+    
     lazy var nextSongButton: UIButton = {
         let btn = UIButton(type: .system)
         btn.setImage(UIImage(named: "next")?.withRenderingMode(.alwaysOriginal), for: .normal)
@@ -119,107 +119,107 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
             MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = TimeInterval(seconds)
         }
     }
-
     
     
-  var imageView: UIImageView = {
-    let iv = UIImageView()
-    iv.contentMode = .scaleAspectFit
-    iv.clipsToBounds = true
-    return iv
-  }()
-  
-  let stackView: UIStackView = {
-    let sv = UIStackView()
-    sv.alignment = .fill
-    sv.axis = .vertical
-    sv.distribution = .fillEqually
-    sv.backgroundColor = .clear
-    sv.spacing = 8
-    return sv
-  }()
-  
-  let containerView: UIView = {
-    let v = UIView()
-    v.backgroundColor = .clear
-    return v
-  }()
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-    setupViews()
-    let commandCenter = MPRemoteCommandCenter.shared()
-    if(thePlayer.injected == false){
-    commandCenter.nextTrackCommand.isEnabled = true
-    commandCenter.previousTrackCommand.isEnabled = true
-    commandCenter.pauseCommand.isEnabled = true
-    commandCenter.playCommand.isEnabled = true
-        if(thePlayer.start){
-    commandCenter.nextTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.nextSong))
-    commandCenter.previousTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.previousSong))
-    commandCenter.pauseCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.pauseSong))
-    commandCenter.playCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.pauseSong))
-        if #available(iOS 9.1, *) {
-            commandCenter.changePlaybackPositionCommand.isEnabled = true
-        } else {
-            // Fallback on earlier versions
+    
+    var imageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.clipsToBounds = true
+        return iv
+    }()
+    
+    let stackView: UIStackView = {
+        let sv = UIStackView()
+        sv.alignment = .fill
+        sv.axis = .vertical
+        sv.distribution = .fillEqually
+        sv.backgroundColor = .clear
+        sv.spacing = 8
+        return sv
+    }()
+    
+    let containerView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .clear
+        return v
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupViews()
+        let commandCenter = MPRemoteCommandCenter.shared()
+        if(thePlayer.injected == false){
+            commandCenter.nextTrackCommand.isEnabled = true
+            commandCenter.previousTrackCommand.isEnabled = true
+            commandCenter.pauseCommand.isEnabled = true
+            commandCenter.playCommand.isEnabled = true
+            if(thePlayer.start){
+                commandCenter.nextTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.nextSong))
+                commandCenter.previousTrackCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.previousSong))
+                commandCenter.pauseCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.pauseSong))
+                commandCenter.playCommand.addTarget(thePlayer.nowPlaying!, action:#selector(thePlayer.nowPlaying?.pauseSong))
+                if #available(iOS 9.1, *) {
+                    commandCenter.changePlaybackPositionCommand.isEnabled = true
+                } else {
+                    // Fallback on earlier versions
+                }
+                if #available(iOS 9.1, *) {
+                    commandCenter.changePlaybackPositionCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.onChangePlaybackPositionCommand))
+                } else {
+                    // Fallback on earlier versions
+                }
+            }
         }
-    if #available(iOS 9.1, *) {
-        commandCenter.changePlaybackPositionCommand.addTarget(self, action:#selector(thePlayer.nowPlaying?.onChangePlaybackPositionCommand))
-    } else {
-        // Fallback on earlier versions
+        //    fetchTrack()
     }
-        }
-    }
-//    fetchTrack()
-  }
-  
-  override func viewWillLayoutSubviews() {
-    super.viewWillLayoutSubviews()
     
-    switch UIApplication.shared.statusBarOrientation {
-    case .portrait: fallthrough
-    case .portraitUpsideDown: fallthrough
-    case .unknown:
-      setPortraitLayout()
-      break
-    case .landscapeLeft: fallthrough
-    case .landscapeRight:
-      setLandscapeLayout()
-      break
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        
+        switch UIApplication.shared.statusBarOrientation {
+        case .portrait: fallthrough
+        case .portraitUpsideDown: fallthrough
+        case .unknown:
+            setPortraitLayout()
+            break
+        case .landscapeLeft: fallthrough
+        case .landscapeRight:
+            setLandscapeLayout()
+            break
+        }
+        view.layoutIfNeeded()
     }
-    view.layoutIfNeeded()
-  }
-  
- override func setupViews() {
-    super.setupViews()
-    view.addSubview(stackView)
-    view.addSubview(imageView)
-    view.addSubview(containerView)
-    view.addSubview(titleLabel)
-    view.addSubview(subTitleLabel)
-    view.addSubview(playbackSlider)
-    view.addSubview(addToPlaylistButton)
-    view.addSubview(pauseSongButton)
-    view.addSubview(nextSongButton)
-    view.addSubview(previousSongButton)
-    view.backgroundColor = ColorPalette.black
-    stackView.addArrangedSubview(imageView)
-    stackView.addArrangedSubview(containerView)
+    
+    override func setupViews() {
+        super.setupViews()
+        view.addSubview(stackView)
+        view.addSubview(imageView)
+        view.addSubview(containerView)
+        view.addSubview(titleLabel)
+        view.addSubview(subTitleLabel)
+        view.addSubview(playbackSlider)
+        view.addSubview(addToPlaylistButton)
+        view.addSubview(pauseSongButton)
+        view.addSubview(nextSongButton)
+        view.addSubview(previousSongButton)
+        view.backgroundColor = ColorPalette.black
+        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(containerView)
         stackView.anchor(topLayoutGuide.bottomAnchor, left: view.leftAnchor, bottom: bottomLayoutGuide.topAnchor, right: view.rightAnchor, topConstant: 8, leftConstant: 8, bottomConstant: 8, rightConstant: 8, widthConstant: 0, heightConstant: 0)
         
         titleLabel.anchor(containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
         
         subTitleLabel.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
-    pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
-    
-    nextSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 200, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
-    
-    previousSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 200, widthConstant: 0, heightConstant: 70)
-    
-    addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 125, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
-    
-    playbackSlider.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 105, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
+        
+        nextSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 200, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
+        
+        previousSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 200, widthConstant: 0, heightConstant: 70)
+        
+        addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 125, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        
+        playbackSlider.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 105, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
 }
 
@@ -236,15 +236,15 @@ extension TrackViewController {
 
 extension TrackViewController {
     func addToPlaylist () {
-         if(thePlayer.start){
-         addToPlaylistButton.setImage(UIImage(named: "send_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
-        let trackOptionsVC = TrackOptionsViewController()
-        trackOptionsVC.track = track
-        let trackOptionsNav = NavigationController(rootViewController: trackOptionsVC)
-        trackOptionsNav.modalPresentationStyle = .overCurrentContext
-        tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
-         } else {
-             addToPlaylistButton.setImage(UIImage(named: "nosong_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        if(thePlayer.start){
+            addToPlaylistButton.setImage(UIImage(named: "send_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+            let trackOptionsVC = TrackOptionsViewController()
+            trackOptionsVC.track = track
+            let trackOptionsNav = NavigationController(rootViewController: trackOptionsVC)
+            trackOptionsNav.modalPresentationStyle = .overCurrentContext
+            tabBarController?.present(trackOptionsNav, animated: true, completion: nil)
+        } else {
+            addToPlaylistButton.setImage(UIImage(named: "nosong_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     }
     
@@ -257,56 +257,56 @@ extension TrackViewController {
     
     func nextSong(){
         if(thePlayer.start){
-        print("next")
-        thePlayer.indeX += 1
-        if thePlayer.indeX >= (thePlayer.trackList?.total)! {
-            thePlayer.indeX = 0
-        }
-        self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
+            print("next")
+            thePlayer.indeX += 1
+            if thePlayer.indeX >= (thePlayer.trackList?.total)! {
+                thePlayer.indeX = 0
+            }
+            self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
         }
     }
     
     
     func previousSong(){
         if(thePlayer.start){
-        print("prev")
-        thePlayer.indeX -= 1
-        if thePlayer.indeX <= -1 {
-            thePlayer.indeX = 0
-        }
-        self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
+            print("prev")
+            thePlayer.indeX -= 1
+            if thePlayer.indeX <= -1 {
+                thePlayer.indeX = 0
+            }
+            self.track = thePlayer.trackList?.items?[safe: thePlayer.indeX]?.track
         }
     }
     
     func pauseSong(){
-         if(thePlayer.start){
-         MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = thePlayer.spotifyPlayer?.playbackState.position
-        if(thePlayer.paused){
-            thePlayer.paused = false
-            pauseSongButton.setImage(UIImage(named: "pausebutton")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyPlaybackRate] = 1
-            thePlayer.spotifyPlayer?.setIsPlaying(true, callback: { (error) in
-                if (error != nil) {
-                    print("what")
-                    //  print(error)
-                }
-            })
-        } else {
-            thePlayer.paused = true
-            pauseSongButton.setImage(UIImage(named: "play-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
-            MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyPlaybackRate] = 0
-            thePlayer.spotifyPlayer?.setIsPlaying(false, callback: { (error) in
-                if (error != nil) {
-                    print("hello")
-                    //  print(error)
-                }
-            })
-        }
+        if(thePlayer.start){
+            MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = thePlayer.spotifyPlayer?.playbackState.position
+            if(thePlayer.paused){
+                thePlayer.paused = false
+                pauseSongButton.setImage(UIImage(named: "pausebutton")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyPlaybackRate] = 1
+                thePlayer.spotifyPlayer?.setIsPlaying(true, callback: { (error) in
+                    if (error != nil) {
+                        print("what")
+                        //  print(error)
+                    }
+                })
+            } else {
+                thePlayer.paused = true
+                pauseSongButton.setImage(UIImage(named: "play-button")?.withRenderingMode(.alwaysOriginal), for: .normal)
+                MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyPlaybackRate] = 0
+                thePlayer.spotifyPlayer?.setIsPlaying(false, callback: { (error) in
+                    if (error != nil) {
+                        print("hello")
+                        //  print(error)
+                    }
+                })
+            }
         }
         
     }
     
- 
+    
     
     func playSong() {
         var trackName = "spotify:track:"
@@ -314,7 +314,7 @@ extension TrackViewController {
         print("here - playsong")
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
-              //  print(error)
+                //  print(error)
             }
         })
         let imageURLString = URL(string: (self.track?.album?.images?[0].url)!)
@@ -351,8 +351,8 @@ extension TrackViewController {
             } else if let trackResponse = trackResponse {
                 
                 strongSelf.track = trackResponse
-              //  print("--- FETCHED TRACK ---")
-               // print(trackResponse)
+                //  print("--- FETCHED TRACK ---")
+                // print(trackResponse)
             }
         }
     }

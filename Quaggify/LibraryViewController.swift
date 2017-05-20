@@ -261,6 +261,8 @@ extension LibraryViewController {
     
     func search() {
         let searchViewController = SearchViewController()
+        searchViewController.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.plain, target:nil, action:nil)
         navigationController?.pushViewController(searchViewController, animated: true)
     }
     
