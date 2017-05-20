@@ -265,7 +265,7 @@ extension TrackOptionsViewController: UICollectionViewDataSource {
       if section == 0 {
         cell.imageView.image = #imageLiteral(resourceName: "placeholder").withRenderingMode(.alwaysTemplate)
         cell.subTitleLabel.isHidden = true
-        cell.imageView.tintColor = ColorPalette.black
+        cell.imageView.tintColor = ColorPalette.gray
       }
       
       // Only on the user's playlists
