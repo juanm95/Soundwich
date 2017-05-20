@@ -72,7 +72,7 @@ class SearchViewController: ViewController {
     sc.searchBar.delegate = self
     return sc
   }()
-  
+  //oh
   lazy var collectionView: UICollectionView = {
     let flowLayout = UICollectionViewFlowLayout()
     flowLayout.scrollDirection = .vertical
