@@ -39,6 +39,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 }
                 
             }
+            addToPlaylistButton.setImage(UIImage(named: "send_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
             self.presentedViewController?.loadView()
             if(thePlayer.paused){
                 self.pauseSong()

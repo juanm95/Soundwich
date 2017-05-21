@@ -85,16 +85,6 @@ extension TabBarController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if let navController = viewController as? NavigationController {
             if let npVC = navController.topViewController as? TrackViewController {
-                if(navController.tabBarController?.selectedIndex == 0){
-                    
-                }
-                if(thePlayer.start && thePlayer.nowPlayingBug == 0 && navController.tabBarController?.selectedIndex != 0){
-                    thePlayer.nowPlayingBug = 1
-                    //navController.setNavigationBarHidden(true, animated: true)
-               //     navController.pushViewController(thePlayer.nowPlaying!, animated:false)
-                    // navController.setViewControllers([thePlayer.nowPlaying!], animated: true)
-
-                }
                 if(!thePlayer.PP){
                     thePlayer.nowPlaying = TrackViewController()
                 }

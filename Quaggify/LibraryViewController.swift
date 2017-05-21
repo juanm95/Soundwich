@@ -13,7 +13,7 @@ import Flurry_iOS_SDK
 
 class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioStreamingPlaybackDelegate {
     
-
+    
     private func react(reactionEmoji: String, trackResponse: Track, frommember: String, time: String, elaboration: String) {
         API.reactToSong(reaction: "\(reactionEmoji) \(elaboration)", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: frommember)
         thePlayer.needToReact = false
@@ -41,7 +41,6 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
-        print("braddd")
         var trackName = "spotify:track:"
         if (thePlayer.needToReact) {
             thePlayer.nowPlaying?.playSong()
@@ -124,7 +123,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePosition position: TimeInterval){
         thePlayer.nowPlaying?.playbackSlider.setValue(Float(position), animated: false)
     }
-
+    
     
     
     var auth = SPTAuth.defaultInstance()!
@@ -161,7 +160,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             try! thePlayer.spotifyPlayer!.start(withClientId: auth.clientID)
             thePlayer.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
         }
-       
+        
     }
     
     
@@ -227,7 +226,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
         setupViews()
         addListeners()
         fetchPlaylists()
-               //addCreateNewPlaylistCell()
+        //addCreateNewPlaylistCell()
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -312,7 +311,27 @@ extension LibraryViewController {
         isFetching = true
         print("Refreshing playlists")
         
-        API.fetchCurrentUsersPlaylists(limit: limit, offset: 0) { [weak self] (spotifyObject, error) in
+        API.fetchSoundwichPlaylist() { (soundwichPlaylist: Playlist?, error: Error?) in
+            //self.playlists.append(soundwichPlaylist!)
+            API.fetchCurrentUsersPlaylists(limit: self.limit, offset: self.offset) { [weak self] (spotifyObject, error) in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.isFetching = false
+                strongSelf.refreshControl.endRefreshing()
+                strongSelf.offset += strongSelf.limit
+                
+                if let error = error {
+                    print(error)
+                    Alert.shared.show(title: "Error", message: "Error communicating with the server")
+                } else if let items = spotifyObject?.items {
+                    strongSelf.playlists.append(contentsOf: items)
+                    strongSelf.spotifyObject = spotifyObject
+                }
+            }
+        }
+
+       /* API.fetchCurrentUsersPlaylists(limit: limit, offset: 0) { [weak self] (spotifyObject, error) in
             guard let strongSelf = self else {
                 return
             }
@@ -329,7 +348,7 @@ extension LibraryViewController {
                 strongSelf.playlists.append(contentsOf: items)
                 strongSelf.spotifyObject = spotifyObject
             }
-        }
+        }*/
     }
     
     func showNewPlaylistModal () {
