@@ -15,7 +15,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
     
 
     private func react(reactionEmoji: String, trackResponse: Track, frommember: String, time: String, elaboration: String) {
-        API.reactToSong(reaction: reactionEmoji, time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: frommember)
+        API.reactToSong(reaction: "\(reactionEmoji) \(elaboration)", time: time, username: UserDefaults.standard.value(forKey: "username") as! String, to: frommember)
         thePlayer.needToReact = false
         thePlayer.injected = false
         let commandCenter = MPRemoteCommandCenter.shared()
