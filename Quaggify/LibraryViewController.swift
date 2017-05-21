@@ -122,7 +122,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didChangePosition position: TimeInterval){
-        thePlayer.nowPlaying?.playbackSlider.setValue(Float(position), animated: true)
+        thePlayer.nowPlaying?.playbackSlider.setValue(Float(position), animated: false)
     }
 
     

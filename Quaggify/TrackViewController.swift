@@ -44,7 +44,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                 self.pauseSong()
             }
             self.playSong()
-        }
+            }
     }
     
     var titleLabel: UILabel = {
@@ -105,9 +105,8 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         playbackSlid.setThumbImage(UIImage(named: "thumb")!, for: .normal)
         playbackSlid.isContinuous = true
         playbackSlid.tintColor = UIColor.orange
-        playbackSlid.addTarget(self, action: #selector(slide(_:)), for: .valueChanged)
+        playbackSlid.addTarget(self, action: #selector(slide(_:)), for: .touchUpInside)
         return playbackSlid
-        
     }()
     
     @IBAction func slide(_ slider: UISlider) {
@@ -149,6 +148,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        
         let commandCenter = MPRemoteCommandCenter.shared()
         if(thePlayer.injected == false){
             commandCenter.nextTrackCommand.isEnabled = true
@@ -171,6 +171,10 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
                     // Fallback on earlier versions
                 }
             }
+        }
+        if(!thePlayer.start){
+            navigationController?.setViewControllers([thePlayer.nowPlaying!], animated: true)
+            thePlayer.start = true
         }
         //    fetchTrack()
     }

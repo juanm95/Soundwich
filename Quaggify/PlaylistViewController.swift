@@ -162,15 +162,10 @@ extension PlaylistViewController: UICollectionViewDelegate {
         thePlayer.nowPlaying = TrackViewController()
     }
     thePlayer.nowPlaying?.track = spotifyObject?.items?[safe: indexPath.item]?.track
-    if(!thePlayer.start && thePlayer.tabsfix == 0){
-        thePlayer.tabsfix = 1
-        thePlayer.start = true
-        navigationController?.pushViewController(thePlayer.nowPlaying!, animated: true)
-    } else {
-        navigationController?.tabBarController?.selectedIndex =  1
+    navigationController?.tabBarController?.selectedIndex =  1
+    //if(!thePlayer.start){
+   // }
     }
-    
-  }
 }
 
 // MARK: UICollectionViewDataSource
@@ -183,9 +178,7 @@ extension PlaylistViewController: UICollectionViewDataSource {
     if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackCell.identifier, for: indexPath) as? TrackCell {
       let track = spotifyObject?.items?[safe: indexPath.item]?.track
       cell.track = track
-      cell.position = indexPath.item
-      //print(track?.id)
-        
+      cell.position = indexPath.item        
       if let totalItems = spotifyObject?.items?.count, indexPath.item == totalItems - 1, spotifyObject?.next != nil {
         if !isFetching {
           fetchTracks()

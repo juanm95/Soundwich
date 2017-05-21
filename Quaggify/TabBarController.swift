@@ -91,10 +91,14 @@ extension TabBarController: UITabBarControllerDelegate {
                 if(thePlayer.start && thePlayer.nowPlayingBug == 0 && navController.tabBarController?.selectedIndex != 0){
                     thePlayer.nowPlayingBug = 1
                     //navController.setNavigationBarHidden(true, animated: true)
-                    navController.pushViewController(thePlayer.nowPlaying!, animated:false)
-                     navController.setViewControllers([thePlayer.nowPlaying!], animated: true)
+               //     navController.pushViewController(thePlayer.nowPlaying!, animated:false)
+                    // navController.setViewControllers([thePlayer.nowPlaying!], animated: true)
 
                 }
+           /*     if(!thePlayer.start){
+                    thePlayer.nowPlaying = TrackViewController()
+                }*/
+                
             }
         }
 
