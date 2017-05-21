@@ -108,7 +108,7 @@ struct API {
     }
     
     static func registerUser(username: String) {
-        fetch(endPoint: "register", postString: "username=\(username)&token=\(UserDefaults.standard.value(forKey: "token") as! String)&password=Ass") { (data: [String:AnyObject]) -> Void in
+        fetch(endPoint: "register", postString: "username=\(username)&token=Simulator&password=Ass") { (data: [String:AnyObject]) -> Void in
                 print(data)
             }
     }

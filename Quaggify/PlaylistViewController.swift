@@ -162,10 +162,14 @@ extension PlaylistViewController: UICollectionViewDelegate {
         thePlayer.nowPlaying = TrackViewController()
     }
     thePlayer.nowPlaying?.track = spotifyObject?.items?[safe: indexPath.item]?.track
-    if(!thePlayer.start){
+    if(!thePlayer.start && thePlayer.tabsfix == 0){
+        thePlayer.tabsfix = 1
+        thePlayer.start = true
         navigationController?.pushViewController(thePlayer.nowPlaying!, animated: true)
+    } else {
+        navigationController?.tabBarController?.selectedIndex =  1
     }
-     thePlayer.start = true
+    
   }
 }
 

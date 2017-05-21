@@ -76,7 +76,8 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     
     lazy var pauseSongButton: UIButton = {
         let btn = UIButton(type: .system)
-        btn.setImage(UIImage(named: "pausebutton")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        let image = UIImage(named: "pausebutton")
+        btn.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         btn.addTarget(self, action: #selector(pauseSong), for: .touchUpInside)
         return btn
     }()
@@ -211,15 +212,15 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
         titleLabel.anchor(containerView.topAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 0, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
         
         subTitleLabel.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 24)
-        pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
+        pauseSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 150, bottomConstant: 0, rightConstant: 150, widthConstant: 64, heightConstant: 64)
         
-        nextSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 250, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 70)
+        nextSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 275, bottomConstant: 0, rightConstant: 25, widthConstant: 64, heightConstant: 64)
         
-        previousSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 0, bottomConstant: 0, rightConstant: 250, widthConstant: 0, heightConstant: 70)
+        previousSongButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 8, leftConstant: 25, bottomConstant: 0, rightConstant: 275, widthConstant: 64, heightConstant: 64)
         
         addToPlaylistButton.anchor(subTitleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 125, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
         
-        playbackSlider.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 105, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
+        playbackSlider.anchor(titleLabel.bottomAnchor, left: containerView.leftAnchor, bottom: nil, right: containerView.rightAnchor, topConstant: 115, leftConstant: 0, bottomConstant: 0, rightConstant: 0, widthConstant: 0, heightConstant: 0)
     }
 }
 
