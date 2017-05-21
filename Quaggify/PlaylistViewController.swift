@@ -156,6 +156,7 @@ extension PlaylistViewController {
 // MARK: UICollectionViewDelegate
 extension PlaylistViewController: UICollectionViewDelegate {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    thePlayer.PP = true
     thePlayer.trackList = spotifyObject
     thePlayer.indeX = indexPath.item
     if(!thePlayer.start){

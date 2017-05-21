@@ -20,5 +20,6 @@ class thePlayer {
     static var injected: Bool = false
     static var start: Bool = false
     static var nowPlayingBug: Int = 0
+    static var PP: Bool = false
 }
 

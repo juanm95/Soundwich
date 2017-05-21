@@ -110,7 +110,7 @@ class TrackViewController: ViewController, SPTAudioStreamingDelegate, SPTAudioSt
     }()
     
     @IBAction func slide(_ slider: UISlider) {
-        if(thePlayer.start){
+        if(thePlayer.PP){
             let seconds : Int64 = Int64(slider.value)
             thePlayer.spotifyPlayer?.seek(to: TimeInterval(seconds), callback: { (error) in
                 if (error != nil) {
@@ -241,7 +241,7 @@ extension TrackViewController {
 
 extension TrackViewController {
     func addToPlaylist () {
-        if(thePlayer.start){
+        if(thePlayer.PP){
             addToPlaylistButton.setImage(UIImage(named: "send_button")?.withRenderingMode(.alwaysOriginal), for: .normal)
             let trackOptionsVC = TrackOptionsViewController()
             trackOptionsVC.track = track
@@ -261,7 +261,7 @@ extension TrackViewController {
     }
     
     func nextSong(){
-        if(thePlayer.start){
+        if(thePlayer.PP){
             print("next")
             thePlayer.indeX += 1
             if thePlayer.indeX >= (thePlayer.trackList?.total)! {
@@ -273,7 +273,7 @@ extension TrackViewController {
     
     
     func previousSong(){
-        if(thePlayer.start){
+        if(thePlayer.PP){
             print("prev")
             thePlayer.indeX -= 1
             if thePlayer.indeX <= -1 {
@@ -284,7 +284,7 @@ extension TrackViewController {
     }
     
     func pauseSong(){
-        if(thePlayer.start){
+        if(thePlayer.PP){
             MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyElapsedPlaybackTime] = thePlayer.spotifyPlayer?.playbackState.position
             if(thePlayer.paused){
                 thePlayer.paused = false

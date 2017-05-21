@@ -95,9 +95,9 @@ extension TabBarController: UITabBarControllerDelegate {
                     // navController.setViewControllers([thePlayer.nowPlaying!], animated: true)
 
                 }
-           /*     if(!thePlayer.start){
+                if(!thePlayer.PP){
                     thePlayer.nowPlaying = TrackViewController()
-                }*/
+                }
                 
             }
         }
