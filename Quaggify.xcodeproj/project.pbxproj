@@ -856,7 +856,7 @@
 				);
 				INFOPLIST_FILE = Quaggify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SM94AGM8Y6.edu.stanford.cs377u.soundwich;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.cs377u.soundwich;
 				PRODUCT_NAME = Soundwich;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -884,7 +884,7 @@
 				);
 				INFOPLIST_FILE = Quaggify/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = SM94AGM8Y6.edu.stanford.cs377u.soundwich;
+				PRODUCT_BUNDLE_IDENTIFIER = edu.stanford.cs377u.soundwich;
 				PRODUCT_NAME = Soundwich;
 				PROVISIONING_PROFILE = "";
 				PROVISIONING_PROFILE_SPECIFIER = "";
