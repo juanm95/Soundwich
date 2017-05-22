@@ -53,7 +53,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             print(response)
             let randomNumber = arc4random_uniform(100)
             let response = response as [String:Any]
-            let chanceOfQueue = 100 as UInt32
+            let chanceOfQueue = 40 as UInt32
             if response["queued"] as! Bool && randomNumber < chanceOfQueue {
                 thePlayer.needToReact = true
                 thePlayer.injected = true
