@@ -78,8 +78,6 @@ class PlaylistViewController: ViewController {
 extension PlaylistViewController {
   func fetchTracks () {
     isFetching = true
-    print("Fetching tracks offset(\(offset)) ")
-    
     API.fetchPlaylistTracks(playlist: playlist, limit: limit, offset: offset) { [weak self] (spotifyObject, error) in
       guard let strongSelf = self else {
         return
@@ -130,7 +128,6 @@ extension PlaylistViewController {
     
   
   func removeFromPlaylist (track: Track?, position: Int?) {
-    print("Removing track \(track?.name ?? "(Null)") on position \(position ?? 0)")
     API.removePlaylistTrack(track: track, position: position, playlist: playlist) { [weak self] (snapshotId, error) in
       guard let strongSelf = self else {
         return

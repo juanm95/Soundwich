@@ -67,7 +67,6 @@ class AlbumsViewController: ViewController {
 extension AlbumsViewController {
   func fetchAlbums () {
     isFetching = true
-    print("Fetching albums offset(\(offset)) ")
     
     if let query = query {
       API.fetchAlbums(query: query, limit: limit, offset: offset) { [weak self] (spotifyObject, error) in

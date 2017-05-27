@@ -18,16 +18,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     
     // enable push notifications
-    
-    print("enable")
     registerForRemoteNotification()
     
     
     // anayltics
     Flurry.startSession("JSZXMGRDMQ69QZHN3N9M", with: FlurrySessionBuilder
         .init()
-        .withCrashReporting(true)
-        .withLogLevel(FlurryLogLevelAll))
+        .withCrashReporting(true))
     
     window = UIWindow(frame: UIScreen.main.bounds)
     
@@ -42,9 +39,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
   }
     
   func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-    
-    print("got in didregister")
-    print("REGISTERINGKS LJFLS FJLSKJ LKSLKFFJ L")
     let chars = (deviceToken as NSData).bytes.bindMemory(to: CChar.self, capacity: deviceToken.count)
     var token = ""
     
@@ -58,8 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
   }
     
     func registerForRemoteNotification() {
-        
-        print("in register remot notifications")
         if #available(iOS 10.0, *) {
             let center = UNUserNotificationCenter.current()
             center.delegate = self
@@ -77,8 +69,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
   func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
     if let code = url.queryItemValueFor(key: "code") {
       API.requestToken(code: code) { [weak self] (error) in
+        print ("SPOTIFY LOGIN SHIT")
         if let error = error {
-          print(error)
           Alert.shared.show(title: "Error", message: error.localizedDescription)
         } else {
           API.fetchCurrentUser { (user, err) in
@@ -128,7 +120,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //Called when a notification is delivered to a foreground app.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        print("User Info = ",notification.request.content.userInfo)
         let info: [AnyHashable : Any] = notification.request.content.userInfo
         //        let message = info["messageFrom"] as! String
 //        let typeInt = info["type"] as! Int
@@ -151,7 +142,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     //Called to let your app know which action was selected by the user for a given notification.
     @available(iOS 10.0, *)
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        print("User Info = ",response.notification.request.content.userInfo)
         completionHandler()
     }
     

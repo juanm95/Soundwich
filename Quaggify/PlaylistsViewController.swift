@@ -66,7 +66,6 @@ class PlaylistsViewController: ViewController {
 extension PlaylistsViewController {
   func fetchPlaylists () {
     isFetching = true
-    print("Fetching albums offset(\(offset)) ")
     
     if let query = query {
       API.fetchPlaylists(query: query, limit: limit, offset: offset) { [weak self] (spotifyObject, error) in

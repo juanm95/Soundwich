@@ -67,7 +67,6 @@ class ArtistsViewController: ViewController {
 extension ArtistsViewController {
   func fetchArtists () {
     isFetching = true
-    print("Fetching artists offset(\(offset)) ")
     
     if let query = query {
       API.fetchArtists(query: query, limit: limit, offset: offset) { [weak self] (spotifyObject, error) in

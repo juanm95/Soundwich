@@ -20,7 +20,7 @@ struct API {
             
             if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
                 print("statusCode should be 200, but is ")
-                print("response")
+                print(httpStatus)
             }
             
             let json = (try? JSONSerialization.jsonObject(with: data, options: [])) as! [String:AnyObject]
@@ -95,7 +95,6 @@ struct API {
   }
     
     static func sendTrackToFriend (track: Track?, friend: Playlist?, completion: @escaping (_ json: [String:AnyObject]) -> Void) {
-        print(track!.id!)
         fetch(endPoint: "sendSong", postString: "to=\(friend!.name!)&from=\(UserDefaults.standard.value(forKey: "username") as! String)&songid=\(track!.id!)", completion: completion)
     }
   
@@ -108,9 +107,15 @@ struct API {
     }
     
     static func registerUser(username: String) {
+        
         fetch(endPoint: "register", postString: "username=\(username)&token=\(UserDefaults.standard.value(forKey: "token") as! String)&password=Ass") { (data: [String:AnyObject]) -> Void in
                 print(data)
             }
+        /*
+        fetch(endPoint: "register", postString: "username=\(username)&token=NoToken&password=Ass") { (data: [String:AnyObject]) -> Void in
+            print(data)
+        }
+ */
     }
     
     static func reactToSong(reaction: String, time: String, username: String, to: String) {

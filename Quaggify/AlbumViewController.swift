@@ -73,7 +73,6 @@ class AlbumViewController: ViewController {
 extension AlbumViewController {
   func fetchTracks () {
     isFetching = true
-    print("Fetching tracks offset(\(offset)) ")
     
     API.fetchAlbumTracks(album: album, limit: limit, offset: offset) { [weak self] (spotifyObject, error) in
       guard let strongSelf = self else {
@@ -109,11 +108,6 @@ extension AlbumViewController: UICollectionViewDelegate {
     for i in 0..<(spotifyObject?.total)! {
         spotifyObjectNew?.items?[i].track = spotifyObject?.items?[i]
     }
-      print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-      print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-    print(spotifyObjectNew)
-    print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
-      print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     thePlayer.trackList = spotifyObjectNew
     thePlayer.indeX = indexPath.item
     if(!thePlayer.start){

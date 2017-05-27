@@ -67,7 +67,6 @@ class TracksViewController: ViewController {
 extension TracksViewController {
   func fetchTracks () {
     isFetching = true
-    print("Fetching albums offset(\(offset)) ")
     
     if let query = query {
       API.fetchTracks(query: query, limit: limit, offset: offset) { [weak self] (spotifyObject, error) in

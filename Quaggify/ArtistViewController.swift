@@ -89,7 +89,6 @@ extension ArtistViewController {
   
   func fetchAlbums () {
     isFetching = true
-    print("Fetching albums offset(\(offset)) ")
     
     API.fetchArtistAlbums(artist: artist, limit: limit, offset: offset) { [weak self] (spotifyObject, error) in
       guard let strongSelf = self else {

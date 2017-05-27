@@ -291,7 +291,6 @@ extension SearchViewController: UICollectionViewDataSource {
     if spotifySearchResponse == nil {
       if RecentSearches.shared.items.count == 0 {
         // show empty view
-        print("Showing empty view")
       } else {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecentSearchesCell.identifier, for: indexPath) as? RecentSearchesCell {
           let item = indexPath.item

@@ -75,7 +75,6 @@ extension HomeViewController {
       return
     }
     isFetching = true
-    print("Fetching albums offset(\(offset)) ")
     
     API.fetchNewReleases(limit: limit, offset: offset) { [weak self] (spotifyObject, error) in
       guard let strongSelf = self else {
@@ -105,7 +104,6 @@ extension HomeViewController {
       return
     }
     isFetching = true
-    print("Refreshing albums")
     
     API.fetchNewReleases(limit: limit, offset: 0) { [weak self] (spotifyObject, error) in
       guard let strongSelf = self else {

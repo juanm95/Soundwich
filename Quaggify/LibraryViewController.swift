@@ -36,8 +36,25 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
         API.addTrackToPlaylist(track: trackResponse, playlist: soundwichPlaylist) {(string: String?, error: Error?) in
             print (string)
         }
-        let reactionParameters = ["reaction": reactionEmoji, "message": elaboration] as [String: Any]
-        Flurry.endTimedEvent("Reacting", withParameters: reactionParameters)
+        var plainTextReaction = ""
+        switch reactionEmoji {
+            case "😂":
+                plainTextReaction = "laughing"
+            break
+            case "😎":
+                plainTextReaction = "dope"
+            break
+            case "💩":
+                plainTextReaction = "poop"
+            break
+            case "😡":
+                plainTextReaction = "angry"
+            break
+        default:
+            break
+        }
+        let reactionParameters = ["reaction": plainTextReaction, "message": elaboration] as [String: Any]
+        Flurry.logEvent("Kek with  Plaintext reactions", withParameters: reactionParameters)
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
@@ -106,7 +123,6 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
                         DispatchQueue.main.async {
                             UIApplication.topViewController()?.present(alertController, animated: true)
                         }
-                        Flurry.logEvent("Reacting", timed: true);
                     }
                 }
             } else {
@@ -152,15 +168,14 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             print(error.localizedDescription)
         }
         
-        print("here")
+        let CLIENT_ID = "9f0cac5d230c4877a2a769febe804681"
         if thePlayer.spotifyPlayer == nil {
             thePlayer.spotifyPlayer = SPTAudioStreamingController.sharedInstance()
             thePlayer.spotifyPlayer!.playbackDelegate = self
             thePlayer.spotifyPlayer!.delegate = self
-            try! thePlayer.spotifyPlayer!.start(withClientId: auth.clientID)
+            try! thePlayer.spotifyPlayer!.start(withClientId: CLIENT_ID)
             thePlayer.spotifyPlayer!.login(withAccessToken: ACCESS_TOKEN)
         }
-        
     }
     
     
@@ -281,7 +296,6 @@ extension LibraryViewController {
     
     func fetchPlaylists () {
         isFetching = true
-        print("Fetching albums offset(\(offset)) ")
         API.fetchSoundwichPlaylist() { (soundwichPlaylist: Playlist?, error: Error?) in
             self.playlists.append(soundwichPlaylist!)
             API.fetchCurrentUsersPlaylists(limit: self.limit, offset: self.offset) { [weak self] (spotifyObject, error) in
@@ -309,7 +323,7 @@ extension LibraryViewController {
             return
         }
         isFetching = true
-        print("Refreshing playlists")
+        print("Refreshing ")
         
         API.fetchSoundwichPlaylist() { (soundwichPlaylist: Playlist?, error: Error?) in
             //self.playlists.append(soundwichPlaylist!)

@@ -263,7 +263,6 @@ extension TrackViewController {
     
     func nextSong(){
         if(thePlayer.PP){
-            print("next")
             thePlayer.indeX += 1
             if thePlayer.indeX >= (thePlayer.trackList?.total)! {
                 thePlayer.indeX = 0
@@ -275,7 +274,6 @@ extension TrackViewController {
     
     func previousSong(){
         if(thePlayer.PP){
-            print("prev")
             thePlayer.indeX -= 1
             if thePlayer.indeX <= -1 {
                 thePlayer.indeX = 0
@@ -293,7 +291,6 @@ extension TrackViewController {
                 MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyPlaybackRate] = 1
                 thePlayer.spotifyPlayer?.setIsPlaying(true, callback: { (error) in
                     if (error != nil) {
-                        print("what")
                         //  print(error)
                     }
                 })
@@ -303,7 +300,6 @@ extension TrackViewController {
                 MPNowPlayingInfoCenter.default().nowPlayingInfo![MPNowPlayingInfoPropertyPlaybackRate] = 0
                 thePlayer.spotifyPlayer?.setIsPlaying(false, callback: { (error) in
                     if (error != nil) {
-                        print("hello")
                         //  print(error)
                     }
                 })
@@ -317,10 +313,9 @@ extension TrackViewController {
     func playSong() {
         var trackName = "spotify:track:"
         trackName += (track?.id)!
-        print("here - playsong")
         thePlayer.spotifyPlayer?.playSpotifyURI(trackName, startingWith: 0, startingWithPosition: 0, callback: { (error) in
             if (error != nil) {
-                //  print(error)
+                print(error)
             }
         })
         let imageURLString = URL(string: (self.track?.album?.images?[0].url)!)
