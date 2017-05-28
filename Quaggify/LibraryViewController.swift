@@ -54,7 +54,7 @@ class LibraryViewController: ViewController, SPTAudioStreamingDelegate, SPTAudio
             break
         }
         let reactionParameters = ["reaction": plainTextReaction, "message": elaboration] as [String: Any]
-        Flurry.logEvent("Kek with  Plaintext reactions", withParameters: reactionParameters)
+        Flurry.logEvent("Plaintext reactions", withParameters: reactionParameters)
     }
     
     func audioStreaming(_ audioStreaming: SPTAudioStreamingController!, didStopPlayingTrack trackUri: String!) {
